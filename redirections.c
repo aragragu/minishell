@@ -1,0 +1,295 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirections.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/10 11:29:24 by aragragu          #+#    #+#             */
+/*   Updated: 2024/08/17 13:35:21 by aragragu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+void handle_redirection(t_elem **list, t_garbage **garbage)
+{
+    if (!*list)
+        return;
+    t_elem *current = *list;
+    if (list && ((*list)->type == REDIR_OUT || (*list)->type == REDIR_IN ||
+                 (*list)->type == HEREDOC || (*list)->type == APPEND))
+        starting_red(list, garbage);
+    while (current)
+    {
+        if (current->next && current->next->type == REDIR_OUT)
+            redirection_out_list(&current);
+        else if (current->next && current->next->type == REDIR_IN)
+            redirection_in_list(&current);
+        else if (current->next && current->next->type == HEREDOC)
+            herdoc_list(&current, garbage);
+        else if (current->next && current->next->type == APPEND)
+            append_list(&current);
+        current = current->next;
+    }
+}
+
+void starting_red(t_elem **list, t_garbage **garbage)
+{
+    t_elem *current = *list;
+    t_elem *holder;
+    if (current && current->type == REDIR_IN)
+    {
+        if (current->next && current->next->type == SPACE)
+        {
+            holder = current->next;
+            if (holder->next && holder->next->type < SPACE)
+            {
+                *list = holder->next;
+                holder->next->type = REDIR_IN;
+                return;
+            }
+        }
+        else if (current->next && current->next->type < SPACE)
+        {
+            *list = current->next;
+            current->next->type = REDIR_IN;
+            return;
+        }
+    }
+    else if (current && current->type == REDIR_OUT)
+    {
+        if (current->next && current->next->type == SPACE)
+        {
+            holder = current->next;
+            if (holder->next && holder->next->type < SPACE)
+            {
+                *list = holder->next;
+                holder->next->type = REDIR_OUT;
+                return;
+            }
+        }
+        else if (current->next && current->next->type < SPACE)
+        {
+            *list = current->next;
+            current->next->type = REDIR_OUT;
+            return;
+        }
+    }
+    else if (current && current->type == APPEND)
+    {
+        if (current->next && current->next->type == SPACE)
+        {
+            holder = current->next;
+            if (holder->next && holder->next->type < SPACE)
+            {
+                *list = holder->next;
+                holder->next->type = APPEND;
+                return;
+            }
+        }
+        else if (current->next && current->next->type < SPACE)
+        {
+            *list = current->next;
+            current->next->type = APPEND;
+            return;
+        }
+    }
+    else if (current && current->type == HEREDOC)
+    {
+        if (current->next && current->next->type == SPACE)
+        {
+            holder = current->next;
+            if (holder->next && holder->next->type < SPACE)
+            {
+                open_herdoc(&holder->next, garbage);
+                *list = holder->next;
+                return;
+            }
+        }
+        else if (current->next && current->next->type < SPACE)
+        {
+            open_herdoc(&current->next, garbage);
+            *list = current->next;
+            return;
+        }
+    }
+}
+
+void redirection_out_list(t_elem **list)
+{
+    if (!*list)
+        return;
+    t_elem *current = *list;
+    t_elem *red_out;
+    t_elem *red_out2;
+    if (current && current->next)
+    {
+        if (current->next->type == REDIR_OUT && !ft_strcmp(current->next->content, ">"))
+        {
+            red_out = current->next;
+            if (red_out && red_out->next)
+            {
+                if (red_out->next && red_out->next->type < SPACE)
+                {
+                    red_out->next->type = REDIR_OUT;
+                    current->next = red_out->next;
+                    return;
+                }
+                else if (red_out->next->next && red_out->next->type == SPACE)
+                {
+                    red_out2 = red_out->next->next;
+                    if (red_out2->type < SPACE)
+                    {
+                        red_out2->type = REDIR_OUT;
+                        current->next = red_out2;
+                        return;
+                    }
+                }
+            }
+        }
+    }
+}
+void redirection_in_list(t_elem **list)
+{
+    if (!*list)
+        return;
+    t_elem *current = *list;
+    t_elem *red_out;
+    t_elem *red_out2;
+    if (current && current->next)
+    {
+        if (current->next->type == REDIR_IN && !ft_strcmp(current->next->content, "<"))
+        {
+            red_out = current->next;
+            if (red_out && red_out->next)
+            {
+                if (red_out->next && red_out->next->type < SPACE)
+                {
+                    red_out->next->type = REDIR_IN;
+                    current->next = red_out->next;
+                    return;
+                }
+                else if (red_out->next->next && red_out->next->type == SPACE)
+                {
+                    red_out2 = red_out->next->next;
+                    if (red_out2->type < SPACE)
+                    {
+                        red_out2->type = REDIR_IN;
+                        current->next = red_out2;
+                        return;
+                    }
+                }
+            }
+        }
+    }
+}
+
+void herdoc_list(t_elem **list, t_garbage **garbage)
+{
+    t_elem *current = *list;
+    t_elem *herdoc;
+
+    if (current->next && current->next->type == HEREDOC && !ft_strcmp(current->next->content, "<<"))
+    {
+        herdoc = current->next;
+        if (herdoc->next && herdoc->next->type < SPACE)
+        {
+            open_herdoc(&herdoc->next, garbage);
+            current->next = herdoc->next;
+            return;
+        }
+        else if (herdoc->next && herdoc->next->type == SPACE)
+        {
+            if (herdoc->next->next && herdoc->next->next->type < SPACE)
+            {
+                open_herdoc(&herdoc->next->next, garbage);
+                current->next = herdoc->next->next;
+                return;
+            }
+        }
+    }
+}
+
+void open_herdoc(t_elem **list, t_garbage **garbage)
+{
+    static int i;
+    char *line;
+    char *buffer = ft_strdup("", garbage);
+    t_elem *current = *list;
+    if (current->type == D_QOUTS || current->type == S_QOUTS)
+        edit_list(current, garbage);
+    char *temp;
+    char *file_name = (ft_strjoin(ft_strdup("tmp_", garbage), ft_itoa(++i), garbage));
+    int fd;
+    while (1)
+    {
+        line = readline(">");
+        if (!line)
+            break;
+        if (!ft_strcmp(current->content, line))
+        {
+            fd = open(file_name, O_CREAT | O_RDWR, 0644);
+            if (fd == -1)
+            {
+                perror("Error opening file");
+                break;
+            }
+            write(fd, buffer, ft_strlen(buffer));
+            // unlink(file_name);
+            close(fd);
+            break;
+        }
+        if (!*line)
+        {
+            free(line);
+            continue;
+        }
+        ft_lstadd_back_garbage(garbage, ft_lstnew_garbage(line));
+        temp = ft_strjoin(line, "\n", garbage);
+        if (!temp)
+            break;
+        temp = ft_strjoin(buffer, temp, garbage);
+        if (!temp)
+            break;
+        buffer = temp;
+    }
+    current->content = file_name;
+    current->type = HEREDOC;
+}
+
+void append_list(t_elem **list)
+{
+    if (!*list)
+        return;
+    t_elem *current = *list;
+    t_elem *red_out;
+    t_elem *red_out2;
+    if (current && current->next)
+    {
+        if (current->next->type == APPEND && !ft_strcmp(current->next->content, ">>"))
+        {
+
+            red_out = current->next;
+            if (red_out && red_out->next)
+            {
+                if (red_out->next && red_out->next->type < SPACE)
+                {
+                    red_out->next->type = APPEND;
+                    current->next = red_out->next;
+                    return;
+                }
+                else if (red_out->next->next && red_out->next->type == SPACE)
+                {
+                    red_out2 = red_out->next->next;
+                    if (red_out2->type < SPACE)
+                    {
+                        red_out2->type = APPEND;
+                        current->next = red_out2;
+                        return;
+                    }
+                }
+            }
+        }
+    }
+}
