@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/08/08 15:47:20 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/08/17 20:44:31 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void    expand_var(char **str, t_env **env, t_garbage **garbage)
                 }
                 list = list->next;
             }
-            *str = ft_strdup("", garbage);
+            *str = NULL;
         }
     }
 }

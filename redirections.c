@@ -6,20 +6,20 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:29:24 by aragragu          #+#    #+#             */
-/*   Updated: 2024/08/17 13:35:21 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/08/18 15:58:06 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void handle_redirection(t_elem **list, t_garbage **garbage)
+void handle_redirection(t_elem **list, t_env **env,t_garbage **garbage)
 {
     if (!*list)
         return;
     t_elem *current = *list;
     if (list && ((*list)->type == REDIR_OUT || (*list)->type == REDIR_IN ||
                  (*list)->type == HEREDOC || (*list)->type == APPEND))
-        starting_red(list, garbage);
+        starting_red(list, env, garbage);
     while (current)
     {
         if (current->next && current->next->type == REDIR_OUT)
@@ -27,14 +27,14 @@ void handle_redirection(t_elem **list, t_garbage **garbage)
         else if (current->next && current->next->type == REDIR_IN)
             redirection_in_list(&current);
         else if (current->next && current->next->type == HEREDOC)
-            herdoc_list(&current, garbage);
+            herdoc_list(&current, env, garbage);
         else if (current->next && current->next->type == APPEND)
             append_list(&current);
         current = current->next;
     }
 }
 
-void starting_red(t_elem **list, t_garbage **garbage)
+void starting_red(t_elem **list, t_env **env,t_garbage **garbage)
 {
     t_elem *current = *list;
     t_elem *holder;
@@ -102,14 +102,20 @@ void starting_red(t_elem **list, t_garbage **garbage)
             holder = current->next;
             if (holder->next && holder->next->type < SPACE)
             {
-                open_herdoc(&holder->next, garbage);
+                if (holder->next->type == VAR)
+                    open_herdoc(&holder->next, env, garbage, 1);
+                else 
+                    open_herdoc(&holder->next, env, garbage, 0);
                 *list = holder->next;
                 return;
             }
         }
         else if (current->next && current->next->type < SPACE)
         {
-            open_herdoc(&current->next, garbage);
+            if (current->next->type == VAR)
+                open_herdoc(&current->next, env, garbage, 1);
+            else 
+                open_herdoc(&current->next, env, garbage, 0);
             *list = current->next;
             return;
         }
@@ -185,7 +191,7 @@ void redirection_in_list(t_elem **list)
     }
 }
 
-void herdoc_list(t_elem **list, t_garbage **garbage)
+void herdoc_list(t_elem **list, t_env **env,t_garbage **garbage)
 {
     t_elem *current = *list;
     t_elem *herdoc;
@@ -195,7 +201,10 @@ void herdoc_list(t_elem **list, t_garbage **garbage)
         herdoc = current->next;
         if (herdoc->next && herdoc->next->type < SPACE)
         {
-            open_herdoc(&herdoc->next, garbage);
+            if (herdoc->next->type == VAR)
+                open_herdoc(&herdoc->next, env, garbage, 1);
+            else 
+                open_herdoc(&herdoc->next, env, garbage, 0);
             current->next = herdoc->next;
             return;
         }
@@ -203,7 +212,10 @@ void herdoc_list(t_elem **list, t_garbage **garbage)
         {
             if (herdoc->next->next && herdoc->next->next->type < SPACE)
             {
-                open_herdoc(&herdoc->next->next, garbage);
+                if (herdoc->next->next->type == VAR)
+                    open_herdoc(&herdoc->next->next, env, garbage, 1);
+                else 
+                    open_herdoc(&herdoc->next->next, env, garbage, 0);
                 current->next = herdoc->next->next;
                 return;
             }
@@ -211,7 +223,7 @@ void herdoc_list(t_elem **list, t_garbage **garbage)
     }
 }
 
-void open_herdoc(t_elem **list, t_garbage **garbage)
+void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
 {
     static int i;
     char *line;
@@ -236,7 +248,7 @@ void open_herdoc(t_elem **list, t_garbage **garbage)
                 break;
             }
             write(fd, buffer, ft_strlen(buffer));
-            // unlink(file_name);
+            unlink(file_name);
             close(fd);
             break;
         }
@@ -246,6 +258,11 @@ void open_herdoc(t_elem **list, t_garbage **garbage)
             continue;
         }
         ft_lstadd_back_garbage(garbage, ft_lstnew_garbage(line));
+        if (flag)
+        {
+            if (line[0] == '$' && line[1])
+                expand_herdoc(&line, env, garbage);
+        }
         temp = ft_strjoin(line, "\n", garbage);
         if (!temp)
             break;
@@ -254,6 +271,7 @@ void open_herdoc(t_elem **list, t_garbage **garbage)
             break;
         buffer = temp;
     }
+    printf("%s", buffer);
     current->content = file_name;
     current->type = HEREDOC;
 }
@@ -290,6 +308,34 @@ void append_list(t_elem **list)
                     }
                 }
             }
+        }
+    }
+}
+
+void    expand_herdoc(char **str, t_env **env, t_garbage **garbage)
+{
+    int i = 0;
+    char *gtr = *str;
+    if (gtr[i] == '$')
+    {
+        t_env   *list = *env;
+        if (gtr[i + 1] >= '0' && gtr[i + 1] <= '9')
+        {
+            *str = ft_strdup("", garbage);
+            return;
+        }
+        else
+        {
+            while (list)
+            {
+                if (!ft_strcmp(list->key, gtr + 1))
+                {
+                    *str = ft_strdup(list->value, garbage);
+                    return ;
+                }
+                list = list->next;
+            }
+            *str = ft_strdup("", garbage);
         }
     }
 }

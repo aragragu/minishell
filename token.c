@@ -36,12 +36,12 @@ void read_input(char **env)
         list = token_input(&list, &input, &garbage);
         if (!sysntax_error_checker(&garbage, input, &list))
             continue ;
-        handle_redirection(&list, &garbage);
-        // print_list(&list);
+        handle_redirection(&list, &env_list, &garbage);
         expand_var_list(&list, &env_list, &garbage);
+        //concatination(&list);
         import_data(&cmd, &list, &garbage);
         // print_list(&list);
-        print_cmd(cmd);
+        // print_cmd(cmd);
         free_garbage(&garbage);
         list = NULL;
         garbage = NULL;
@@ -156,7 +156,7 @@ void is_a_var(t_elem **list, char *input, int index, t_garbage **garbage)
     }
     else
     {
-        while (input[index + 1 + len] && (is_alphanumeric(input[index + 1 + len]) || input[index + 1 + len] == '_'))
+        while (input[index + 1 + len] && (is_alphanumeric(input[index + 1 + len]) || input[index + 1 + len] == '_' || input[index + 1 + len] == '?'))
             len++;
         str = ft_substr(input, index, len + 1, garbage);
         ft_lstadd_back(list, ft_lstnew(str, VAR, garbage));
