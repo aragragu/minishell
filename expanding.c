@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/08/17 20:44:31 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/08/18 21:08:44 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void expand_var_list(t_elem **list, t_env **env, t_garbage **garbage)
     t_elem *token;
     token = *list;
     if (!*list)
-        return ;
+        return;
     while (token)
     {
         edit_list(token, garbage);
@@ -50,7 +50,7 @@ t_env *fill_env(char **str, t_garbage **garbage)
                 key = ft_substr(str[j], 0, i, garbage);
                 value = ft_substr(str[j] + i + 1, 0, (end - i - 1), garbage);
                 ft_lstadd_back2(&list, ft_lstnew2(key, value, garbage));
-                break ;
+                break;
             }
             i++;
         }
@@ -59,14 +59,13 @@ t_env *fill_env(char **str, t_garbage **garbage)
     return (list);
 }
 
-
-void    expand_var(char **str, t_env **env, t_garbage **garbage)
+void expand_var(char **str, t_env **env, t_garbage **garbage)
 {
     int i = 0;
     char *gtr = *str;
     if (gtr[i] == '$')
     {
-        t_env   *list = *env;
+        t_env *list = *env;
         if (gtr[i + 1] >= '0' && gtr[i + 1] <= '9')
         {
             *str = ft_strdup("", garbage);
@@ -79,7 +78,7 @@ void    expand_var(char **str, t_env **env, t_garbage **garbage)
                 if (!ft_strcmp(list->key, gtr + 1))
                 {
                     *str = ft_strdup(list->value, garbage);
-                    return ;
+                    return;
                 }
                 list = list->next;
             }
@@ -88,12 +87,12 @@ void    expand_var(char **str, t_env **env, t_garbage **garbage)
     }
 }
 
-void    expand_d_qouts(t_env **env, char **ptr, t_garbage **garbage)
+void expand_d_qouts(t_env **env, char **ptr, t_garbage **garbage)
 {
     t_elem *list = NULL;
-    t_elem  *current = NULL;
+    t_elem *current = NULL;
     char *str;
-    
+
     list = token_quots(&list, *ptr, garbage);
     current = list;
     str = ft_strdup("", garbage);
@@ -101,6 +100,29 @@ void    expand_d_qouts(t_env **env, char **ptr, t_garbage **garbage)
     {
         if (current->type == VAR)
             expand_var(&current->content, env, garbage);
+        if (!current->content)
+            current->content = ft_strdup("", garbage);
+        str = ft_strjoin(str, current->content, garbage);
+        current = current->next;
+    }
+    *ptr = str;
+}
+
+void expand_d_qouts_2(t_env **env, char **ptr, t_garbage **garbage)
+{
+    t_elem *list = NULL;
+    t_elem *current = NULL;
+    char *str;
+
+    list = token_quots(&list, *ptr, garbage);
+    current = list;
+    str = ft_strdup("", garbage);
+    while (current)
+    {
+        if (current->type == VAR)
+            expand_herdoc(&current->content, env, garbage);
+        if (!current->content)
+            current->content = ft_strdup("", garbage);
         str = ft_strjoin(str, current->content, garbage);
         current = current->next;
     }

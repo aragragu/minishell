@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:02:07 by aragragu          #+#    #+#             */
-/*   Updated: 2024/08/17 20:13:30 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/08/18 16:06:26 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,6 @@ const char* get_token_type_string(t_token type) {
     }
 }
 
-void    print_split(char **str)
-{
-    int i = 0;
-    if (!str)
-        return;
-    while (str[i])
-        printf("%s\n", str[i++]);
-}
 
 void print_list(t_elem **list) {
     if (!*list)
@@ -52,7 +44,6 @@ void print_list(t_elem **list) {
     }
 }
 
-
 void print_env_list(t_env *head)
 {
     if (!head)
@@ -60,7 +51,6 @@ void print_env_list(t_env *head)
         printf("Environment list is empty or not initialized.\n");
         return;
     }
-
     t_env *current = head;
     while (current != NULL)
     {
@@ -85,7 +75,6 @@ void    free_garbage(t_garbage **garbage)
     }
     *garbage = NULL;
 }
-
 
 void print_cmd(t_cmd *cmd) 
 {

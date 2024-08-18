@@ -23,7 +23,7 @@ void read_input(char **env)
     env_list = fill_env(env, &garb);
     while (1)
     {
-        input = readline(GREEN "➜ ""minishell💀$ " RESET);
+        input = readline("➜ minishell💀$ ");
         if (!input)
             break;
         if (!*input)
@@ -38,10 +38,11 @@ void read_input(char **env)
             continue ;
         handle_redirection(&list, &env_list, &garbage);
         expand_var_list(&list, &env_list, &garbage);
-        //concatination(&list);
-        import_data(&cmd, &list, &garbage);
         // print_list(&list);
-        // print_cmd(cmd);
+        concatination(&list, &garbage);
+        // print_list(&list);
+        import_data(&cmd, &list, &garbage);
+        print_cmd(cmd);
         free_garbage(&garbage);
         list = NULL;
         garbage = NULL;

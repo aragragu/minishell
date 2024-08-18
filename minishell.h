@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/08/18 16:04:33 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/08/18 21:07:55 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <readline/history.h>
 #include <fcntl.h>
 #include <errno.h>
+
 #define RED     "\x1b[31m"
 #define GREEN   "\e[1;32m"
 #define BLUE    "\e[1;38;5;87m"
@@ -95,7 +96,6 @@ t_env		*ft_lstnew2(char *key, char *value, t_garbage **garbage);
 void 		ft_lstadd_back_garbage(t_garbage **lst, t_garbage *new);
 void		ft_lstadd_back(t_elem **lst, t_elem *new);
 int			ft_lstsize(t_elem *lst);
-void		print_split(char **str);
 void		read_input(char **env);
 int			sysntax_error_checker(t_garbage **garbage, char *str, t_elem **list);
 int			is_withespace(char c);
@@ -130,6 +130,7 @@ int			ft_strcmp(char *s1, char *s2);
 void    	expand_var(char **str, t_env **env, t_garbage **garbage);
 void    	free_garbage(t_garbage **garbage);
 void	    expand_d_qouts(t_env **env, char **ptr, t_garbage **garbage);
+void		expand_d_qouts_2(t_env **env, char **ptr, t_garbage **garbage);
 char		*ft_strjoin(char *s1, char *s2, t_garbage **garbage);
 int			not_special(char c);
 void		is_a_string(t_elem **list, char *input, int index, t_garbage **garbage);
@@ -152,5 +153,6 @@ void    	fill_cmd2(t_cmd  **cmd, t_elem **list, t_garbage **garbage);
 int			word_count(t_elem *list);
 t_elem		*fill_argc(t_cmd  **cmd, t_elem **list, t_garbage **garbage);
 void		expand_herdoc(char **str, t_env **env, t_garbage **garbage);
+void		concatination(t_elem **list, t_garbage **garbage);
 
 #endif

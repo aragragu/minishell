@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:30:40 by aragragu          #+#    #+#             */
-/*   Updated: 2024/08/16 15:31:30 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/08/18 19:53:07 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,3 +166,31 @@ int     word_count(t_elem *list)
     return (i);
 }
 
+void    concatination(t_elem **list, t_garbage **garbage)
+{
+    t_elem *new_list = NULL;
+    t_elem *current = *list;
+    char *str;
+    while (current)
+    {
+        if (current && current->type < SPACE)
+        {
+            str = ft_strdup("", garbage);
+            while (current && current->type < SPACE)
+            {
+                if (current->content)
+                    str = ft_strjoin(str, current->content, garbage);
+                current = current->next;
+            }
+            ft_lstadd_back(&new_list, ft_lstnew(str, WORD, garbage));
+            str = NULL;
+        }
+        else
+        {
+            ft_lstadd_back(&new_list, ft_lstnew(current->content, current->type, garbage));
+            current = current->next;
+        }
+    }
+    // print_list(&new_list);
+    *list = new_list;
+}

@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:29:24 by aragragu          #+#    #+#             */
-/*   Updated: 2024/08/18 15:58:06 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/08/18 21:13:05 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,10 +259,9 @@ void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
         }
         ft_lstadd_back_garbage(garbage, ft_lstnew_garbage(line));
         if (flag)
-        {
-            if (line[0] == '$' && line[1])
-                expand_herdoc(&line, env, garbage);
-        }
+            expand_d_qouts_2(env, &line, garbage);
+        if (!line)
+            continue ;
         temp = ft_strjoin(line, "\n", garbage);
         if (!temp)
             break;
@@ -271,7 +270,6 @@ void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
             break;
         buffer = temp;
     }
-    printf("%s", buffer);
     current->content = file_name;
     current->type = HEREDOC;
 }
