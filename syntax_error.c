@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 13:19:54 by aragragu          #+#    #+#             */
-/*   Updated: 2024/08/17 14:10:31 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/08/22 22:17:01 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int has_invalid_redirection_in(t_elem **list)
             if (current->next && current->next->type == SPACE)
             {
                 current = current->next->next;
-                if (current && current->type >= PIPE)
+                if (current && (current->type >= PIPE))
                     return (0);
             }
             if (current->next && current->next->type >= PIPE)

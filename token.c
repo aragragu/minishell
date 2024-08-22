@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/08/19 10:08:46 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/08/22 22:51:29 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@ void read_input(char **env)
     t_env *env_list = NULL;
     t_garbage *garbage = NULL;
     t_garbage *garb = NULL;
-    t_cmd       *cmd = NULL;
+    t_cmd *cmd = NULL;
     char *input;
     env_list = fill_env(env, &garb);
+    // print_env_list(env_list);
     while (1)
     {
         input = readline("➜ minishell💀$ ");
@@ -35,12 +36,11 @@ void read_input(char **env)
         add_history(input);
         list = token_input(&list, &input, &garbage);
         if (!sysntax_error_checker(&garbage, input, &list))
-            continue ;
+            continue;
+        print_list(&list);
         handle_redirection(&list, &env_list, &garbage);
         expand_var_list(&list, &env_list, &garbage);
-        // print_list(&list);
         concatination(&list, &garbage);
-        // print_list(&list);
         import_data(&cmd, &list, &garbage);
         print_cmd(cmd);
         free_garbage(&garbage);
@@ -143,13 +143,7 @@ void is_a_var(t_elem **list, char *input, int index, t_garbage **garbage)
 {
     int len = 0;
     char *str;
-    if ( is_withespace(input[index + 1]) || input[index + 1] == '\0')
-    {
-        str = ft_substr(input, index, 1, garbage);
-        ft_lstadd_back(list, ft_lstnew(str, DOLLAR, garbage));
-        return;
-    }
-    else if (input[index + 1] >= '0' && input[index + 1] <= '9')
+    if (input[index + 1] >= '0' && input[index + 1] <= '9')
     {
         str = ft_substr(input, index, 2, garbage);
         ft_lstadd_back(list, ft_lstnew(str, VAR, garbage));
@@ -160,7 +154,10 @@ void is_a_var(t_elem **list, char *input, int index, t_garbage **garbage)
         while (input[index + 1 + len] && (is_alphanumeric(input[index + 1 + len]) || input[index + 1 + len] == '_' || input[index + 1 + len] == '?'))
             len++;
         str = ft_substr(input, index, len + 1, garbage);
-        ft_lstadd_back(list, ft_lstnew(str, VAR, garbage));
+        if (ft_strlen(str) == 1)
+            ft_lstadd_back(list, ft_lstnew(str, WORD, garbage));
+        else
+            ft_lstadd_back(list, ft_lstnew(str, VAR, garbage));
     }
 }
 
@@ -188,4 +185,11 @@ void edit_list(t_elem *list, t_garbage **garbage)
         list->content = str;
     }
     list = list->next;
+}
+
+int is_special_character(char c)
+{
+    if ((c >= 33 && c <= 47) || (c >= 58 && c <= 64) || (c >= 91 && c <= 96) || (c >= 123 && c <= 126))
+        return (1);
+    return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:02:07 by aragragu          #+#    #+#             */
-/*   Updated: 2024/08/18 16:06:26 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/08/22 15:26:36 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ const char* get_token_type_string(t_token type) {
         case D_QOUTS: return "D_QOUTS";
         case S_QOUTS: return "S_QOUTS";
         case VAR: return "VAR";
-        case DOLLAR: return "DOLLAR";
         case DOUBLE_DLR: return "DOUBLE_DLR";
         case SPACE: return "SPACE";
         case PIPE: return "PIPE";
@@ -34,7 +33,7 @@ const char* get_token_type_string(t_token type) {
 }
 
 
-void print_list(t_elem **list) {
+void    print_list(t_elem **list) {
     if (!*list)
         return ;
     t_elem *current = *list;
@@ -52,7 +51,7 @@ void print_env_list(t_env *head)
         return;
     }
     t_env *current = head;
-    while (current != NULL)
+    while (current)
     {
         printf("Key: %s, Value: %s\n", current->key, current->value);
         current = current->next;
@@ -86,11 +85,14 @@ void print_cmd(t_cmd *cmd)
             printf("Command: %s\n", cmd->cmd);
         else 
             printf("Command: (null)\n");
-        if (cmd->argc) 
+        if (cmd->argc && cmd->argc[0]) 
         {
             printf("Arguments:\n");
             for (int i = 0; cmd->argc[i] != NULL; i++) 
-                printf("  Arg[%d]: %s\n", i, cmd->argc[i]);
+            {
+                if (cmd->argc[i])
+                    printf("  Arg[%d]: [%s]\n", i, cmd->argc[i]);
+            }
         } 
         else 
             printf("Arguments: (null)\n");
@@ -114,7 +116,7 @@ void print_cmd(t_cmd *cmd)
 int main(int argc, char *argv[], char **env)
 {
     (void)argv;
-    atexit(f);
+    // atexit(f);E
     if (argc == 1)
         read_input(env);
     else

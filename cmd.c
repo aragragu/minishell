@@ -6,32 +6,33 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:30:40 by aragragu          #+#    #+#             */
-/*   Updated: 2024/08/18 19:53:07 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/08/22 22:50:55 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void        import_data(t_cmd **cmd, t_elem **list, t_garbage **garbage)
+void import_data(t_cmd **cmd, t_elem **list, t_garbage **garbage)
 {
     if (!*list)
-        return ;
+        return;
     t_elem *current = *list;
     int pipe = 0;
     rename_token(list);
+    // print_list(list);
     while (current)
     {
         if (current->type == PIPE)
             pipe++;
         current = current->next;
     }
-    if (pipe == 0)
+    if (!pipe)
         fill_cmd1(cmd, list, garbage);
     else
         fill_cmd2(cmd, list, garbage);
 }
 
-void        fill_cmd1(t_cmd  **cmd, t_elem **list, t_garbage **garbage)
+void fill_cmd1(t_cmd **cmd, t_elem **list, t_garbage **garbage)
 {
     int i = 0;
     int j = 0;
@@ -46,49 +47,67 @@ void        fill_cmd1(t_cmd  **cmd, t_elem **list, t_garbage **garbage)
             i++;
         current = current->next;
     }
+    print_list(list);
     if (i > 1)
     {
         str = (char **)malloc(sizeof(char *) * (i));
         if (!str)
-            return ;
+            return;
         ft_lstadd_back_garbage(garbage, ft_lstnew_garbage(str));
         str[i - 1] = NULL;
         command->argc = str;
-    }
-    current = *list;
-    while (current)
-    {
-        if (current->type >= REDIR_IN && current->type <= APPEND)
-            ft_lstadd_back_redi(&command->redirection, ft_lstnew_redi(current->content, current->type, garbage));
-        else if (current->type == WORD)
+        current = *list;
+        while (current)
         {
-            if (current && j == 0)
+            if (current->type >= REDIR_IN && current->type <= APPEND)
+                ft_lstadd_back_redi(&command->redirection, ft_lstnew_redi(current->content, current->type, garbage));
+            else if (current->type == WORD)
             {
-                command->cmd = current->content;
-                j++;
+                if (current && j == 0)
+                {
+                    // printf("[%s]\n", current->content);
+                    command->cmd = current->content;
+                    j++;
+                }
+                else if (current && current->content && current->content[0])
+                {
+                    // printf("[%s]\n", current->content);
+                    str[argc] = current->content;
+                    argc++;
+                }
             }
-            else
-            {
-                str[argc] = current->content;
-                argc++;
-            }
+            current = current->next;
         }
-        current = current->next;
+        str[argc] = NULL;
     }
+    else
+    {
+        current = *list;
+        while (current && current->type != PIPE)
+        {
+            if (current->type == WORD)
+                command->cmd = current->content;
+            if (current->type >= REDIR_IN && current->type <= APPEND)
+                ft_lstadd_back_redi(&command->redirection, ft_lstnew_redi(current->content, current->type, garbage));
+            current = current->next;
+        }
+    }
+    // puts("=====================");
     ft_lstadd_back_cmd(cmd, command);
 }
 
-void    fill_cmd2(t_cmd  **cmd, t_elem **list, t_garbage **garbage)
+void fill_cmd2(t_cmd **cmd, t_elem **list, t_garbage **garbage)
 {
     t_elem *current = *list;
     while (current)
     {
-        current = fill_argc(cmd ,&current, garbage);
+        // printf("%s\n", current->content);
+        current = fill_argc(cmd, &current, garbage);
         if (current && current->type == PIPE)
             current = current->next;
     }
 }
-t_elem    *fill_argc(t_cmd  **cmd, t_elem **list, t_garbage **garbage)
+t_elem *fill_argc(t_cmd **cmd, t_elem **list, t_garbage **garbage)
 {
     int i = 0;
     int j = 0;
@@ -101,7 +120,7 @@ t_elem    *fill_argc(t_cmd  **cmd, t_elem **list, t_garbage **garbage)
     while (count)
     {
         if (count->type == PIPE)
-            break ;
+            break;
         if (count->type == WORD)
             i++;
         count = count->next;
@@ -114,34 +133,49 @@ t_elem    *fill_argc(t_cmd  **cmd, t_elem **list, t_garbage **garbage)
         ft_lstadd_back_garbage(garbage, ft_lstnew_garbage(str));
         str[i - 1] = NULL;
         command->argc = str;
-    }
-    while (current && current->type != PIPE)
-    {
-        if (current->type >= REDIR_IN && current->type <= APPEND)
-            ft_lstadd_back_redi(&command->redirection, ft_lstnew_redi(current->content, current->type, garbage));
-        else if (current->type == WORD)
+        while (current && current->type != PIPE)
         {
-            if (j == 0)
+            if (current->type >= REDIR_IN && current->type <= APPEND)
+                ft_lstadd_back_redi(&command->redirection, ft_lstnew_redi(current->content, current->type, garbage));
+            else if (current->type == WORD)
             {
-                command->cmd = current->content;
-                j++;
+                if (j == 0)
+                {
+                    // printf("[%s]\n", current->content);
+                    command->cmd = current->content;
+                    j++;
+                }
+                else if (current && current->content && current->content[0])
+                {
+                    // printf("[%s]\n", current->content);
+                    str[argc] = current->content;
+                    argc++;
+                }
             }
-            else
-            {
-                str[argc] = current->content;
-                argc++;
-            }
+            current = current->next;
         }
-        current = current->next;
+        str[argc] = NULL;
+    }
+    else
+    {
+        current = *list;
+        while (current && current->type != PIPE)
+        {
+            if (current->type == WORD)
+                command->cmd = current->content;
+            if (current->type >= REDIR_IN && current->type <= APPEND)
+                ft_lstadd_back_redi(&command->redirection, ft_lstnew_redi(current->content, current->type, garbage));
+            current = current->next;
+        }
     }
     ft_lstadd_back_cmd(cmd, command);
     return (current);
 }
 
-void    rename_token(t_elem **list)
+void rename_token(t_elem **list)
 {
     if (!*list)
-        return ;
+        return;
     t_elem *current = *list;
     while (current)
     {
@@ -151,7 +185,7 @@ void    rename_token(t_elem **list)
     }
 }
 
-int     word_count(t_elem *list)
+int word_count(t_elem *list)
 {
     t_elem *current = list;
     int i = 0;
@@ -160,13 +194,13 @@ int     word_count(t_elem *list)
         if (current->type == WORD)
             i++;
         if (current->type == PIPE)
-            break ;
+            break;
         current = current->next;
     }
     return (i);
 }
 
-void    concatination(t_elem **list, t_garbage **garbage)
+void concatination(t_elem **list, t_garbage **garbage)
 {
     t_elem *new_list = NULL;
     t_elem *current = *list;
@@ -175,6 +209,11 @@ void    concatination(t_elem **list, t_garbage **garbage)
     {
         if (current && current->type < SPACE)
         {
+            if (!current->content)
+            {
+                current = current->next;
+                continue;
+            }
             str = ft_strdup("", garbage);
             while (current && current->type < SPACE)
             {
@@ -187,6 +226,7 @@ void    concatination(t_elem **list, t_garbage **garbage)
         }
         else
         {
+
             ft_lstadd_back(&new_list, ft_lstnew(current->content, current->type, garbage));
             current = current->next;
         }

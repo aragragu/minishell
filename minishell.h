@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/08/18 21:07:55 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/08/20 17:21:58 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ typedef enum    s_token
 	D_QOUTS,        		// " "
 	S_QOUTS,        		// ' '
 	VAR,            		// $ASJASD
-	DOLLAR,					// $
 	DOUBLE_DLR,				// $$
 	SPACE,					// "_"
 	PIPE,           		// |
@@ -71,6 +70,7 @@ typedef struct s_redir
 {
 	char			*value;
 	t_token			type;
+	int fd;	
 	struct	s_redir *next;
 }			t_redir;
 
@@ -80,7 +80,7 @@ typedef	struct c_cmd
 	char			**argc;
 	t_redir			*redirection;
 	struct c_cmd	*next;
-}				t_cmd;
+}					t_cmd;
 
 char		*ft_itoa(int nb);
 char		**ft_split(char const *s, char c, t_garbage **garbage);
@@ -154,5 +154,6 @@ int			word_count(t_elem *list);
 t_elem		*fill_argc(t_cmd  **cmd, t_elem **list, t_garbage **garbage);
 void		expand_herdoc(char **str, t_env **env, t_garbage **garbage);
 void		concatination(t_elem **list, t_garbage **garbage);
+int     is_special_character(char c);
 
 #endif
