@@ -116,7 +116,7 @@ void print_cmd(t_cmd *cmd)
 int main(int argc, char *argv[], char **env)
 {
     (void)argv;
-    // atexit(f);E
+    // atexit(f);
     if (argc == 1)
         read_input(env);
     else

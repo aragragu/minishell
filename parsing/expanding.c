@@ -15,9 +15,9 @@
 void expand_var_list(t_elem **list, t_env **env, t_garbage **garbage)
 {
     t_elem *token;
-    token = *list;
     if (!*list)
         return;
+    token = *list;
     while (token) // content -> var -> content
     {
         edit_list(token, garbage);

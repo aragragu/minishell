@@ -20,11 +20,19 @@
 #include <readline/history.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <stdint.h>
 
 #define RED     "\x1b[31m"
 #define GREEN   "\e[1;32m"
 #define BLUE    "\e[1;38;5;87m"
 #define RESET   "\x1b[0m"
+
+#undef SPACE //remove if u are using macos
+#undef PIPE //remove if u are using macos
+#undef REDIR_IN //remove if u are using macos
+#undef REDIR_OUT //remove if u are using macos
+#undef HEREDOC //remove if u are using macos
+#undef APPEND //remove if u are using macos
 
 typedef enum    s_token
 {
@@ -70,7 +78,7 @@ typedef struct s_redir
 {
 	char			*value;
 	t_token			type;
-	int fd;	
+	int 			fd;	
 	struct	s_redir *next;
 }			t_redir;
 
