@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+         #
+#    By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/13 11:48:28 by aragragu          #+#    #+#              #
-#    Updated: 2024/08/17 13:21:33 by aragragu         ###   ########.fr        #
+#    Updated: 2024/09/03 19:27:35 by ykasmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,8 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 RM = rm -rf
-SRC = main.c split.c libft.c token.c syntax_error.c expanding.c redirections.c ft_itoa.c cmd.c
+SRC = main.c split.c libft.c token.c syntax_error.c expanding.c redirections.c ft_itoa.c cmd.c \
+	  ft_builtins.c 
 OBJ = $(SRC:%.c=%.o)
 	
 

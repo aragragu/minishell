@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:55:29 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/08/24 17:20:26 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/03 19:55:37 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int	ft_strcmp(char *s1, const char *s2)
 	int	i;
 
 	i = 0;
+	if (!s1 || !s2)
+		return(NULL);
 	while (s1[i] != '\0' && s2[i] != '\0' && s1[i] == s2[i])
 		i++;
 	return (s1[i] - s2[i]);

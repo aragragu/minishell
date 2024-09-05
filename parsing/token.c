@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/08/22 22:51:29 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/05 19:25:42 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,15 @@ void read_input(char **env)
     t_garbage *garbage = NULL;
     t_garbage *garb = NULL;
     t_cmd *cmd = NULL;
+    t_var var;
+    var.env = NULL;
+    var.list = NULL;
     char *input;
-    env_list = fill_env(env, &garb);
+    // env_list = fill_env(env, &garb);
+    // var.env = env_list;
+    init_env(&var.env, env);
+    // var.env = env_list;
+    // var.list = malloc(sizeof(t_cmd));
     // print_env_list(env_list);
     while (1)
     {
@@ -37,12 +44,21 @@ void read_input(char **env)
         list = token_input(&list, &input, &garbage);
         if (!sysntax_error_checker(&garbage, input, &list))
             continue;
-        print_list(&list);
+        // print_list(&list);
         handle_redirection(&list, &env_list, &garbage);
         expand_var_list(&list, &env_list, &garbage);
         concatination(&list, &garbage);
         import_data(&cmd, &list, &garbage);
+        print_env_list(env_list);
+        puts("==================================================");
+        print_env_list(var.env);
+        var.list = cmd;
         print_cmd(cmd);
+        if (check_builtins(cmd->cmd))
+			ft_builtins(&var, cmd->cmd, &cmd);
+		// if (ft_strcmp(inp, "env") == 0)
+		// 	ft_env(&var.env);  
+        // print_cmd(cmd);
         free_garbage(&garbage);
         list = NULL;
         garbage = NULL;

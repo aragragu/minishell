@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/08/20 17:21:58 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/05 18:33:07 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <readline/history.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <libc.h>
 
 #define RED     "\x1b[31m"
 #define GREEN   "\e[1;32m"
@@ -81,6 +82,30 @@ typedef	struct c_cmd
 	t_redir			*redirection;
 	struct c_cmd	*next;
 }					t_cmd;
+
+////////////////////////////////
+
+typedef struct s_list
+{
+	char			*cmd;
+	char			**arg;
+	struct s_list	*next;
+}					t_list;
+
+// typedef struct s_env
+// {
+// 	char			*key;
+// 	char			*val;
+// 	int				flag;
+// 	struct s_env	*next;
+// }					t_env;
+
+typedef struct s_var
+{
+	t_cmd			*list;
+	t_env			*env;
+}					t_var;
+///////////////////////////////////////
 
 char		*ft_itoa(int nb);
 char		**ft_split(char const *s, char c, t_garbage **garbage);
@@ -155,5 +180,30 @@ t_elem		*fill_argc(t_cmd  **cmd, t_elem **list, t_garbage **garbage);
 void		expand_herdoc(char **str, t_env **env, t_garbage **garbage);
 void		concatination(t_elem **list, t_garbage **garbage);
 int     is_special_character(char c);
+
+//////////////////////////////////////////////////////////////////////////////
+
+void	ft_echo(t_var *var);
+void	ft_export(t_var *var, int i, int error);
+void	ft_pwd(void);
+void	ft_exit(t_var *var);
+void	ft_cd(t_var *var);
+void	ft_unset(t_var *var);
+void	sort_env(t_env **env);
+void	ft_env(t_env **env);
+// void	ft_export(t_var *var, int i, int error);
+int		ft_isalpha(char c);
+int		ft_digits(char c);
+char	*ft_cat(char *str, int len, int flag);
+void	pwd_upd_old(t_env **env, char *key, char *val);
+void	ft_putstr_fd(char *s, int fd);
+int		check_builtins(char *str);
+// void	ft_builtins(t_var *var, char *str);
+void    init_env(t_env **envr, char **env);
+void	ft_builtins(t_var *var, char *str, t_cmd **cmd);
+void print_t_env(t_env *env);
+void print_t_var(t_var *var);
+void print_t_list(t_cmd *list);
+
 
 #endif
