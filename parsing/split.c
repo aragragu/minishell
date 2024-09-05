@@ -48,9 +48,7 @@ static	int	count_words(const char *s, char c)
 static	size_t	count_letter(const char *s, int position, char c)
 {
 	size_t		i;
-	char		*p;
 
-	p = (char *)s;
 	i = 0;
 	while (*(s + position + i) && *(s + position + i) != c)
 		i++;
@@ -101,7 +99,6 @@ static	char	**allocation(char **s, const char *x, char c, t_garbage **garbage)
 
 char	**ft_split(char const *s, char c, t_garbage **garbage)
 {
-	int			i;
 	char		**result;
 	size_t		count;
 
@@ -112,7 +109,6 @@ char	**ft_split(char const *s, char c, t_garbage **garbage)
 	if (!result)
 		return (NULL);
 	result[count] = NULL;
-	i = 0;
 	result = allocation(result, s, c,garbage);
 	return (result);
 }

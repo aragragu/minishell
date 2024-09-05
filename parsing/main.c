@@ -116,10 +116,14 @@ void print_cmd(t_cmd *cmd)
 int main(int argc, char *argv[], char **env)
 {
     (void)argv;
+<<<<<<< HEAD
     // t_env *envr = malloc(sizeof(t_env));
     // var.list = malloc(sizeof(t_list));
     
     // atexit(f);E
+=======
+    // atexit(f);
+>>>>>>> 6d2d79407e05899ed294d2596041b33ef29962af
     if (argc == 1)
         read_input(env);
     else

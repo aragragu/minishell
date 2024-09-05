@@ -215,7 +215,9 @@ int word_count(t_elem *list)
 
 void concatination(t_elem **list, t_garbage **garbage)
 {
-    t_elem *new_list = NULL;
+    t_elem *new_list;
+    if (!*list)
+        return;
     t_elem *current = *list;
     char *str;
     while (current)
