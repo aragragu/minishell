@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/05 20:56:44 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/05 21:07:24 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <stdint.h>
+#include <libc.h>
 
 #define RED     "\x1b[31m"
 #define GREEN   "\e[1;32m"

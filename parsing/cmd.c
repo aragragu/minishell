@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:30:40 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/05 18:00:50 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/05 21:09:51 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,9 +215,7 @@ int word_count(t_elem *list)
 
 void concatination(t_elem **list, t_garbage **garbage)
 {
-    t_elem *new_list;
-    if (!*list)
-        return;
+    t_elem *new_list = NULL;
     t_elem *current = *list;
     char *str;
     while (current)
