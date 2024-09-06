@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:30:40 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/05 18:00:50 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/06 12:05:45 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void fill_cmd2(t_cmd **cmd, t_elem **list, t_garbage **garbage)
 t_elem *fill_argc(t_cmd **cmd, t_elem **list, t_garbage **garbage)
 {
     int i = 0;
-    // int j = 0;
+    int j = 0;
     int argc = 0;
     char **str;
     t_elem *count = *list;
@@ -150,12 +150,12 @@ t_elem *fill_argc(t_cmd **cmd, t_elem **list, t_garbage **garbage)
                 ft_lstadd_back_redi(&command->redirection, ft_lstnew_redi(current->content, current->type, garbage));
             else if (current->type == WORD)
             {
-                // if (j == 0)
-                // {
-                //     // printf("[%s]\n", current->content);
-                //     command->cmd = current->content;
-                //     j++;
-                // }
+                if (j == 0)
+                {
+                    // printf("[%s]\n", current->content);
+                    command->cmd = current->content;
+                    j++;
+                }
                 if (current && current->content && current->content[0])
                 {
                     // printf("[%s]\n", current->content);
@@ -166,7 +166,7 @@ t_elem *fill_argc(t_cmd **cmd, t_elem **list, t_garbage **garbage)
             current = current->next;
         }
         str[argc] = NULL;
-    printf("%s\n", str[0]);
+    // printf("%s\n", str[0]);
     }
     else
     {
@@ -181,7 +181,7 @@ t_elem *fill_argc(t_cmd **cmd, t_elem **list, t_garbage **garbage)
         }
     }
     ft_lstadd_back_cmd(cmd, command);
-	printf("%s\n", command->argc[0]);
+	// printf("%s\n", command->argc[0]);
     return (current);
 }
 
@@ -215,9 +215,7 @@ int word_count(t_elem *list)
 
 void concatination(t_elem **list, t_garbage **garbage)
 {
-    t_elem *new_list;
-    if (!*list)
-        return;
+    t_elem *new_list = NULL;
     t_elem *current = *list;
     char *str;
     while (current)
@@ -246,6 +244,6 @@ void concatination(t_elem **list, t_garbage **garbage)
             current = current->next;
         }
     }
-    print_list(&new_list);
+    // print_list(&new_list);
     *list = new_list;
 }

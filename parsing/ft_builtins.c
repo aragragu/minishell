@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 10:13:32 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/05 19:15:14 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/06 18:24:57 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,11 +237,11 @@ void ft_echo(t_var *var)
 
 	i = 1;
 	newline = 1;
-	if (var->list->argc)
-	{
-		printf("\n");
-		return;
-	}
+	// if (var->list->argc)
+	// {
+	// 	printf("\n");
+	// 	return;
+	// }
 	while (var->list->argc[i] && check_n_option(var->list->argc[i]))
 	{
 		newline = 0;
@@ -265,7 +265,7 @@ void norm_init_env(t_env **envr, char **env)
 	int i;
 	int j;
 
-	i = 0;
+	i = 1;
 	j = 0;
 	key = NULL;
 	val = NULL;
@@ -295,23 +295,23 @@ void init_env(t_env **envr, char **env)
 	i = -1;
 	key = NULL;
 	val = NULL;
-	// *envr = ft_lstnewww(ft_strduppp("PATH"), ft_strduppp("/Users/ykasmi/Desktop/Minishell")); // protection
+	*envr = ft_lstnewww(ft_strduppp("PATH"), ft_strduppp("/Users/ykasmi/Desktop/Minishell")); // protection
 	if (!env || !env[0])
 	{
 		ft_lstadd_backkk(envr, ft_lstnewww(ft_strduppp("SHLVL"), ft_strduppp("1")));
 		ft_lstadd_backkk(envr, ft_lstnewww(ft_strduppp("_"), ft_strduppp("/usr/bin/env")));
 		return;
 	}
-	// while (env[0][++i])
-	// {
-	// 	if (env[0][i] == '=')
-	// 	{
-	// 		key = ft_cat(env[0], i, 0);
-	// 		val = ft_cat(env[0], i + 1, 1);
-	// 		break;
-	// 	}
-	// }
-	// *envr = ft_lstnewww(key, val); // protection
+	while (env[0][++i])
+	{
+		if (env[0][i] == '=')
+		{
+			key = ft_cat(env[0], i, 0);
+			val = ft_cat(env[0], i + 1, 1);
+			break;
+		}
+	}
+	*envr = ft_lstnewww(key, val); // protection
 	norm_init_env(envr, env);
 }
 
@@ -366,24 +366,49 @@ int is_num(const char *str)
 	return (1);
 }
 
+long	ft_atoi(char *str, t_var *var)
+{
+	int		i;
+	int		n;
+	long	result;
+
+	i = 0;
+	n = 1;
+	result = 0;
+	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '+' || str[i] == '-')
+	{
+		if (str[i] == '-')
+			n = -n;
+		i++;
+	}
+	while ('0' <= str[i] && str[i] <= '9')
+	{
+		result = (result * 10) + (str[i] - 48);
+		if ((result * n > LONG_MAX && result * n < LONG_MIN))
+		{
+			printf("exit\nexit: %s: numeric arg required\n", var->list->argc[1]);
+			exit(255);
+		}
+		i++;
+	}
+	return (result * n);
+}
+
 void ft_exit(t_var *var)
 {
-	int num;
+	long num;
 	int ac = 1;
 
 	ac = 0;
-	if (var->list->argc)
-	{
-		printf("exit\n");
-		exit(0);
-	}
 	while (var->list->argc[ac])
 		ac++;
-	if (ac < 2)
+	if (ac < 3)
 	{
+		num = ft_atoi(var->list->argc[1], var);
 		if (is_num(var->list->argc[1]))
 		{
-			num = atoi(var->list->argc[1]);
 			printf("exit\n");
 			exit(num);
 		}
@@ -433,7 +458,7 @@ void sort_env(t_env **env)
 
 	i = ft_lstsizeee(*env);
 	j = 0;
-	while (i > j)
+	while (i >= j)
 	{
 		first = *env;
 		tmp = *env;
@@ -453,7 +478,6 @@ void sort_env(t_env **env)
 				first = tmp;
 			tmp = tmp->next;
 		}
-		// printf("[%s]\t[%s]\n", first->key, first->value);
 		if (first->value)
 			printf("declare -x %s=\"%s\"\n", first->key, first->value);
 		else
@@ -489,8 +513,6 @@ void ft_export(t_var *var, int i, int error)
 	t_env *index;
 
 	flag_plus = 0;
-	// printf("%p\n", var->list->argc[1]);
-	// exit(0);
 	if (!var->list->argc[1])
 		sort_env(&var->env);
 	else
@@ -568,7 +590,6 @@ void ft_export(t_var *var, int i, int error)
 			error = 0;
 		}
 	}
-	// sort_env(&var->env);
 }
 
 void ft_pwd(void)
@@ -653,10 +674,7 @@ int check_builtins(char *str)
 
 void ft_builtins(t_var *var, char *str, t_cmd **cmd)
 {
-	if (cmd)
-		var->list = *cmd;
-	
-	// puts("");
+	(void)cmd;
 	if (!ft_strcmp(str, "echo"))
 		ft_echo(var);
 	else if (!ft_strcmp(str, "exit"))
@@ -669,7 +687,8 @@ void ft_builtins(t_var *var, char *str, t_cmd **cmd)
 		ft_unset(var);
 	else if (!ft_strcmp(str, "export"))
 		ft_export(var, 0, 0);
-	// else÷ not found");
+	else
+		printf("command not found");
 }
 
 ///////////////////////////////////////////////////////////////

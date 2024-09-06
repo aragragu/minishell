@@ -1,1 +1,63 @@
+# "hey ||" hey
+# "<<||"
+# 'hey ||' mm
+# "hye||" mm
 
+
+
+# "➜ minishell💀$ "hey > |" hey
+# ➜ minishell💀$ "hey >>" hey
+# ➜ minishell💀$ "hey ><" hey
+# ➜ minishell💀$ "hey ||" hey
+# syntax error: logical operators not supported
+# ➜ minishell💀$ "hey |.|" hey
+# ➜ minishell💀$ "hey "||"" hey
+# syntax error: logical operators not supported
+# ➜ minishell💀$ "||"
+# syntax error: logical operators not supported
+# ➜ minishell💀$ ">>"
+# ➜ minishell💀$ "<<"
+# ➜ minishell💀$ "<<||"
+# syntax error: logical operators not supported
+# ➜ minishell💀$ "<< ||"
+# syntax error: logical operators not supported
+# ➜ minishell💀$ "<< | <<"
+# ➜ minishell💀$ "<< ||"
+# syntax error: logical operators not supported
+# ➜ minishell💀$ ls
+# ➜ minishell💀$ cat >> hey | ls -la
+# ➜ minishell💀$ cat >> hey | "ls -la
+# Error: Unclosed quotes
+# ➜ minishell💀$ cat >> hey | "ls -la"
+# ➜ minishell💀$ cat >> "hey | "ls -la
+# ➜ minishell💀$ cat >> mm hey | ls -la
+# ➜ minishell💀$ echo "hey'"
+# hey'
+# ➜ minishell💀$ echo "hey'"'
+# Error: Unclosed quotes
+# ➜ minishell💀$ echo "hey'" | cat Makefile >
+# Error: syntax error near unexpected token `>'
+# ➜ minishell💀$ echo "hey'" | cat Makefile > |
+# error: syntax error near unexpected token `|'
+# ➜ minishell💀$ echo "hey'" | cat Makefile > file
+# hey'
+# ➜ minishell💀$ > |
+# error: syntax error near unexpected token `|'
+# ➜ minishell💀$ hey < |
+# error: syntax error near unexpected token `|'
+# ➜ minishell💀$ hey| >
+# Error: syntax error near unexpected token `>'
+# ➜ minishell💀$ hey || hey
+# syntax error: logical operators not supported
+# ➜ minishell💀$ "hye||" mm
+# syntax error: logical operators not supported
+# ➜ minishell💀$ 'hey ||' mm
+# Error: Unclosed quotes
+# ➜ minishell💀$ 'hey >' hey
+# ➜ minishell💀$ 'hey >|' hey
+# ➜ minishell💀$ 'hey > |' hey
+# ➜ minishell💀$ 'hey >>>' hey
+# ➜ minishell💀$ 'hey >> ' hey
+# ➜ minishell💀$ 'hey >< ' hey
+# ➜ minishell💀$ 'hey : hey
+# "
