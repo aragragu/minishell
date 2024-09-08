@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/08/20 17:54:40 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/06 00:40:25 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,10 @@ void expand_var_list(t_elem **list, t_env **env, t_garbage **garbage)
     while (token) // content -> var -> content
     {
         edit_list(token, garbage);
-        if (token && token->type == VAR){
-            
+        if (token && token->type == VAR)
             expand_var(&token->content, env, garbage);
-            
-        }
-        else if (token && token->type == D_QOUTS){
-            
+        else if (token && token->type == D_QOUTS)
             expand_d_qouts(env, &token->content, garbage);
-        }
         token = token->next;
     }
 }
@@ -119,7 +114,7 @@ void expand_d_qouts_2(t_env **env, char **ptr, t_garbage **garbage)
     t_elem *current = NULL;
     char *str;
 
-    // list = token_quots(&list, *ptr, garbage);
+    list = token_quots(&list, *ptr, garbage);
     current = list;
     str = ft_strdup("", garbage);
     while (current)

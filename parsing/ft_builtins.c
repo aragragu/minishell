@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_builtins.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 10:13:32 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/05 19:15:14 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/08 19:09:01 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -433,6 +433,8 @@ void sort_env(t_env **env)
 
 	i = ft_lstsizeee(*env);
 	j = 0;
+	// print_env_list(*env);
+	// exit(0);
 	while (i > j)
 	{
 		first = *env;
@@ -490,6 +492,7 @@ void ft_export(t_var *var, int i, int error)
 
 	flag_plus = 0;
 	// printf("%p\n", var->list->argc[1]);
+	// print_env_list(var->env);
 	// exit(0);
 	if (!var->list->argc[1])
 		sort_env(&var->env);

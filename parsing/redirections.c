@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:29:24 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/05 19:18:14 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/06 00:39:38 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,7 +248,7 @@ void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
                 break;
             }
             write(fd, buffer, ft_strlen(buffer));
-            unlink(file_name);
+            // unlink(file_name);
             // close(fd);
             break;
         }
@@ -270,7 +270,6 @@ void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
             break;
         buffer = temp;
     }
-    printf("%s", buffer);
     current->content = file_name;
     current->type = HEREDOC;
 }

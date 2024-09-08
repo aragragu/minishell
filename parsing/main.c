@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:02:07 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/05 21:06:19 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/06 00:34:48 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,11 +116,7 @@ void print_cmd(t_cmd *cmd)
 int main(int argc, char *argv[], char **env)
 {
     (void)argv;
-    // t_env *envr = malloc(sizeof(t_env));
-    // var.list = malloc(sizeof(t_list));
-    
-    // atexit(f);E
-    // atexit(f);
+    atexit(f);
     if (argc == 1)
         read_input(env);
     else
