@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/05 21:07:24 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/09 19:03:38 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ t_elem		*ft_lstlast(t_elem *lst);
 t_elem		*token_input(t_elem **list, char **input, t_garbage **garbage);
 t_elem		*token_quots(t_elem **list, char *in, t_garbage **garbage);
 t_env		*ft_lstlast2(t_env *lst);
-t_env 		*fill_env(char **str, t_garbage **garbage);
+void 		fill_env(t_env **env, char **str, t_garbage **garbage);
 t_env		*ft_lstnew2(char *key, char *value, t_garbage **garbage);
 void 		ft_lstadd_back_garbage(t_garbage **lst, t_garbage *new);
 void		ft_lstadd_back(t_elem **lst, t_elem *new);
@@ -160,7 +160,7 @@ void		expand_var_list(t_elem **list, t_env **env, t_garbage **garbage);
 void		ft_lstadd_back2(t_env **lst, t_env *new);
 void		print_env_list(t_env *head);
 int			ft_strcmp(char *s1, char *s2);
-void    	expand_var(char **str, t_env **env, t_garbage **garbage);
+void    	expand_var(t_elem *list ,char **str, t_env **env, t_garbage **garbage);
 void    	free_garbage(t_garbage **garbage);
 void	    expand_d_qouts(t_env **env, char **ptr, t_garbage **garbage);
 void		expand_d_qouts_2(t_env **env, char **ptr, t_garbage **garbage);

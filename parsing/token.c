@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/08 19:10:50 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/09 18:39:42 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void read_input(char **env)
 {
     t_elem *list = NULL;
-    t_env *env_list = NULL;
+    // t_env *env_list = NULL;
     t_garbage *garbage = NULL;
     t_garbage *garb = NULL;
     t_cmd *cmd = NULL;
@@ -23,10 +23,7 @@ void read_input(char **env)
     var.env = NULL;
     var.list = NULL;
     char *input;
-    // env_list = fill_env(env, &garb);
-    // var.env = env_list;
-    init_env(&var.env, env);
-    // var.env = env_list;
+    fill_env(&var.env, env, &garb);
     // var.list = malloc(sizeof(t_cmd));
     // print_env_list(env_list);
     while (1)
@@ -34,25 +31,31 @@ void read_input(char **env)
         input = readline("➜ minishell💀$ ");
         if (!input)
             break;
-        if (!*input)
+        if (*input)
+        {
+            ft_lstadd_back_garbage(&garbage, ft_lstnew_garbage(input));
+            add_history(input);
+            list = token_input(&list, &input, &garbage);
+            if (!list)
+                continue;
+            if (!sysntax_error_checker(&garbage, input, &list))
+                continue;
+            print_list(&list);
+            handle_redirection(&list, &var.env, &garbage);
+            expand_var_list(&list, &var.env, &garbage);
+            concatination(&list, &garbage);
+            print_list(&list);
+            import_data(&cmd, &list, &garbage);
+            var.list = cmd;
+            print_cmd(cmd);
+            if (check_builtins(cmd->cmd))
+                ft_builtins(&var, cmd->cmd, &cmd);
+        }
+        else
         {
             free(input);
             continue;
         }
-        ft_lstadd_back_garbage(&garbage, ft_lstnew_garbage(input));
-        add_history(input);
-        list = token_input(&list, &input, &garbage);
-        if (!sysntax_error_checker(&garbage, input, &list))
-            continue;
-        // print_list(&list);
-        handle_redirection(&list, &env_list, &garbage);
-        expand_var_list(&list, &env_list, &garbage);
-        concatination(&list, &garbage);
-        import_data(&cmd, &list, &garbage);
-        var.list = cmd;
-        print_cmd(cmd);
-        if (check_builtins(cmd->cmd))
-			ft_builtins(&var, cmd->cmd, &cmd);
         // print_env_list(env_list);
         // puts("==================================================");
         // print_env_list(var.env);
@@ -63,6 +66,7 @@ void read_input(char **env)
         list = NULL;
         garbage = NULL;
         cmd = NULL;
+        var.list = NULL;
     }
     free_garbage(&garb);
 }

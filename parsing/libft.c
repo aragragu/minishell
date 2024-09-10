@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 18:45:01 by aragragu          #+#    #+#             */
-/*   Updated: 2024/08/18 19:51:11 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/09 18:41:32 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_env *ft_lstnew2(char *key, char *value, t_garbage **garbage)
 	ft_lstadd_back_garbage(garbage, ft_lstnew_garbage(new_node));
 	new_node->key = key;
 	new_node->value = value;
+	new_node->flag = 0;
 	new_node->next = NULL;
 
 	return (new_node);

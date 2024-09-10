@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/06 00:40:25 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/10 23:11:50 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,22 @@ void expand_var_list(t_elem **list, t_env **env, t_garbage **garbage)
     {
         edit_list(token, garbage);
         if (token && token->type == VAR)
-            expand_var(&token->content, env, garbage);
+            expand_var(token, &token->content, env, garbage);
         else if (token && token->type == D_QOUTS)
             expand_d_qouts(env, &token->content, garbage);
         token = token->next;
     }
+    
 }
 
-t_env *fill_env(char **str, t_garbage **garbage)
+void    fill_env(t_env **env, char **str, t_garbage **garbage)
 {
     char *key;
     char *value;
     int end;
     int i;
     int j;
-    t_env *list = NULL;
+    // t_env *list = NULL;
 
     j = 0;
     while (str[j])
@@ -49,20 +50,23 @@ t_env *fill_env(char **str, t_garbage **garbage)
             {
                 key = ft_substr(str[j], 0, i, garbage);
                 value = ft_substr(str[j] + i + 1, 0, (end - i - 1), garbage);
-                ft_lstadd_back2(&list, ft_lstnew2(key, value, garbage));
+                ft_lstadd_back2(env, ft_lstnew2(key, value, garbage));
                 break;
             }
             i++;
         }
         j++;
     }
-    return (list);
+    // return (list);
 }
 
-void expand_var(char **str, t_env **env, t_garbage **garbage)
+void expand_var(t_elem *elem ,char **str, t_env **env, t_garbage **garbage)
 {
     int i = 0;
     char *gtr = *str;
+    // t_elem *current = elem;
+    // t_elem *last = elem->next;
+    (void)elem;
     if (gtr[i] == '$')
     {
         t_env *list = *env;
@@ -85,6 +89,21 @@ void expand_var(char **str, t_env **env, t_garbage **garbage)
             *str = NULL;
         }
     }
+    // if (ft_strchr(*str, ' '))
+    // {
+    //     t_elem *list;
+    //     int j = 0;
+    //     char **ptr = ft_split(*str, ' ', garbage);
+    //     int i = 0;
+    //     while (ptr[i])
+    //         i++;
+    //     while (j < i)
+    //     {
+    //         ft_lstadd_back(&list, ft_lstnew(ptr[j++], WORD, garbage));
+    //         ft_lstadd_back(&list, ft_lstnew(ft_strdup(" ", garbage), SPACE, garbage));
+    //     }
+    //     elem->next = list;
+    // }
 }
 
 void expand_d_qouts(t_env **env, char **ptr, t_garbage **garbage)
@@ -99,7 +118,7 @@ void expand_d_qouts(t_env **env, char **ptr, t_garbage **garbage)
     while (current)
     {
         if (current->type == VAR)
-            expand_var(&current->content, env, garbage);
+            expand_var(current, &current->content, env, garbage);
         if (!current->content)
             current->content = ft_strdup("", garbage);
         str = ft_strjoin(str, current->content, garbage);

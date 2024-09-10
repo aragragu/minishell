@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 10:13:32 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/08 19:09:01 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/09 18:42:16 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,11 +237,6 @@ void ft_echo(t_var *var)
 
 	i = 1;
 	newline = 1;
-	if (var->list->argc)
-	{
-		printf("\n");
-		return;
-	}
 	while (var->list->argc[i] && check_n_option(var->list->argc[i]))
 	{
 		newline = 0;
@@ -435,7 +430,7 @@ void sort_env(t_env **env)
 	j = 0;
 	// print_env_list(*env);
 	// exit(0);
-	while (i > j)
+	while (i >= j)
 	{
 		first = *env;
 		tmp = *env;

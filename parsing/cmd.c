@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:30:40 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/06 00:52:51 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/09 18:29:27 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void fill_cmd1(t_cmd **cmd, t_elem **list, t_garbage **garbage)
                     str[argc++] = current->content;
                     j++;
                 }
-                else if (current && current->content && current->content[0])
+                else if (current && current->content)
                 {
                     str[argc] = current->content;
                     argc++;
@@ -150,7 +150,7 @@ t_elem *fill_argc(t_cmd **cmd, t_elem **list, t_garbage **garbage)
                     str[argc++] = current->content;
                     j++;
                 }
-                else if (current && current->content && current->content[0])
+                else if (current && current->content)
                 {
                     str[argc] = current->content;
                     argc++;
