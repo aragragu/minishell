@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 13:19:54 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/06 00:44:07 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/12 18:01:22 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ int sysntax_error_checker(t_garbage **garbage, char *str, t_elem **list)
             my_perror(garbage, list, "Error: Unclosed quotes\n");
             return (0);
         }
-        else if (!has_logical_operators(str))
-        {
-            my_perror(garbage, list, "syntax error: logical operators not supported\n");
-            return (0);
-        }
+        // else if (!has_logical_operators(str))
+        // {
+        //     my_perror(garbage, list, "syntax error: logical operators not supported\n");
+        //     return (0);
+        // }
         else if (has_logical_operators(str) == 2)
         {
             my_perror(garbage, list, "syntax error: single '&' not supported\n");

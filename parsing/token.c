@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/09 18:39:42 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/12 18:05:40 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void read_input(char **env)
 {
     t_elem *list = NULL;
-    // t_env *env_list = NULL;
+    t_env *env_list = NULL;
     t_garbage *garbage = NULL;
     t_garbage *garb = NULL;
     t_cmd *cmd = NULL;
@@ -23,50 +23,46 @@ void read_input(char **env)
     var.env = NULL;
     var.list = NULL;
     char *input;
+    
     fill_env(&var.env, env, &garb);
-    // var.list = malloc(sizeof(t_cmd));
-    // print_env_list(env_list);
+    // init_env(&var.env, env);
+    // var.env = env_list;
     while (1)
     {
         input = readline("➜ minishell💀$ ");
         if (!input)
             break;
-        if (*input)
-        {
-            ft_lstadd_back_garbage(&garbage, ft_lstnew_garbage(input));
-            add_history(input);
-            list = token_input(&list, &input, &garbage);
-            if (!list)
-                continue;
-            if (!sysntax_error_checker(&garbage, input, &list))
-                continue;
-            print_list(&list);
-            handle_redirection(&list, &var.env, &garbage);
-            expand_var_list(&list, &var.env, &garbage);
-            concatination(&list, &garbage);
-            print_list(&list);
-            import_data(&cmd, &list, &garbage);
-            var.list = cmd;
-            print_cmd(cmd);
-            if (check_builtins(cmd->cmd))
-                ft_builtins(&var, cmd->cmd, &cmd);
-        }
-        else
+        if (!*input)
         {
             free(input);
             continue;
         }
-        // print_env_list(env_list);
-        // puts("==================================================");
-        // print_env_list(var.env);
-		// if (ft_strcmp(inp, "env") == 0)
-		// 	ft_env(&var.env);  
+        ft_lstadd_back_garbage(&garbage, ft_lstnew_garbage(input));
+        add_history(input);
+        list = token_input(&list, &input, &garbage);
+        if (!list)
+                continue;
+        if (!sysntax_error_checker(&garbage, input, &list))
+            continue;
+        handle_redirection(&list, &env_list, &garbage);
+        expand_var_list(&list, &env_list, &garbage);
+        concatination(&list, &garbage);
+        // print_list(&list);
+        import_data(&cmd, &list, &garbage);
+        var.list = cmd;
         // print_cmd(cmd);
+        if (check_builtins(cmd->cmd))
+			ft_builtins(&var, cmd->cmd, &cmd);
+		else if (ft_strcmp(input, "env") == 0)
+			ft_env(&var.env);
+        else if (check_valid_path(cmd->cmd, &var))
+            ft_exc(&var);
+        else
+            printf("minishell: %s: command not found\n", cmd->argc[0]);
         free_garbage(&garbage);
         list = NULL;
         garbage = NULL;
         cmd = NULL;
-        var.list = NULL;
     }
     free_garbage(&garb);
 }

@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:02:07 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/06 00:34:48 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/12 15:59:24 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "minishell.h"
-
 
 void    f(){system("leaks minishell");}
 const char* get_token_type_string(t_token type) {
@@ -116,7 +114,7 @@ void print_cmd(t_cmd *cmd)
 int main(int argc, char *argv[], char **env)
 {
     (void)argv;
-    atexit(f);
+    // atexit(f);
     if (argc == 1)
         read_input(env);
     else

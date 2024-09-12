@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/09 19:03:38 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/12 18:04:49 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@
 #undef REDIR_OUT //remove if u are using macos
 #undef HEREDOC //remove if u are using macos
 #undef APPEND //remove if u are using macos
+
+#define MAX_CMD_LEN 100
+#define MAX_ARGS 10
+#define MAX_CMDS 10
 
 typedef enum    s_token
 {
@@ -92,22 +96,6 @@ typedef	struct c_cmd
 }					t_cmd;
 
 ////////////////////////////////
-
-typedef struct s_list
-{
-	char			*cmd;
-	char			**arg;
-	struct s_list	*next;
-}					t_list;
-
-// typedef struct s_env
-// {
-// 	char			*key;
-// 	char			*val;
-// 	int				flag;
-// 	struct s_env	*next;
-// }					t_env;
-
 typedef struct s_var
 {
 	t_cmd			*list;
@@ -124,7 +112,7 @@ t_elem		*ft_lstlast(t_elem *lst);
 t_elem		*token_input(t_elem **list, char **input, t_garbage **garbage);
 t_elem		*token_quots(t_elem **list, char *in, t_garbage **garbage);
 t_env		*ft_lstlast2(t_env *lst);
-void 		fill_env(t_env **env, char **str, t_garbage **garbage);
+void    	fill_env(t_env **env, char **str, t_garbage **garbage);
 t_env		*ft_lstnew2(char *key, char *value, t_garbage **garbage);
 void 		ft_lstadd_back_garbage(t_garbage **lst, t_garbage *new);
 void		ft_lstadd_back(t_elem **lst, t_elem *new);
@@ -187,31 +175,48 @@ int			word_count(t_elem *list);
 t_elem		*fill_argc(t_cmd  **cmd, t_elem **list, t_garbage **garbage);
 void		expand_herdoc(char **str, t_env **env, t_garbage **garbage);
 void		concatination(t_elem **list, t_garbage **garbage);
-int     is_special_character(char c);
+int			is_special_character(char c);
 
 //////////////////////////////////////////////////////////////////////////////
 
-void	ft_echo(t_var *var);
-void	ft_export(t_var *var, int i, int error);
-void	ft_pwd(void);
-void	ft_exit(t_var *var);
-void	ft_cd(t_var *var);
-void	ft_unset(t_var *var);
-void	sort_env(t_env **env);
-void	ft_env(t_env **env);
-// void	ft_export(t_var *var, int i, int error);
-int		ft_isalpha(char c);
-int		ft_digits(char c);
-char	*ft_cat(char *str, int len, int flag);
-void	pwd_upd_old(t_env **env, char *key, char *val);
-void	ft_putstr_fd(char *s, int fd);
-int		check_builtins(char *str);
-// void	ft_builtins(t_var *var, char *str);
-void    init_env(t_env **envr, char **env);
-void	ft_builtins(t_var *var, char *str, t_cmd **cmd);
-void print_t_env(t_env *env);
-void print_t_var(t_var *var);
-void print_t_list(t_cmd *list);
-
+void		ft_echo(t_var *var);
+void		ft_export(t_var *var, int i, int error);
+void		ft_pwd(void);
+void		ft_exit(t_var *var);
+void		ft_cd(t_var *var);
+void		ft_unset(t_var *var);
+void		sort_env(t_env **env);
+void		ft_env(t_env **env);
+int			ft_isalpha(char c);
+int			ft_digits(char c);
+char		*ft_cat(char *str, int len, int flag);
+void		pwd_upd_old(t_env **env, char *key, char *val);
+void		ft_putstr_fd(char *s, int fd);
+int			check_builtins(char *str);
+void		init_env(t_env **envr, char **env);
+char		*ft_strduppp(char *s1);
+void		ft_builtins(t_var *var, char *str, t_cmd **cmd);
+void		ft_lstadd_backkk(t_env **lst, t_env *new);
+t_env		*ft_lstlasttt(t_env *lst);
+int			ft_lstsizeee(t_env *lst);
+t_env		*ft_lstnewww(char *key, char *val);
+int			ft_isalpha(char c);
+int			ft_digits(char c);
+void		ft_putstr(char *str);
+void		ft_putstr_fd(char *s, int fd);
+char		*ft_strjoinnn(char *s1, char *s2);
+void		env_key_error(char **cmd, t_env **env, int i, char *msg);
+int			count_env(t_env *envv);
+char		*build_path(char *dir, char *filename);
+char		*excu_in_path(char *filename, t_var *var);
+void		ft_exc(t_var *var);
+char		*ft_strchrr(char *str, int c);
+int			check_valid_path(char *filename, t_var *var);
+char		*ft_getenv(t_env *env, char *key);
+char		*ft_strcat(char *dest, const char *src);
+char		*ft_strcpy(char *dest, const char *src);
+void execute_pipeline(t_var *var, char **envp);
+void execute_command(t_var *var, int input_fd, int output_fd, char **envp);
+void	store_env(t_env *envv, char ***env);
 
 #endif
