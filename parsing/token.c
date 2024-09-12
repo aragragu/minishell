@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/06 21:50:06 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/12 17:45:35 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,10 @@ void read_input(char **env)
     var.env = NULL;
     var.list = NULL;
     char *input;
-    // char *exec_path;
-    // char *cmd_name;
-    // env_list = fill_env(env, &garb);
-    // var.env = env_list;
-    init_env(&var.env, env);
-    // var.env = env_list;
-    // var.list = malloc(sizeof(t_cmd));
-    // print_env_list(env_list);
+    
+    env_list = fill_env(env, &garb);
+    // init_env(&var.env, env);
+    var.env = env_list;
     while (1)
     {
         input = readline("➜ minishell💀$ ");
@@ -46,21 +42,21 @@ void read_input(char **env)
         list = token_input(&list, &input, &garbage);
         if (!sysntax_error_checker(&garbage, input, &list))
             continue;
-        // print_list(&list);
         handle_redirection(&list, &env_list, &garbage);
         expand_var_list(&list, &env_list, &garbage);
         concatination(&list, &garbage);
+        print_list(&list);
         import_data(&cmd, &list, &garbage);
-        // print_env_list(env_list);
-        // puts("==================================================");
-        // print_env_list(var.env);
         var.list = cmd;
-        // print_cmd(cmd);
+        print_cmd(cmd);
         if (check_builtins(cmd->cmd))
 			ft_builtins(&var, cmd->cmd, &cmd);
-		if (ft_strcmp(input, "env") == 0)
+		else if (ft_strcmp(input, "env") == 0)
 			ft_env(&var.env);
-        // print_cmd(cmd);
+        else if (check_valid_path(cmd->cmd, &var))
+            ft_exc(&var);
+        else
+            printf("minishell: %s: command not found\n", cmd->argc[0]);
         free_garbage(&garbage);
         list = NULL;
         garbage = NULL;

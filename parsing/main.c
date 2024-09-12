@@ -6,13 +6,11 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:02:07 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/05 21:00:06 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/12 15:59:24 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "minishell.h"
-
 
 void    f(){system("leaks minishell");}
 const char* get_token_type_string(t_token type) {

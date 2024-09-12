@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 18:45:01 by aragragu          #+#    #+#             */
-/*   Updated: 2024/08/18 19:51:11 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/11 17:26:06 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_env *ft_lstnew2(char *key, char *value, t_garbage **garbage)
 	ft_lstadd_back_garbage(garbage, ft_lstnew_garbage(new_node));
 	new_node->key = key;
 	new_node->value = value;
+	new_node->flag = 0;
 	new_node->next = NULL;
 
 	return (new_node);
@@ -350,6 +351,8 @@ int	ft_strcmp(char *s1, char *s2)
 {
 	int i;
 
+	if (!s1 || !s2)
+		return (0);
 	i = 0;
 	while (s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0')
 		i++;

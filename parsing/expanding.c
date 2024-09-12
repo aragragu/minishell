@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/08/20 17:54:40 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/12 17:45:05 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ t_env *fill_env(char **str, t_garbage **garbage)
     t_env *list = NULL;
 
     j = 0;
+    // list = ft_lstnewww(ft_strduppp("PWD"), ft_strduppp("/Users/ykasmi/Desktop/parss/parsing"));
+    // if (!str && !str[0])
     while (str[j])
     {
         i = 0;
