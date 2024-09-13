@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/12 18:04:49 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/12 23:32:59 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <stdint.h>
-#include <libc.h>
+// #include <libc.h>
+#include <limits.h>
+#include <sys/wait.h>
 
 #define RED     "\x1b[31m"
 #define GREEN   "\e[1;32m"
@@ -148,7 +150,7 @@ void		expand_var_list(t_elem **list, t_env **env, t_garbage **garbage);
 void		ft_lstadd_back2(t_env **lst, t_env *new);
 void		print_env_list(t_env *head);
 int			ft_strcmp(char *s1, char *s2);
-void    	expand_var(t_elem *list ,char **str, t_env **env, t_garbage **garbage);
+void    	expand_var(t_elem **list ,t_elem *node, t_env **env, t_garbage **garbage);
 void    	free_garbage(t_garbage **garbage);
 void	    expand_d_qouts(t_env **env, char **ptr, t_garbage **garbage);
 void		expand_d_qouts_2(t_env **env, char **ptr, t_garbage **garbage);

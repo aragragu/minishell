@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/12 19:04:14 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/12 22:29:49 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,19 +49,19 @@ void read_input(char **env)
         handle_redirection(&list, &var.env, &garbage);
         // puts("===================================");
         concatination(&list, &garbage);
-        print_list(&list);
+        // print_list(&list);
         // puts("===================================");
         import_data(&cmd, &list, &garbage);
         var.list = cmd;
         print_cmd(cmd);
-        // if (check_builtins(cmd->cmd))
-		// 	ft_builtins(&var, cmd->cmd, &cmd);
-		// else if (ft_strcmp(input, "env") == 0)
-		// 	ft_env(&var.env);
-        // else if (check_valid_path(cmd->cmd, &var))
-        //     ft_exc(&var);
-        // else
-        //     printf("minishell: %s: command not found\n", cmd->argc[0]);
+        if (check_builtins(cmd->cmd))
+			ft_builtins(&var, cmd->cmd, &cmd);
+		else if (ft_strcmp(input, "env") == 0)
+			ft_env(&var.env);
+        else if (check_valid_path(cmd->cmd, &var))
+            ft_exc(&var);
+        else
+            printf("minishell: %s: command not found\n", cmd->argc[0]);
         free_garbage(&garbage);
         list = NULL;
         garbage = NULL;
