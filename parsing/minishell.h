@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/12 16:09:16 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/14 15:09:56 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,14 @@ typedef struct s_var
 }					t_var;
 ///////////////////////////////////////
 
+
+
+
+
+
+
+
+
 char		*ft_itoa(int nb);
 char		**ft_split(char const *s, char c, t_garbage **garbage);
 void		ft_sign(char c, int *sign);
@@ -112,7 +120,7 @@ t_elem		*ft_lstlast(t_elem *lst);
 t_elem		*token_input(t_elem **list, char **input, t_garbage **garbage);
 t_elem		*token_quots(t_elem **list, char *in, t_garbage **garbage);
 t_env		*ft_lstlast2(t_env *lst);
-t_env 		*fill_env(char **str, t_garbage **garbage);
+void    	fill_env(t_env **env, char **str, t_garbage **garbage);
 t_env		*ft_lstnew2(char *key, char *value, t_garbage **garbage);
 void 		ft_lstadd_back_garbage(t_garbage **lst, t_garbage *new);
 void		ft_lstadd_back(t_elem **lst, t_elem *new);
@@ -218,5 +226,6 @@ char		*ft_strcpy(char *dest, const char *src);
 void execute_pipeline(t_var *var, char **envp);
 void execute_command(t_var *var, int input_fd, int output_fd, char **envp);
 void	store_env(t_env *envv, char ***env);
+void	ft_exc2(t_var *var);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:33:11 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/11 17:29:06 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/14 15:59:49 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	check_n_option(const char *str)
 			}
 			return (1);
 		}
-		str++;
+		return (0);
 	}
 	return (0);
 }

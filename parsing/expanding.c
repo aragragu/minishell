@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/12 17:45:05 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/14 11:51:42 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,23 @@ void expand_var_list(t_elem **list, t_env **env, t_garbage **garbage)
     }
 }
 
-t_env *fill_env(char **str, t_garbage **garbage)
+void    fill_env(t_env **env, char **str, t_garbage **garbage)
 {
     char *key;
     char *value;
     int end;
     int i;
     int j;
-    t_env *list = NULL;
+    // t_env *list = NULL;
 
     j = 0;
-    // list = ft_lstnewww(ft_strduppp("PWD"), ft_strduppp("/Users/ykasmi/Desktop/parss/parsing"));
-    // if (!str && !str[0])
+	if (!str || !str[0])
+	{
+        *env = ft_lstnewww(ft_strduppp("PWD"), ft_strduppp("/Users/ykasmi/Desktop/parss/parsing"));//protection
+		ft_lstadd_backkk(env, ft_lstnewww(ft_strduppp("SHLVL"), ft_strduppp("1")));
+		ft_lstadd_backkk(env, ft_lstnewww(ft_strduppp("_"), ft_strduppp("/usr/bin/env")));
+		return;
+	}
     while (str[j])
     {
         i = 0;
@@ -56,14 +61,14 @@ t_env *fill_env(char **str, t_garbage **garbage)
             {
                 key = ft_substr(str[j], 0, i, garbage);
                 value = ft_substr(str[j] + i + 1, 0, (end - i - 1), garbage);
-                ft_lstadd_back2(&list, ft_lstnew2(key, value, garbage));
+                ft_lstadd_back2(env, ft_lstnew2(key, value, garbage));
                 break;
             }
             i++;
         }
         j++;
     }
-    return (list);
+    // return (list);
 }
 
 void expand_var(char **str, t_env **env, t_garbage **garbage)

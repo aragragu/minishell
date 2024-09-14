@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 13:19:54 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/11 12:00:35 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/14 16:07:15 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ int sysntax_error_checker(t_garbage **garbage, char *str, t_elem **list)
             my_perror(garbage, list, "Error: Unclosed quotes\n");
             return (0);
         }
-        else if (!has_logical_operators(str))
-        {
-            my_perror(garbage, list, "syntax error: logical operators not supported\n");
-            return (0);
-        }
+        // else if (!has_logical_operators(str))
+        // {
+        //     my_perror(garbage, list, "syntax error: logical operators not supported\n");
+        //     return (0);
+        // }
         else if (has_logical_operators(str) == 2)
         {
             my_perror(garbage, list, "syntax error: single '&' not supported\n");

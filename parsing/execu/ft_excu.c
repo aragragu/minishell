@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:53:26 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/12 15:54:20 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/14 15:06:25 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	check_valid_path(char *filename, t_var *var)
 	if (!filename || !*filename)
 		return (-1);
 	exec_path = excu_in_path(filename, var);
-	if (exec_path != NULL)
+	if (exec_path != NULL && ft_strcmp(exec_path, "/bin/"))
 	{
 		free(exec_path);
 		return (1);

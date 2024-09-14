@@ -6,16 +6,34 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/12 17:45:35 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/14 17:11:36 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// void execute_command(t_var *var, int input_fd, int output_fd) {
+//     pid_t pid = fork();
+
+//     if (pid == 0) { // Child process
+//         if (input_fd != 0) { // Redirect input if needed
+//             dup2(input_fd, STDIN_FILENO);
+//             close(input_fd);
+//         }
+
+//         if (output_fd != 1) { // Redirect output if needed
+//             dup2(output_fd, STDOUT_FILENO);
+//             close(output_fd);
+//         }
+//         ft_exc(var);
+//     }
+//     wait(NULL);
+// }
+
 void read_input(char **env)
 {
     t_elem *list = NULL;
-    t_env *env_list = NULL;
+    // t_env *env_list = NULL;
     t_garbage *garbage = NULL;
     t_garbage *garb = NULL;
     t_cmd *cmd = NULL;
@@ -23,10 +41,10 @@ void read_input(char **env)
     var.env = NULL;
     var.list = NULL;
     char *input;
-    
-    env_list = fill_env(env, &garb);
+
+    fill_env(&var.env, env, &garb);
     // init_env(&var.env, env);
-    var.env = env_list;
+    // var.env = env_list;
     while (1)
     {
         input = readline("➜ minishell💀$ ");
@@ -42,17 +60,19 @@ void read_input(char **env)
         list = token_input(&list, &input, &garbage);
         if (!sysntax_error_checker(&garbage, input, &list))
             continue;
-        handle_redirection(&list, &env_list, &garbage);
-        expand_var_list(&list, &env_list, &garbage);
+        handle_redirection(&list, &var.env, &garbage);
+        expand_var_list(&list, &var.env, &garbage);
         concatination(&list, &garbage);
-        print_list(&list);
+        // print_list(&list);
         import_data(&cmd, &list, &garbage);
         var.list = cmd;
-        print_cmd(cmd);
+        // print_cmd(cmd);
         if (check_builtins(cmd->cmd))
-			ft_builtins(&var, cmd->cmd, &cmd);
-		else if (ft_strcmp(input, "env") == 0)
-			ft_env(&var.env);
+            ft_builtins(&var, cmd->cmd, &cmd);
+        else if (ft_strcmp(input, "env") == 0)
+            ft_env(&var.env);
+        else if(access(cmd->cmd, X_OK) == 0)
+            ft_exc2(&var);
         else if (check_valid_path(cmd->cmd, &var))
             ft_exc(&var);
         else
