@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:02:07 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/12 15:59:24 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/14 18:07:15 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,16 @@ void print_cmd(t_cmd *cmd)
     }
 }
 
+
+void    print_array(char **ptr)
+{
+    int i = 0;
+    while (ptr[i])
+    {
+        printf("%s and i = %d\n", ptr[i], i);
+        i++;
+    }
+}
 
 int main(int argc, char *argv[], char **env)
 {

@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/14 15:09:56 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/14 18:07:49 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <stdint.h>
-#include <libc.h>
+// #include <libc.h>
+#include <limits.h>
+#include <sys/wait.h>
 
 #define RED     "\x1b[31m"
 #define GREEN   "\e[1;32m"
@@ -156,7 +158,7 @@ void		expand_var_list(t_elem **list, t_env **env, t_garbage **garbage);
 void		ft_lstadd_back2(t_env **lst, t_env *new);
 void		print_env_list(t_env *head);
 int			ft_strcmp(char *s1, char *s2);
-void    	expand_var(char **str, t_env **env, t_garbage **garbage);
+void    	expand_var(t_elem **list ,t_elem *node, t_env **env, t_garbage **garbage);
 void    	free_garbage(t_garbage **garbage);
 void	    expand_d_qouts(t_env **env, char **ptr, t_garbage **garbage);
 void		expand_d_qouts_2(t_env **env, char **ptr, t_garbage **garbage);
@@ -226,6 +228,9 @@ char		*ft_strcpy(char *dest, const char *src);
 void execute_pipeline(t_var *var, char **envp);
 void execute_command(t_var *var, int input_fd, int output_fd, char **envp);
 void	store_env(t_env *envv, char ***env);
+<<<<<<< HEAD
 void	ft_exc2(t_var *var);
+=======
+>>>>>>> d77127542b992ff2183c1333d26f5fe3e34073cf
 
 #endif
