@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/12 19:04:14 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/14 17:01:07 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,12 @@ void read_input(char **env)
     t_elem *list = NULL;
     t_garbage *garbage = NULL;
     t_garbage *garb = NULL;
-    t_cmd *cmd = NULL;
     t_var var;
     var.env = NULL;
     var.list = NULL;
     char *input;
     
     fill_env(&var.env, env, &garb);
-    // print_env_list(var.env);
-    // init_env(&var.env, env);
-    // var.env = env_list;
     while (1)
     {
         input = readline("➜ minishell💀$ ");
@@ -44,28 +40,27 @@ void read_input(char **env)
                 continue;
         if (!sysntax_error_checker(&garbage, input, &list))
             continue;
-        // print_list(&list);
         expand_var_list(&list, &var.env, &garbage);
         handle_redirection(&list, &var.env, &garbage);
+        // print_list(&list);
         // puts("===================================");
         concatination(&list, &garbage);
-        print_list(&list);
+        // print_list(&list);
         // puts("===================================");
-        import_data(&cmd, &list, &garbage);
-        var.list = cmd;
-        print_cmd(cmd);
-        // if (check_builtins(cmd->cmd))
-		// 	ft_builtins(&var, cmd->cmd, &cmd);
-		// else if (ft_strcmp(input, "env") == 0)
-		// 	ft_env(&var.env);
-        // else if (check_valid_path(cmd->cmd, &var))
-        //     ft_exc(&var);
-        // else
-        //     printf("minishell: %s: command not found\n", cmd->argc[0]);
+        import_data(&var.list, &list, &garbage);
+        print_cmd(var.list);
+        if (check_builtins(var.list->cmd))
+			ft_builtins(&var, var.list->cmd, &var.list);
+		else if (ft_strcmp(input, "env") == 0)
+			ft_env(&var.env);
+        else if (check_valid_path(var.list->cmd, &var))
+            ft_exc(&var);
+        else
+            printf("minishell: %s: command not found\n", var.list->argc[0]);
         free_garbage(&garbage);
         list = NULL;
         garbage = NULL;
-        cmd = NULL;
+        var.list = NULL;
     }
     free_garbage(&garb);
 }

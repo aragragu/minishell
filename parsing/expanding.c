@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/12 19:02:10 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/14 13:01:46 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,20 @@ void expand_var_list(t_elem **list, t_env **env, t_garbage **garbage)
     while (token) // content -> var -> content
     {
         edit_list(token, garbage);
-        if (token && token->type == VAR){
+        if (token && token->type == HEREDOC)
+        {
+            if (token->next && token->next->type == SPACE)
+            {
+                if (token->next->next && token->next->next->type == VAR)
+                {
+                    if (token->next->next->next)
+                        token = token->next->next->next;
+                    else
+                        break;
+                }
+            }
+        }
+        else if (token && token->type == VAR){
             expand_var(token, &token->content, env, garbage);
         }
         else if (token && token->type == D_QOUTS)
