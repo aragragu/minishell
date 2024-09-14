@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/09/14 17:11:36 by ykasmi           ###   ########.fr       */
-=======
-/*   Updated: 2024/09/14 17:16:55 by aragragu         ###   ########.fr       */
->>>>>>> d77127542b992ff2183c1333d26f5fe3e34073cf
+/*   Updated: 2024/09/14 18:42:35 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +66,7 @@ void read_input(char **env)
         // print_list(&list);
         // puts("===================================");
         import_data(&var.list, &list, &garbage);
-        print_cmd(var.list);
+        // print_cmd(var.list);
         if (check_builtins(var.list->cmd))
 			ft_builtins(&var, var.list->cmd, &var.list);
 		else if (ft_strcmp(input, "env") == 0)

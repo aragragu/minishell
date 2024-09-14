@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/14 18:07:49 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/14 21:16:02 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <stdint.h>
-// #include <libc.h>
+#include <libc.h>
 #include <limits.h>
 #include <sys/wait.h>
 
@@ -226,11 +226,9 @@ char		*ft_getenv(t_env *env, char *key);
 char		*ft_strcat(char *dest, const char *src);
 char		*ft_strcpy(char *dest, const char *src);
 void execute_pipeline(t_var *var, char **envp);
-void execute_command(t_var *var, int input_fd, int output_fd, char **envp);
+void execute_command(t_var *var);
 void	store_env(t_env *envv, char ***env);
-<<<<<<< HEAD
 void	ft_exc2(t_var *var);
-=======
->>>>>>> d77127542b992ff2183c1333d26f5fe3e34073cf
+void split_commands(char *input, char **commands);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/14 18:07:02 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/14 18:43:34 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void expand_var_list(t_elem **list, t_env **env, t_garbage **garbage)
             }
         }
         else if (token && token->type == VAR){
-            expand_var(token, &token->content, env, garbage);
+            expand_var(&token, token, env, garbage);
         }
         else if (token && token->type == D_QOUTS)
             expand_d_qouts(env, &token->content, garbage);
@@ -109,7 +109,7 @@ void expand_var(t_elem **elem ,t_elem *node, t_env **env, t_garbage **garbage)
             {
                 if (!ft_strcmp(list->key, gtr + 1))
                 {
-                    printf("===%s===\n", node->content);
+                    // printf("===%s===\n", node->content);
                     node->content = ft_strdup(list->value, garbage);
                     flag = 1;
                 }
