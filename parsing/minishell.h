@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/14 21:16:02 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/15 13:28:41 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,9 +223,9 @@ void		ft_exc(t_var *var);
 char		*ft_strchrr(char *str, int c);
 int			check_valid_path(char *filename, t_var *var);
 char		*ft_getenv(t_env *env, char *key);
-char		*ft_strcat(char *dest, const char *src);
-char		*ft_strcpy(char *dest, const char *src);
-void execute_pipeline(t_var *var, char **envp);
+char		*ft_strcat(char *dest, char *src);
+char		*ft_strcpy(char *dest, char *src);
+void execute_pipeline(char *input, t_var *var);
 void execute_command(t_var *var);
 void	store_env(t_env *envv, char ***env);
 void	ft_exc2(t_var *var);

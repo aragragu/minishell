@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:38:50 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/14 18:38:38 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/15 16:04:35 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	ft_exc2(t_var *var)
 		// var->list->argc[0] = exec_path;
 		if (execve(var->list->cmd, var->list->argc, envp) == -1)
 		{
-			perror("Execution failed");
+			// printf("minishell: %s :is a directory\n", var->list->argc[0]);
 			// free(exec_path);
 		}
 	}
@@ -131,6 +131,7 @@ void	ft_exc(t_var *var)
 			var->list->argc[0] = exec_path;
 			if (execve(exec_path, var->list->argc, envp) == -1)
 			{
+				puts(" ");
 				perror("Execution failed");
 				free(exec_path);
 			}

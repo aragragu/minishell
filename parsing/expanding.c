@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/14 18:43:34 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/15 17:15:51 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void expand_var(t_elem **elem ,t_elem *node, t_env **env, t_garbage **garbage)
     int i = 0;
     char *gtr = node->content;
     t_elem *current = *elem;
-    t_elem *last = node->next;
+    // t_elem *last = node->next;
     int flag = 0;
 
     while (current)
@@ -119,23 +119,23 @@ void expand_var(t_elem **elem ,t_elem *node, t_env **env, t_garbage **garbage)
                 node->content = NULL;
         }
     }
-    if (ft_strchr(node->content, ' '))
-    {
-        t_elem *list = NULL;
-        int j = 0;
-        char **ptr = ft_split(node->content, ' ', garbage);
-        int i = 0;
-        while (ptr[i])
-            i++;
-        while (j < i)
-        {
-            ft_lstadd_back(&list, ft_lstnew(ptr[j], WORD, garbage));
-            ft_lstadd_back(&list, ft_lstnew(ft_strdup(" ", garbage), SPACE, garbage));
-            j++;
-        }
-        current->next = list;
-        ft_lstlast(list)->next = last;
-    }
+    // if (ft_strchr(node->content, ' '))
+    // {
+    //     t_elem *list = NULL;
+    //     int j = 0;
+    //     char **ptr = ft_split(node->content, ' ', garbage);
+    //     int i = 0;
+    //     while (ptr[i])
+    //         i++;
+    //     while (j < i)
+    //     {
+    //         ft_lstadd_back(&list, ft_lstnew(ptr[j], WORD, garbage));
+    //         ft_lstadd_back(&list, ft_lstnew(ft_strdup(" ", garbage), SPACE, garbage));
+    //         j++;
+    //     }
+    //     current->next = list;
+    //     ft_lstlast(list)->next = last;
+    // }
 }
 
 void expand_d_qouts(t_env **env, char **ptr, t_garbage **garbage)

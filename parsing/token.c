@@ -6,32 +6,92 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/14 18:42:35 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/15 17:30:23 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void execute_command(t_var *var, int input_fd, int output_fd) {
-//     pid_t pid = fork();
+// #define MAX_COMMANDS 100
+// // #define MAX_ARGS 100
 
-//     if (pid == 0) { // Child process
-//         if (input_fd != 0) { // Redirect input if needed
-//             dup2(input_fd, STDIN_FILENO);
-//             close(input_fd);
-//         }
+int calculate_num_cmds(char *input) {
+    int num_cmds = 0;
+    char *input_copy = strdup(input); // Make a copy of the input string
 
-//         if (output_fd != 1) { // Redirect output if needed
-//             dup2(output_fd, STDOUT_FILENO);
-//             close(output_fd);
-//         }
-//         ft_exc(var);
-//     }
-//     wait(NULL);
-// }
+    // Use strtok to split the input by the pipe (|) character
+    char *token = strtok(input_copy, "|");
+    while (token != NULL) {
+        num_cmds++;                   // Increment command count
+        token = strtok(NULL, "|");     // Move to the next command
+    }
 
-void read_input(char **env)
-{
+    free(input_copy);                 // Free the duplicated string
+    return num_cmds;                  // Return the total number of commands
+}
+
+// Function to execute piped commands
+void execute_piped_commands(char *commands[], int num_cmds, t_var *var) {
+    int pipefds[2 * (num_cmds - 1)];
+    pid_t pids[MAX_CMDS];
+    int i;
+
+    // Create pipes
+    (void)commands;
+    for (i = 0; i < num_cmds - 1; i++) {
+        if (pipe(pipefds + i * 2) == -1) {
+            perror("pipe");
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    for (i = 0; i < num_cmds; i++) {
+        pids[i] = fork();
+        if (pids[i] == 0) {
+            // Child process
+
+            // If not the first command, get input from previous pipe
+            if (i > 0) {
+                if (dup2(pipefds[(i - 1) * 2], STDIN_FILENO) == -1) {
+                    perror("dup2 stdin");
+                    exit(EXIT_FAILURE);
+                }
+            }
+
+            // If not the last command, send output to next pipe
+            if (i < num_cmds - 1) {
+                if (dup2(pipefds[i * 2 + 1], STDOUT_FILENO) == -1) {
+                    perror("dup2 stdout");
+                    exit(EXIT_FAILURE);
+                }
+            }
+
+            // Close all pipe file descriptors
+            for (int j = 0; j < 2 * (num_cmds - 1); j++) {
+                close(pipefds[j]);
+            }
+
+            // Execute the command
+            ft_exc(var);  // Assuming `execute_single_command` runs the command
+        } else if (pids[i] < 0) {
+            perror("fork");
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    // Parent process closes all pipes
+    for (i = 0; i < 2 * (num_cmds - 1); i++) {
+        close(pipefds[i]);
+    }
+
+    // Parent waits for all children
+    for (i = 0; i < num_cmds; i++) {
+        waitpid(pids[i], NULL, 0);
+    }
+}
+
+// Updated read_input function
+void read_input(char **env) {
     t_elem *list = NULL;
     t_garbage *garbage = NULL;
     t_garbage *garb = NULL;
@@ -41,40 +101,40 @@ void read_input(char **env)
     char *input;
     
     fill_env(&var.env, env, &garb);
-    while (1)
-    {
+    while (1) {
         input = readline("➜ minishell💀$ ");
         if (!input)
             break;
-        if (!*input)
-        {
+        if (!*input) {
             free(input);
             continue;
         }
+
         ft_lstadd_back_garbage(&garbage, ft_lstnew_garbage(input));
         add_history(input);
         list = token_input(&list, &input, &garbage);
         if (!list)
-                continue;
+            continue;
         if (!sysntax_error_checker(&garbage, input, &list))
             continue;
+
         expand_var_list(&list, &var.env, &garbage);
         handle_redirection(&list, &var.env, &garbage);
-        // print_list(&list);
-        // puts("===================================");
         concatination(&list, &garbage);
-        // print_list(&list);
-        // puts("===================================");
         import_data(&var.list, &list, &garbage);
-        // print_cmd(var.list);
         if (check_builtins(var.list->cmd))
-			ft_builtins(&var, var.list->cmd, &var.list);
-		else if (ft_strcmp(input, "env") == 0)
-			ft_env(&var.env);
-        else if (check_valid_path(var.list->cmd, &var))
+            ft_builtins(&var, var.list->cmd, &var.list);
+        else if (ft_strcmp(input, "env") == 0)
+            ft_env(&var.env);
+        else if (access(var.list->cmd, X_OK) == 0)
+            ft_exc2(&var);
+        else if (check_valid_path(var.list->cmd, &var)) {
+            // int num_cmds = calculate_num_cmds(input);
+            // execute_piped_commands(var.list->argc, num_cmds, &var);
             ft_exc(&var);
-        else
+        } else
             printf("minishell: %s: command not found\n", var.list->argc[0]);
+
         free_garbage(&garbage);
         list = NULL;
         garbage = NULL;

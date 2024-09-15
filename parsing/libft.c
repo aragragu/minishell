@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 18:45:01 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/11 17:26:06 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/15 17:05:36 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -338,6 +338,8 @@ char *ft_strtrim(char *s1, char *set, t_garbage **garbage)
 
 char *ft_strchr(char *s, int c)
 {
+	if (!*s)
+		return(NULL);
 	while (*s != (unsigned char)c)
 	{
 		if (*s == '\0')
