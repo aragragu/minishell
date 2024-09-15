@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/14 18:07:49 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/15 19:01:46 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef enum    s_token
 	VAR,            		// $ASJASD
 	DOUBLE_DLR,				// $$
 	SPACE,					// "_"
+	NULL_TOKEN,
 	PIPE,           		// |
 	REDIR_IN,       		// <
 	REDIR_OUT,      		// >
@@ -186,6 +187,8 @@ t_elem		*fill_argc(t_cmd  **cmd, t_elem **list, t_garbage **garbage);
 void		expand_herdoc(char **str, t_env **env, t_garbage **garbage);
 void		concatination(t_elem **list, t_garbage **garbage);
 int			is_special_character(char c);
+int ft_strlen2(char **str);
+void    ft_split_var(t_elem **elem, t_elem *node, t_garbage **garbage);
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -228,9 +231,6 @@ char		*ft_strcpy(char *dest, const char *src);
 void execute_pipeline(t_var *var, char **envp);
 void execute_command(t_var *var, int input_fd, int output_fd, char **envp);
 void	store_env(t_env *envv, char ***env);
-<<<<<<< HEAD
 void	ft_exc2(t_var *var);
-=======
->>>>>>> d77127542b992ff2183c1333d26f5fe3e34073cf
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 18:45:01 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/11 17:26:06 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/15 18:10:34 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,6 +225,16 @@ int ft_strlen(char *str)
 	{
 		i++;
 	}
+	return (i);
+}
+int ft_strlen2(char **str)
+{
+	int i;
+	if (!str)
+		return (0);
+	i = 0;
+	while (str[i] != NULL)
+		i++;
 	return (i);
 }
 

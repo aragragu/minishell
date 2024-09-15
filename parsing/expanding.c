@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/14 18:07:02 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/15 20:13:53 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void expand_var_list(t_elem **list, t_env **env, t_garbage **garbage)
         {
             if (token->next && token->next->type == SPACE)
             {
-                if (token->next->next && token->next->next->type == VAR)
+                if (token->next->next && (token->next->next->type == VAR || token->next->next->type == S_QOUTS || token->next->next->type == D_QOUTS))
                 {
                     if (token->next->next->next)
                         token = token->next->next->next;
@@ -33,15 +33,24 @@ void expand_var_list(t_elem **list, t_env **env, t_garbage **garbage)
                         break;
                 }
             }
+            else
+            {
+                if (token->next && (token->next->type == VAR || token->next->type == S_QOUTS || token->next->type == D_QOUTS))
+                {
+                    if (token->next->next)
+                        token = token->next->next;
+                    else
+                        break;
+                }
+            }
         }
         else if (token && token->type == VAR){
-            expand_var(token, &token->content, env, garbage);
+            expand_var(list, token, env, garbage);
         }
         else if (token && token->type == D_QOUTS)
             expand_d_qouts(env, &token->content, garbage);
         token = token->next;
     }
-    
 }
 
 void    fill_env(t_env **env, char **str, t_garbage **garbage)
@@ -86,7 +95,7 @@ void expand_var(t_elem **elem ,t_elem *node, t_env **env, t_garbage **garbage)
     int i = 0;
     char *gtr = node->content;
     t_elem *current = *elem;
-    t_elem *last = node->next;
+    // t_elem *last = node->next;
     int flag = 0;
 
     while (current)
@@ -109,9 +118,9 @@ void expand_var(t_elem **elem ,t_elem *node, t_env **env, t_garbage **garbage)
             {
                 if (!ft_strcmp(list->key, gtr + 1))
                 {
-                    printf("===%s===\n", node->content);
                     node->content = ft_strdup(list->value, garbage);
                     flag = 1;
+                    break;
                 }
                 list = list->next;
             }
@@ -119,23 +128,8 @@ void expand_var(t_elem **elem ,t_elem *node, t_env **env, t_garbage **garbage)
                 node->content = NULL;
         }
     }
-    if (ft_strchr(node->content, ' '))
-    {
-        t_elem *list = NULL;
-        int j = 0;
-        char **ptr = ft_split(node->content, ' ', garbage);
-        int i = 0;
-        while (ptr[i])
-            i++;
-        while (j < i)
-        {
-            ft_lstadd_back(&list, ft_lstnew(ptr[j], WORD, garbage));
-            ft_lstadd_back(&list, ft_lstnew(ft_strdup(" ", garbage), SPACE, garbage));
-            j++;
-        }
-        current->next = list;
-        ft_lstlast(list)->next = last;
-    }
+    if (node->content && ft_strchr(node->content, ' '))
+        ft_split_var(elem, node, garbage);
 }
 
 void expand_d_qouts(t_env **env, char **ptr, t_garbage **garbage)
@@ -197,4 +191,47 @@ t_elem *token_quots(t_elem **list, char *in, t_garbage **garbage)
         i += ft_strlen(ft_lstlast(*list)->content);
     }
     return (*list);
+}
+
+void    ft_split_var(t_elem **elem, t_elem *node, t_garbage **garbage)
+{
+    t_elem *new_list = NULL;
+    t_elem *prev = NULL;
+    // t_elem *next = NULL;
+    t_elem *current = *elem;
+    char **str = ft_split(node->content, ' ', garbage);
+    int i = ft_strlen2(str);
+    int j = 0;
+    while (j < i)
+    {
+        ft_lstadd_back(&new_list, ft_lstnew(str[j], WORD, garbage));
+        if (j != (i - 1))
+            ft_lstadd_back(&new_list, ft_lstnew(ft_strdup(" ", garbage), SPACE, garbage));
+        j++;
+    }
+    // print_list(&new_list);
+    // printf("\n");
+    // exit(0);
+    print_list(elem);
+    t_elem *tmp;
+    while (current)
+    {
+        puts("========================");
+        if (current->next && ft_strcmp(current->next->content, node->content))
+        {
+            prev = current;
+            if (current->next->next)
+            {
+                tmp = ft_lstlast(new_list);
+                tmp->next = current->next->next;
+            }
+            prev->next = new_list;
+            if (tmp)
+                current = tmp->next;
+            else
+                current = NULL;
+        }
+        else
+            current = current->next;
+    }
 }
