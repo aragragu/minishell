@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 18:45:01 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/15 17:05:36 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/16 19:29:53 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,16 @@ int ft_strlen(char *str)
 	}
 	return (i);
 }
+int ft_strlen2(char **str)
+{
+	int i;
+	if (!str)
+		return (0);
+	i = 0;
+	while (str[i] != NULL)
+		i++;
+	return (i);
+}
 
 char *ft_substr(char *s, int start, int len, t_garbage **garbage)
 {
@@ -338,8 +348,6 @@ char *ft_strtrim(char *s1, char *set, t_garbage **garbage)
 
 char *ft_strchr(char *s, int c)
 {
-	if (!*s)
-		return(NULL);
 	while (*s != (unsigned char)c)
 	{
 		if (*s == '\0')

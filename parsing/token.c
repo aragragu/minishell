@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/15 17:30:23 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/16 22:04:14 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,65 +30,124 @@ int calculate_num_cmds(char *input) {
     return num_cmds;                  // Return the total number of commands
 }
 
-// Function to execute piped commands
-void execute_piped_commands(char *commands[], int num_cmds, t_var *var) {
-    int pipefds[2 * (num_cmds - 1)];
-    pid_t pids[MAX_CMDS];
-    int i;
+char **parse_command(char *cmd) {
+    char **args = malloc(8 * sizeof(char *));
+    char *arg;
+    int i = 0;
 
-    // Create pipes
-    (void)commands;
-    for (i = 0; i < num_cmds - 1; i++) {
-        if (pipe(pipefds + i * 2) == -1) {
-            perror("pipe");
-            exit(EXIT_FAILURE);
-        }
+    arg = strtok(cmd, " ");
+    while (arg != NULL) {
+        args[i++] = arg;
+        arg = strtok(NULL, " ");
     }
-
-    for (i = 0; i < num_cmds; i++) {
-        pids[i] = fork();
-        if (pids[i] == 0) {
-            // Child process
-
-            // If not the first command, get input from previous pipe
-            if (i > 0) {
-                if (dup2(pipefds[(i - 1) * 2], STDIN_FILENO) == -1) {
-                    perror("dup2 stdin");
-                    exit(EXIT_FAILURE);
-                }
-            }
-
-            // If not the last command, send output to next pipe
-            if (i < num_cmds - 1) {
-                if (dup2(pipefds[i * 2 + 1], STDOUT_FILENO) == -1) {
-                    perror("dup2 stdout");
-                    exit(EXIT_FAILURE);
-                }
-            }
-
-            // Close all pipe file descriptors
-            for (int j = 0; j < 2 * (num_cmds - 1); j++) {
-                close(pipefds[j]);
-            }
-
-            // Execute the command
-            ft_exc(var);  // Assuming `execute_single_command` runs the command
-        } else if (pids[i] < 0) {
-            perror("fork");
-            exit(EXIT_FAILURE);
-        }
-    }
-
-    // Parent process closes all pipes
-    for (i = 0; i < 2 * (num_cmds - 1); i++) {
-        close(pipefds[i]);
-    }
-
-    // Parent waits for all children
-    for (i = 0; i < num_cmds; i++) {
-        waitpid(pids[i], NULL, 0);
-    }
+    args[i] = NULL;
+    return args;
 }
+
+void execute_pipe(char *input, int num_cmds, t_var *var) {
+    int pipefd[2], prev_fd = 0;
+    char *input_copy = strdup(input);
+    (void)var;
+    char *cmd = strtok(input_copy, "|");
+    for (int i = 0; i < num_cmds; i++) {
+        pipe(pipefd);
+        if (fork() == 0) {
+            dup2(prev_fd, 0); // read from prev_fd
+            if (i < num_cmds - 1)
+                dup2(pipefd[1], 1); // write to pipe if not the last command
+            close(pipefd[0]);
+            close(pipefd[1]);
+
+            // Parse and execute the command
+            char **args = parse_command(cmd);
+            execvp(args[0], args);
+            perror("execvp failed");
+            exit(EXIT_FAILURE);
+        }
+        close(pipefd[1]);
+        prev_fd = pipefd[0]; // next child reads from this pipe
+        cmd = strtok(NULL, "|");
+    }
+
+    close(prev_fd);
+    while (wait(NULL) > 0); // wait for all child processes
+    free(input_copy);
+}
+
+// int calculate_num_cmds(char *input) {
+//     int num_cmds = 0;
+//     char *input_copy = strdup(input); // Make a copy of the input string
+
+//     // Use strtok to split the input by the pipe (|) character
+//     char *token = strtok(input_copy, "|");
+//     while (token != NULL) {
+//         num_cmds++;                   // Increment command count
+//         token = strtok(NULL, "|");     // Move to the next command
+//     }
+
+//     free(input_copy);                 // Free the duplicated string
+//     return num_cmds;                  // Return the total number of commands
+// }
+
+// Function to execute piped commands
+// void execute_piped_commands(char *commands[], int num_cmds, t_var *var) {
+//     int pipefds[2 * (num_cmds - 1)];
+//     pid_t pids[MAX_CMDS];
+//     int i;
+
+//     // Create pipes
+//     (void)commands;
+//     for (i = 0; i < num_cmds - 1; i++) {
+//         if (pipe(pipefds + i * 2) == -1) {
+//             perror("pipe");
+//             exit(EXIT_FAILURE);
+//         }
+//     }
+
+//     for (i = 0; i < num_cmds; i++) {
+//         pids[i] = fork();
+//         if (pids[i] == 0) {
+//             // Child process
+
+//             // If not the first command, get input from previous pipe
+//             if (i > 0) {
+//                 if (dup2(pipefds[(i - 1) * 2], STDIN_FILENO) == -1) {
+//                     perror("dup2 stdin");
+//                     exit(EXIT_FAILURE);
+//                 }
+//             }
+
+//             // If not the last command, send output to next pipe
+//             if (i < num_cmds - 1) {
+//                 if (dup2(pipefds[i * 2 + 1], STDOUT_FILENO) == -1) {
+//                     perror("dup2 stdout");
+//                     exit(EXIT_FAILURE);
+//                 }
+//             }
+
+//             // Close all pipe file descriptors
+//             for (int j = 0; j < 2 * (num_cmds - 1); j++) {
+//                 close(pipefds[j]);
+//             }
+
+//             // Execute the command
+//             ft_exc(var);  // Assuming `execute_single_command` runs the command
+//         } else if (pids[i] < 0) {
+//             perror("fork");
+//             exit(EXIT_FAILURE);
+//         }
+//     }
+
+//     // Parent process closes all pipes
+//     for (i = 0; i < 2 * (num_cmds - 1); i++) {
+//         close(pipefds[i]);
+//     }
+
+//     // Parent waits for all children
+//     for (i = 0; i < num_cmds; i++) {
+//         waitpid(pids[i], NULL, 0);
+//     }
+// }
 
 // Updated read_input function
 void read_input(char **env) {
@@ -129,9 +188,13 @@ void read_input(char **env) {
         else if (access(var.list->cmd, X_OK) == 0)
             ft_exc2(&var);
         else if (check_valid_path(var.list->cmd, &var)) {
+            if (check_valid_path(var.list->cmd, &var)) {
+                int num_cmds = calculate_num_cmds(input);
+                execute_pipe(input, num_cmds, &var);
+}
             // int num_cmds = calculate_num_cmds(input);
             // execute_piped_commands(var.list->argc, num_cmds, &var);
-            ft_exc(&var);
+            // ft_exc(&var);
         } else
             printf("minishell: %s: command not found\n", var.list->argc[0]);
 

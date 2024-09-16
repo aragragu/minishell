@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/15 17:15:51 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/16 19:25:20 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void expand_var_list(t_elem **list, t_env **env, t_garbage **garbage)
         {
             if (token->next && token->next->type == SPACE)
             {
-                if (token->next->next && token->next->next->type == VAR)
+                if (token->next->next && (token->next->next->type == VAR || token->next->next->type == S_QOUTS || token->next->next->type == D_QOUTS))
                 {
                     if (token->next->next->next)
                         token = token->next->next->next;
@@ -33,15 +33,24 @@ void expand_var_list(t_elem **list, t_env **env, t_garbage **garbage)
                         break;
                 }
             }
+            else
+            {
+                if (token->next && (token->next->type == VAR || token->next->type == S_QOUTS || token->next->type == D_QOUTS))
+                {
+                    if (token->next->next)
+                        token = token->next->next;
+                    else
+                        break;
+                }
+            }
         }
         else if (token && token->type == VAR){
-            expand_var(&token, token, env, garbage);
+            expand_var(list, token, env, garbage);
         }
         else if (token && token->type == D_QOUTS)
             expand_d_qouts(env, &token->content, garbage);
         token = token->next;
     }
-    
 }
 
 void    fill_env(t_env **env, char **str, t_garbage **garbage)

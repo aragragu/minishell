@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/15 13:28:41 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/16 20:57:53 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,8 @@ t_elem		*fill_argc(t_cmd  **cmd, t_elem **list, t_garbage **garbage);
 void		expand_herdoc(char **str, t_env **env, t_garbage **garbage);
 void		concatination(t_elem **list, t_garbage **garbage);
 int			is_special_character(char c);
+int ft_strlen2(char **str);
+void    ft_split_var(t_elem **elem, t_elem *node, t_garbage **garbage);
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -230,5 +232,6 @@ void execute_command(t_var *var);
 void	store_env(t_env *envv, char ***env);
 void	ft_exc2(t_var *var);
 void split_commands(char *input, char **commands);
+char **parse_command(char *cmd);
 
 #endif

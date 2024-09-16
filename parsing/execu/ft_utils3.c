@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:38:50 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/15 16:04:35 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/16 22:04:48 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,30 +114,39 @@ void	ft_exc2(t_var *var)
 	waitpid(pid, NULL, 0);
 }
 
-void	ft_exc(t_var *var)
-{
-	char	*exec_path;
-	char	**envp;
-	pid_t	pid;
+// void	ft_exc(char *input, t_var *var)
+// {
+// 	char	*exec_path;
+// 	char	**envp;
+// 	// pid_t	pid;
 
-	store_env(var->env, &envp);
-	exec_path = excu_in_path(var->list->cmd, var);
-	if (exec_path != NULL)
-	{
-		pid = fork();
-		if (pid == 0)
-		{
+// 	store_env(var->env, &envp);
+// 	exec_path = excu_in_path(var->list->cmd, var);
+// 	char *input_copy = strdup(input);
+// 	char *cmd = strtok(input_copy, "|");
+// 	// if (exec_path != NULL)
+// 	// {
+// 	// 	pid = fork();
+// 	// 	if (pid == 0)
+// 	// 	{
 			
-			var->list->argc[0] = exec_path;
-			if (execve(exec_path, var->list->argc, envp) == -1)
-			{
-				puts(" ");
-				perror("Execution failed");
-				free(exec_path);
-			}
-		}
-		waitpid(pid, NULL, 0);
-	}
-	else if (exec_path)
-		return ;
-}
+// 	// 		var->list->argc[0] = exec_path;
+// 	// 		if (execve(exec_path, var->list->argc, envp) == -1)
+// 	// 		{
+// 	// 			puts(" ");
+// 	// 			perror("Execution failed");
+// 	// 			free(exec_path);
+// 	// 		}
+// 	// 	}
+// 	// 	waitpid(pid, NULL, 0);
+// 	// }
+// 	char **args = parse_command(cmd);
+//             // char *cmd_path = excu_in_path(args[0], var);
+//             if (exec_path) {
+//                 execve(exec_path, args, envp); // Use execve instead of execvp
+//                 perror("execve failed");
+//                 free(exec_path);
+// 			}
+// 	else if (exec_path)
+// 		return ;
+// }
