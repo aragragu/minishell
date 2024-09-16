@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/15 20:13:53 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/16 14:51:08 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,16 +94,9 @@ void expand_var(t_elem **elem ,t_elem *node, t_env **env, t_garbage **garbage)
 {
     int i = 0;
     char *gtr = node->content;
-    t_elem *current = *elem;
     // t_elem *last = node->next;
     int flag = 0;
 
-    while (current)
-    {
-        if (current->next && !ft_strcmp(current->next->content, gtr))
-            break;
-        current = current->next;
-    }
     if (gtr[i] == '$')
     {
         t_env *list = *env;
@@ -130,6 +123,7 @@ void expand_var(t_elem **elem ,t_elem *node, t_env **env, t_garbage **garbage)
     }
     if (node->content && ft_strchr(node->content, ' '))
         ft_split_var(elem, node, garbage);
+    
 }
 
 void expand_d_qouts(t_env **env, char **ptr, t_garbage **garbage)
@@ -197,8 +191,8 @@ void    ft_split_var(t_elem **elem, t_elem *node, t_garbage **garbage)
 {
     t_elem *new_list = NULL;
     t_elem *prev = NULL;
-    // t_elem *next = NULL;
     t_elem *current = *elem;
+    t_elem *tmp;
     char **str = ft_split(node->content, ' ', garbage);
     int i = ft_strlen2(str);
     int j = 0;
@@ -209,29 +203,20 @@ void    ft_split_var(t_elem **elem, t_elem *node, t_garbage **garbage)
             ft_lstadd_back(&new_list, ft_lstnew(ft_strdup(" ", garbage), SPACE, garbage));
         j++;
     }
-    // print_list(&new_list);
-    // printf("\n");
-    // exit(0);
-    print_list(elem);
-    t_elem *tmp;
     while (current)
     {
-        puts("========================");
-        if (current->next && ft_strcmp(current->next->content, node->content))
+        if (!ft_strcmp(current->content, node->content))
         {
-            prev = current;
-            if (current->next->next)
-            {
-                tmp = ft_lstlast(new_list);
-                tmp->next = current->next->next;
-            }
-            prev->next = new_list;
-            if (tmp)
-                current = tmp->next;
+            tmp = ft_lstlast(new_list);
+            if (current->next)
+                tmp->next = current->next;
+            if (prev)
+                prev->next = new_list;
             else
-                current = NULL;
+                *elem = new_list;
         }
         else
-            current = current->next;
+            prev = current;
+        current = current->next;
     }
 }

@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/15 20:07:38 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/16 13:54:15 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ void read_input(char **env)
         ft_lstadd_back_garbage(&garbage, ft_lstnew_garbage(input));
         add_history(input);
         list = token_input(&list, &input, &garbage);
-        // print_list(&list);
+        print_list(&list);
         if (!list)
-                continue;
+            continue;
         if (!sysntax_error_checker(&garbage, input, &list))
             continue;
         expand_var_list(&list, &var.env, &garbage);
@@ -94,7 +94,7 @@ t_elem *token_input(t_elem **list, char **in, t_garbage **garbage)
 {
     int i = 0;
     char *input;
-    ft_lstadd_back(list, ft_lstnew(ft_strdup("", garbage), NULL_TOKEN, garbage));
+    // ft_lstadd_back(list, ft_lstnew(ft_strdup("", garbage), NULL_TOKEN, garbage));
     input = ft_strtrim(*in, " \t\n\v\f\r", garbage);
     while (input && input[i])
     {
@@ -138,7 +138,7 @@ t_elem *token_input(t_elem **list, char **in, t_garbage **garbage)
             is_a_word(list, input, i, garbage);
         i += ft_strlen(ft_lstlast(*list)->content);
     }
-    ft_lstadd_back(list, ft_lstnew(ft_strdup("", garbage), NULL_TOKEN, garbage));
+    // ft_lstadd_back(list, ft_lstnew(ft_strdup("", garbage), NULL_TOKEN, garbage));
     return (*list);
 }
 
