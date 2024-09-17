@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:32:21 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/17 17:44:38 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/17 17:55:19 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,12 @@ void	ft_export(t_var *var, int i, int error)
 						key = ft_cat(var->list->argc[i], j, 0);
 						index = index_key(var->env, key);
 						if (index && var->list->argc[i][j] == '+' && var->list->argc[i][j + 1] == '=')
-							index->value = ft_strjoinnn(index->value, new_val);
+						{
+							if (!index->value)
+								index->value = new_val;
+							else
+								index->value = ft_strjoinnn(index->value, new_val);
+						}
 						else
 							ft_lstadd_backkk(&var->env, ft_lstnewww(ft_cat(var->list->argc[i], j, 0), ft_cat(var->list->argc[i], j + 2, 1)));
 					}

@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:34:13 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/12 14:35:48 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/15 12:35:50 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,13 @@ char	*ft_strchrr(char *str, int c)
 	return (NULL);
 }
 
-char *ft_strcpy(char *dest, const char *src)
+char *ft_strcpy(char *dest, char *src)
 {
-    char *ptr = dest;
+    char *ptr;
 
+    if (!src || !dest)
+        return(NULL);
+    ptr = dest;
     while (*src != '\0')
     {
         *dest = *src;
@@ -42,10 +45,13 @@ char *ft_strcpy(char *dest, const char *src)
     return ptr;
 }
 
-char *ft_strcat(char *dest, const char *src)
+char *ft_strcat(char *dest, char *src)
 {
-    char *ptr = dest;
-  
+    char *ptr;
+
+    if (!src || !dest)
+        return(NULL);
+    ptr = dest;
     while (*dest != '\0')
         dest++;
     while (*src != '\0')
