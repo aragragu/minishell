@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/16 13:54:15 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/16 15:29:15 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,13 @@ void read_input(char **env)
         ft_lstadd_back_garbage(&garbage, ft_lstnew_garbage(input));
         add_history(input);
         list = token_input(&list, &input, &garbage);
-        print_list(&list);
         if (!list)
             continue;
         if (!sysntax_error_checker(&garbage, input, &list))
             continue;
         expand_var_list(&list, &var.env, &garbage);
         handle_redirection(&list, &var.env, &garbage);
-        // puts("===================================");
         concatination(&list, &garbage);
-        // print_list(&list);
-        // puts("===================================");
         import_data(&var.list, &list, &garbage);
         print_cmd(var.list);
         if (check_builtins(var.list->cmd))

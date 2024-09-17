@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/16 14:51:08 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/16 15:17:18 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void    fill_env(t_env **env, char **str, t_garbage **garbage)
     j = 0;
 	if (!str || !str[0])
 	{
-        *env = ft_lstnewww(ft_strduppp("PWD"), ft_strduppp("/Users/ykasmi/Desktop/parss/parsing"));//protection
+        *env = ft_lstnewww(ft_strduppp("PWD"), ft_strduppp("/Users/aragragu/Desktop/parss/parsing"));//protection
 		ft_lstadd_backkk(env, ft_lstnewww(ft_strduppp("SHLVL"), ft_strduppp("1")));
 		ft_lstadd_backkk(env, ft_lstnewww(ft_strduppp("_"), ft_strduppp("/usr/bin/env")));
 		return;
@@ -94,7 +94,6 @@ void expand_var(t_elem **elem ,t_elem *node, t_env **env, t_garbage **garbage)
 {
     int i = 0;
     char *gtr = node->content;
-    // t_elem *last = node->next;
     int flag = 0;
 
     if (gtr[i] == '$')
