@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/17 16:51:58 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/17 17:46:38 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void read_input(char **env) {
 			free(input);
 			continue;
 		}
-
 		ft_lstadd_back_garbage(&garbage, ft_lstnew_garbage(input));
 		add_history(input);
 		list = token_input(&list, &input, &garbage);
@@ -38,20 +37,19 @@ void read_input(char **env) {
 			continue;
 		if (!sysntax_error_checker(&garbage, input, &list))
 			continue;
-
 		expand_var_list(&list, &var.env, &garbage);
 		handle_redirection(&list, &var.env, &garbage);
 		concatination(&list, &garbage);
 		import_data(&var.list, &list, &garbage);
-		if (check_builtins(var.list->cmd))
-			ft_builtins(&var, var.list->cmd, &var.list);
-		else if (ft_strcmp(input, "env") == 0)
+		if (ft_strcmp(input, "env") == 0)
 			ft_env(&var.env);
 		else if (check_valid_path(var.list->cmd, &var))
 		{
 			int num_cmds = calculate_num_cmds(input);
 			if (contains_pipe(input))
 				execute_pipe(input, num_cmds, &var);
+			else if (check_builtins(var.list->cmd))
+				ft_builtins(&var, var.list->cmd, &var.list);
 			else
 				ft_exc(&var);
 		}

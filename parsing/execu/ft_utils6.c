@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:21:52 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/17 17:01:09 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/17 17:49:19 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	calculate_num_cmds(char *input)
 	return (free(input_copy), num_cmds);
 }
 
-char **parse_command(char *cmd)
+char	**parse_command(char *cmd)
 {
 	int		size;  
 	char	**args;
@@ -50,7 +50,7 @@ char **parse_command(char *cmd)
 	return (args);
 }
 
-void execute_pipe(char *input, int num_cmds, t_var *var)
+void	execute_pipe(char *input, int num_cmds, t_var *var)
 {
 	int		pipefd[2];
 	int		prev_fd = 0;
@@ -79,9 +79,10 @@ void execute_pipe(char *input, int num_cmds, t_var *var)
 			if (cmd_path)
 			{
 				if (execve(cmd_path, args, envp) == -1)
-					perror("execve failed");
+					fprintf(stderr, "minishell: command not found: %s\n", "");
 				free(cmd_path);
 			}
+			exit(EXIT_FAILURE);
 		}
 		close(pipefd[1]);
 		prev_fd = pipefd[0];
