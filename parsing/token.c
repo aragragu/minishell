@@ -6,11 +6,29 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/14 17:16:55 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/17 17:40:54 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// void execute_command(t_var *var, int input_fd, int output_fd) {
+//     pid_t pid = fork();
+
+//     if (pid == 0) { // Child process
+//         if (input_fd != 0) { // Redirect input if needed
+//             dup2(input_fd, STDIN_FILENO);
+//             close(input_fd);
+//         }
+
+//         if (output_fd != 1) { // Redirect output if needed
+//             dup2(output_fd, STDOUT_FILENO);
+//             close(output_fd);
+//         }
+//         ft_exc(var);
+//     }
+//     wait(NULL);
+// }
 
 void read_input(char **env)
 {
@@ -37,16 +55,12 @@ void read_input(char **env)
         add_history(input);
         list = token_input(&list, &input, &garbage);
         if (!list)
-                continue;
+            continue;
         if (!sysntax_error_checker(&garbage, input, &list))
             continue;
         expand_var_list(&list, &var.env, &garbage);
         handle_redirection(&list, &var.env, &garbage);
-        // print_list(&list);
-        // puts("===================================");
         concatination(&list, &garbage);
-        // print_list(&list);
-        // puts("===================================");
         import_data(&var.list, &list, &garbage);
         print_cmd(var.list);
         if (check_builtins(var.list->cmd))
@@ -76,7 +90,7 @@ t_elem *token_input(t_elem **list, char **in, t_garbage **garbage)
 {
     int i = 0;
     char *input;
-
+    // ft_lstadd_back(list, ft_lstnew(ft_strdup("", garbage), NULL_TOKEN, garbage));
     input = ft_strtrim(*in, " \t\n\v\f\r", garbage);
     while (input && input[i])
     {
@@ -120,6 +134,7 @@ t_elem *token_input(t_elem **list, char **in, t_garbage **garbage)
             is_a_word(list, input, i, garbage);
         i += ft_strlen(ft_lstlast(*list)->content);
     }
+    // ft_lstadd_back(list, ft_lstnew(ft_strdup("", garbage), NULL_TOKEN, garbage));
     return (*list);
 }
 

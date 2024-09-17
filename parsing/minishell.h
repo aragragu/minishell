@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/12 23:32:59 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/17 17:41:29 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef enum    s_token
 	VAR,            		// $ASJASD
 	DOUBLE_DLR,				// $$
 	SPACE,					// "_"
+	NULL_TOKEN,
 	PIPE,           		// |
 	REDIR_IN,       		// <
 	REDIR_OUT,      		// >
@@ -104,6 +105,14 @@ typedef struct s_var
 	t_env			*env;
 }					t_var;
 ///////////////////////////////////////
+
+
+
+
+
+
+
+
 
 char		*ft_itoa(int nb);
 char		**ft_split(char const *s, char c, t_garbage **garbage);
@@ -178,6 +187,8 @@ t_elem		*fill_argc(t_cmd  **cmd, t_elem **list, t_garbage **garbage);
 void		expand_herdoc(char **str, t_env **env, t_garbage **garbage);
 void		concatination(t_elem **list, t_garbage **garbage);
 int			is_special_character(char c);
+int ft_strlen2(char **str);
+void    ft_split_var(t_elem **elem, t_elem *node, t_garbage **garbage);
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -220,5 +231,6 @@ char		*ft_strcpy(char *dest, const char *src);
 void execute_pipeline(t_var *var, char **envp);
 void execute_command(t_var *var, int input_fd, int output_fd, char **envp);
 void	store_env(t_env *envv, char ***env);
+void	ft_exc2(t_var *var);
 
 #endif

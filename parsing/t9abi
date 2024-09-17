@@ -1,0 +1,436 @@
+export export
+export=1337
+env -i ./minishell 
+minishell: ls: env
+
+
+./
+
+
+////////////////////////////////////
+echo ---------------nnnnnnnnnnnnnnnnn nsaad
+
+/bin/ls
+➜ minishell💀$ cd ..
+➜ minishell💀$ export
+declare -x PWD="/Users/ykasmi/Desktop/parss"
+declare -x SHLVL="1"
+declare -x _="/usr/bin/env"
+declare -x PWD="/Users/ykasmi/Desktop/parss"
+_=hello
+touch said
+➜ minishell💀$ ./said
+minishell: ./said: command not found
+➜ minishell💀$ chmod +x said
+➜ minishell💀$ ./said
+minishell: ./said: command not found  check Errno    
+
+check if is a directory
+➜ minishell💀$ saad/
+minishell: saad/: command not found 
+
+
+///////////////////////////////////////////////////////
+
+Minishell$ echo "gello$$test$1gds$USER-L" gello$$test$1gds$USER-L$'hell$"' gello$$test$1gds$USER-L$'hell$'     //its not error
+------------------------------------------------------------------------------------------------------------------------------------------
+➜ Minishell$ unset PWD            **********************************
+➜ Minishell$ cd ../
+➜ Minishell$ $PWD
+➜ Minishell$ echo $PWD
+------------------------------------------------------------------------------------------------------------------------------------------
+➜ Minishell$ export a="b c= d="
+➜ Minishell$ export $a
+➜ Minishell$ export p=$a
+➜ Minishell$ export
+declare -x COLORTERM="truecolor"
+declare -x __CF_USER_TEXT_ENCODING="0x194C4:0x0:0x0"
+declare -x a="b c= d="
+declare -x b
+declare -x c=""
+declare -x d=""
+declare -x p="b"
+➜ Minishell$ export p=$a
+------------------------------------------------------------------------------------------------------------------------------------------
+➜ Minishell$ echo -n $USER >> a
+ozahdi➜ Minishell$
+------------------------------------------------------------------------------------------------------------------------------------------
+➜ Minishell$ export p='"'                ***************************
+➜ Minishell$ echo $p
+------------------------------------------------------------------------------------------------------------------------------------------
+➜ Minishell$ export l="src libft"
+➜ Minishell$ ls $l
+ls: src libft: No such file or directory
+------------------------------------------------------------------------------------------------------------------------------------------
+➜ Minishell$ cgjgc
+cgjgc: command not found
+➜ Minishell$ ls | fgjcv | echo $?
+fgjcv: command not found
+127
+------------------------------------------------------------------------------------------------------------------------------------------
+➜ Minishell$ ./minishell            ********************************
+➜ Minishell$ djf
+djf: command not found
+➜ Minishell$ exit 
+exit
+➜ Minishell$ echo $?
+0
+➜ Minishell$ 
+------------------------------------------------------------------------------------------------------------------------------------------
+➜  push git:(master) ✗ env -i ./minishell                           (oussama)
+➜ Minishell$ unset USER
+➜ Minishell$ unset PWD 
+=================================================================
+==56480==ERROR: AddressSanitizer: heap-use-after-free on address 0x6040000000d0 at pc 0x00010184a6b2 bp 0x7ffeee3c6610 sp 0x7ffeee3c6608
+READ of size 8 at 0x6040000000d0 thread T0
+    #0 0x10184a6b1 in ft_add_enver+0x2a1 (/Users/ozahdi/Desktop/push/./minishell:x86_64+0x1000116b1)
+    #1 0x101852017 in unset_builtin+0x2f7 (/Users/ozahdi/Desktop/push/./minishell:x86_64+0x100019017)
+
+------------------------------------------------------------------------------------------------------------------------------------------
+➜ Minishell$ cat
+^C
+➜ Minishell$ ➜ Minishell$ echo $?
+2
+➜ Minishell$ cat
+^\^\^\^\^\^\^C
+➜ Minishell$ ➜ Minishell$ 
+➜ Minishell$ echo $?
+2
+➜ Minishell$ 
+------------------------------------------------------------------------------------------------------------------------------------------
+update $_              ****************************************
+------------------------------------------------------------------------------------------------------------------------------------------
+➜ Minishell$ mkdir -p 1/1/1/1
+➜ Minishell$ cd 1/1/1/1
+➜ Minishell$ pwd
+/Users/ozahdi/Desktop/push/1/1/1/1
+➜ Minishell$ cd ..
+cd: ..: No such file or directory
+➜ Minishell$ pwd
+minishell: pwd: : No such file or directory
+➜ Minishell$ echo $PWD
+/Users/ozahdi/Desktop/push
+➜ Minishell$ echo $OLDPWD
+/Users/ozahdi/Desktop/push
+➜ Minishell$ cd ..
+cd: error retrieving current directory
+➜ Minishell$ cd ..
+cd: error retrieving current directory
+AddressSanitizer:DEADLYSIGNAL
+=================================================================
+==28585==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000000 (pc 0x000109f95fc7 bp 0x7ffee5c8c950 sp 0x7ffee5c8c950 T0)
+==28585==The signal is caused by a READ memory access.
+==28585==Hint: address points to the zero page.
+    #0 0x109f95fc7 in ft_strncmp+0x47 (minishell:x86_64+0x100023fc7)
+    #1 0x109f8c3f2 in handle_cd_directory+0x482 (minishell:x86_64+0x10001a3f2)
+    #2 0x109f8bab3 in handle_cd_with_args+0x103 (minishell:x86_64+0x100019ab3)
+    #3 0x109f8f6e5 in cd_builtin+0x115 (minishell:x86_64+0x10001d6e5)
+------------------------------------------------------------------------------------------------------------------------------------------
+➜ Minishell$ exit | exit 100 | exit 1 2
+exit: too many arguments
+➜ Minishell$ echo $?
+0
+➜ Minishell$ exit | exit 100 | exit o
+exit: numeric argument required
+➜ Minishell$ echo $?
+1
+➜ Minishell$ 
+------------------------------------------------------------------------------------------------------------------------------------------
+bash-3.2$ exit 31423 fdf
+exit
+bash: exit: too many arguments
+bash-3.2$ $?
+bash: 1: command not found
+------------------------------------------------------------------------------------------------------------------------------------------
+./minishell
+./minishell
+ctr+c
+------------------------------------------------------------------------------------------------------------------------------------------
+bash-3.2$ exit gfd 312
+exit
+bash: exit: gfd: numeric argument required
+➜  push git:(master) ✗ $?
+zsh: command not found: 255
+------------------------------------------------------------------------------------------------------------------------------------------
+bash-3.2$ exit -92233720368547758081 # min/max long long
+exit
+bash: exit: -92233720368547758081: numeric argument required
+------------------------------------------------------------------------------------------------------------------------------------------
+bash-3.2$ exit 3123 312312 
+exit
+bash: exit: too many arguments
+bash-3.2$ $?
+bash: 1: command not found
+------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------
+➜ Minishell$ unset  USER MallocNanoZone PATH LOGNAME SSH_AUTH_SOCK HOME SHELL __CF_USER_TEXT_ENCODING TMPDIR XPC_SERVICE_NAME XPC_FLAGS ORIGINAL_XDG_CURRENT_DESKTOP SHLVL PWD OLDPWDZSH PAGER LESS LSCOLORS LS_COLORS HOMEBREW_CACHE HOMEBREW_TEMP TERM_PROGRAM TERM_PROGRAM_VERSION LANG COLORTERM GIT_ASKPASS VSCODE_GIT_ASKPASS_NODE VSCODE_GIT_ASKPASS_EXTRA_ARGSVSCODE_GIT_ASKPASS_MAIN VSCODE_GIT_IPC_HANDLE VSCODE_INJECTION ZDOTDIR USER_ZDOTDIR TERM _
+=================================================================
+==16755==ERROR: AddressSanitizer: heap-use-after-free on address 0x604000000c90 at pc 0x0001058eb39a bp 0x7ffeea32cfa0 sp 0x7ffeea32cf98
+READ of size 8 at 0x604000000c90 thread T0
+    #0 0x1058eb399 in ft_find+0x89 (minishell:x86_64+0x100019399)
+    #1 0x1058eaf40 in unset_builtin+0x220 (minishell:x86_64+0x100018f40)
+    #2 0x1058e8c90 in execute_builtin+0x410 (minishell:x86_64+0x100016c90)
+------------------------------------------------------------------------------------------------------------------------------------------
+_=/Users/ozahdi/Desktop/new_vers/./minishell
+------------------------------------------------------------------------------------------------------------------------------------------
+➜ Minishell$ ^C
+➜ Minishell$ echo $?
+0
+------------------------------------------------------------------------------------------------------------------------------------------
+➜ Minishell$ export ggg uuu+ lll                   
+export: 'uuu+': not a valid identifier
+➜ Minishell$ echo $?
+0
+------------------------------------------------------------------------------------------------------------------------------------------
+➜  new_vers git:(master) ✗ ./minishell           *******************************************
+➜ Minishell$ wewef
+wewef: command not found
+➜ Minishell$ 
+exit
+➜  new_vers git:(master) ✗ echo $?
+0
+------------------------------------------------------------------------------------------------------------------------------------------
+➜ Minishell$ cat
+^\^\^\^\^\^\
+------------------------------------------------------------------------------------------------------------------------------------------
+➜ Minishell$ cat
+^\^\^\^\^\^\^C
+➜ Minishell$ ➜ Minishell$ 
+------------------------------------------------------------------------------------------------------------------------------------------
+// update OLDPWD
+➜ Minishell$ cd ..
+➜ Minishell$ export
+declare -x OLDPWD
+declare -x PWD="/Users/ozahdi/Desktop"
+declare -x SHLVL="1"
+declare -x yyy
+------------------------------------------------------------------------------------------------------------------------------------------
+➜ Minishell$ $PWD                     ************************************
+/Users/ozahdi/Desktop: permission denied
+------------------------------------------------------------------------------------------------------------------------------------------
+➜ Minishell$ env jjj   ************************ env: jjj: No such file or directory
+------------------------------------------------------------------------------------------------------------------------------------------
+➜ Minishell$ exit " 77 88 99 "
+exit
+------------------------------------------------------------------------------------------------------------------------------------------
+➜ Minishell$ touch ls              *************************
+➜ Minishell$ export PATH+=:.
+➜ Minishell$ ls
+ls: permission denied
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+~ : change this with HOME PATH
+------------------------------------------------------------------------------------------------------------------------------------------
+bash-3.2$ << a | << b  | < > | << r
+bash: syntax error near unexpected token `>'
+> a
+> b
+------------------------------------------------------------------------------------------------------------------------------------------
+bash-3.2$ << $"USER"
+> $USER
+> USER
+------------------------------------------------------------------------------------------------------------------------------------------
+➜ Minishell$ cat << $USER
+herdoc > $PWD
+herdoc > $?
+herdoc > ozahdi
+herdoc > '$USER'
+herdoc > $USER
+/Users/ozahdi/Desktop/new_vers
+?
+ozahdi
+'ozahdi'
+------------------------------------------------------------------------------------------------------------------------------------------
+➜ Minishell$ << $"USER" => delemeter is USER
+herdoc > USER
+herdoc > $USER
+------------------------------------------------------------------------------------------------------------------------------------------
+bash-3.2$ echo $~""
+$~
+bash-3.2$ echo $-""
+himBH
+bash-3.2$ echo $!""
+bash: !"": event not found
+bash-3.2$ echo $@""
+
+bash-3.2$ echo $#""
+0
+bash-3.2$ echo $.""
+$.
+bash-3.2$ echo $,""
+$,
+bash-3.2$ echo $""
+------------------------------------------------------------------------------------------------------------------------------------------
+
+bash-3.2$ echo "$"$
+$$
+bash-3.2$ echo $"$"$
+$$
+bash-3.2$ echo "$$$"
+58168$
+bash-3.2$ echo "$$"
+58168
+bash-3.2$ echo "$"
+$
+bash-3.2$ $$$"$"$$$
+bash: 58168$58168$: command not found
+bash-3.2$ echo $$$"$"$$$
+58168$58168$
+bash-3.2$ echo $$"$"$$$
+58168$58168$
+bash-3.2$ echo $$$""
+58168
+bash-3.2$ echo $$$"$"
+58168$
+bash-3.2$ echo $""
+
+bash-3.2$ echo $
+$
+bash-3.2$ 
+bash-3.2$ echo $''
+
+bash-3.2$ echo $'$'
+$
+bash-3.2$ echo $'$$'
+$$
+bash-3.2$ echo $'$$$'
+$$$
+bash-3.2$ echo "$'$'"
+$'$'
+bash-3.2$ echo "$'$USER'"
+$'ozahdi'
+bash-3.2$ echo "$'$USER$'"
+$'ozahdi$'
+bash-3.2$ echo "$'$USER$'$"
+$'ozahdi$'$
+bash-3.2$ echo "$'$USER$'$"$ --------- check
+$'ozahdi$'$$
+bash-3.2$ echo "$$'$USER$'$"
+58168'ozahdi$'$
+bash-3.2$ echo "$$$'$USER$'$"
+58168$'ozahdi$'$
+bash-3.2$ echo "$$$""'$USER$'$"
+58168$'ozahdi$'$
+bash-3.2$ echo "$''$"
+$''$
+bash-3.2$ echo $""
+
+bash-3.2$ echo "$"
+$
+bash-3.2$ echo $""
+
+bash-3.2$ echo $""$
+$
+bash-3.2$ echo ''$""
+
+bash-3.2$ echo  "'$USER'$"""
+'ozahdi'$
+bash-3.2$ echo  "'$USER'$""$"
+'ozahdi'$$
+bash-3.2$ echo  "'$USER'$"$""
+'ozahdi'$
+bash-3.2$ echo  "'$USER'$"$s""
+'ozahdi'$
+bash-3.2$ echo  "'$USER'$"$1""
+'ozahdi'$
+bash-3.2$ echo  "'$USER'$"$12""
+'ozahdi'$2
+bash-3.2$ echo  "'$USER'$"$12s""
+'ozahdi'$2s
+bash-3.2$ echo  ""$
+$
+bash-3.2$ echo  $""$
+$
+bash-3.2$ echo  $"$"$
+$$
+bash-3.2$ echo  "$"$
+$$
+bash-3.2$ $$$USER
+bash: 58168ozahdi: command not found
+bash-3.2$ ECHO $USER
+ozahdi
+bash-3.2$ << $""
+> $
+> 
+bash-3.2$ << ''
+> 
+bash-3.2$ << ' '
+> 
+>  
+bash-3.2$ 
+
+
+
+➜ Minishell$ ls
+Makefile        include         libft           main.c          minishell       parsing         src             ztest.c
+➜ Minishell$ echo 
+
+➜ Minishell$ echo ""
+
+➜ Minishell$ echo $""
+
+➜ Minishell$ echo $""$
+$
+➜ Minishell$ echo $"$"$
+$
+➜ Minishell$ echo "$"
+
+➜ Minishell$ echo $
+$
+➜ Minishell$ echo "$"
+
+➜ Minishell$ echo "$$"
+
+➜ Minishell$ echo "$$$"
+$
+➜ Minishell$ echo $""
+
+➜ Minishell$  echo "$$$""'$USER$'$"
+$'ozahdi'
+➜ Minishell$ echo $''
+
+➜ Minishell$ echo "$''"
+''
+➜ Minishell$ echo "$''$"
+''
+➜ Minishell$ echo ''$""
+
+➜ Minishell$ echo '$USER'$""
+$USER
+➜ Minishell$ echo "'$USER'$"""
+'ozahdi'
+➜ Minishell$ $$$USER
+ozahdi: command not found
+➜ Minishell$ $$$$USER
+USER: command not found
+➜ Minishell$ ECHO $$$$USER
+USER
+➜ Minishell$ ECHO $$$$USER
+➜ Minishell$ 
+exit
+
+
+
+
+
+
+
+errors.txt
