@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/16 20:57:53 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/17 16:21:30 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,11 +227,11 @@ int			check_valid_path(char *filename, t_var *var);
 char		*ft_getenv(t_env *env, char *key);
 char		*ft_strcat(char *dest, char *src);
 char		*ft_strcpy(char *dest, char *src);
-void execute_pipeline(char *input, t_var *var);
-void execute_command(t_var *var);
-void	store_env(t_env *envv, char ***env);
-void	ft_exc2(t_var *var);
-void split_commands(char *input, char **commands);
-char **parse_command(char *cmd);
+void		execute_pipe(char *input, int num_cmds, t_var *var);
+void		store_env(t_env *envv, char ***env);
+void		ft_exc2(t_var *var);
+char		**parse_command(char *cmd);
+int			contains_pipe(char *input);
+int			calculate_num_cmds(char *input);
 
 #endif
