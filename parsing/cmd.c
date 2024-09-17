@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:30:40 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/17 15:29:17 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/17 17:54:35 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void fill_cmd1(t_cmd **cmd, t_elem **list, t_garbage **garbage)
     char **str;
     while (current)
     {
-        if (current->type == WORD)
+        if (current->content && current->type == WORD)
             i++;
         current = current->next;
     }
@@ -61,7 +61,7 @@ void fill_cmd1(t_cmd **cmd, t_elem **list, t_garbage **garbage)
                 ft_lstadd_back_redi(&command->redirection, ft_lstnew_redi(current->content, current->type, garbage));
             else if (current->type == WORD)
             {
-                if (current && j == 0)
+                if (current && current->content && j == 0)
                 {
                     command->cmd = current->content;
                     str[argc++] = current->content;
@@ -245,5 +245,6 @@ void concatination(t_elem **list, t_garbage **garbage)
             current = current->next;
         }
     }
-    *list = new_list;
+    if (new_list)
+        *list = new_list;
 }

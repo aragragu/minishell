@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/17 17:46:38 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/17 17:53:04 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,53 +75,54 @@ int not_special(char c)
 
 t_elem *token_input(t_elem **list, char **in, t_garbage **garbage)
 {
-	int i = 0;
-	char *input;
-
-	input = ft_strtrim(*in, " \t\n\v\f\r", garbage);
-	while (input && input[i])
-	{
-		if (input[i] && is_withespace(input[i]))
-		{
-			while (input[i] && is_withespace(input[i]))
-				i++;
-			i--;
-			ft_lstadd_back(list, ft_lstnew(ft_strdup(" ", garbage), SPACE, garbage));
-		}
-		else if (input[i] == '>' && input[i + 1] == '>')
-			ft_lstadd_back(list, ft_lstnew(ft_strdup(">>", garbage), APPEND, garbage));
-		else if (input[i] == '<' && input[i + 1] == '<')
-			ft_lstadd_back(list, ft_lstnew(ft_strdup("<<", garbage), HEREDOC, garbage));
-		else if (input[i] == '<')
-			ft_lstadd_back(list, ft_lstnew(ft_strdup("<", garbage), REDIR_IN, garbage));
-		else if (input[i] == '>')
-			ft_lstadd_back(list, ft_lstnew(ft_strdup(">", garbage), REDIR_OUT, garbage));
-		else if (input[i] == '$' && input[i + 1] == '$')
-			ft_lstadd_back(list, ft_lstnew(ft_strdup("$$", garbage), DOUBLE_DLR, garbage));
-		else if (input[i] == '$' && (input[i + 1] == '\"' || input[i + 1] == '\''))
-		{
-			i++;
-			continue;
-		}
-		else if (input[i] == '$')
-			is_a_var(list, input, i, garbage);
-		else if (input[i] == '|')
-			ft_lstadd_back(list, ft_lstnew(ft_strdup("|", garbage), PIPE, garbage));
-		else if (input[i] == '\"')
-			is_a_quot(list, input, i, garbage);
-		else if (input[i] == '\'')
-			is_a_squot(list, input, i, garbage);
-		else if (input[i] == '(')
-			ft_lstadd_back(list, ft_lstnew(ft_strdup("(", garbage), OPENING_PARENTHESIS, garbage));
-		else if (input[i] == ')')
-			ft_lstadd_back(list, ft_lstnew(ft_strdup(")", garbage), CLOSING_PARENTHESIS, garbage));
-		else if (input[i] == '#')
-			ft_lstadd_back(list, ft_lstnew(ft_strdup("#", garbage), HASH, garbage));
-		else if (not_special(input[i]))
-			is_a_word(list, input, i, garbage);
-		i += ft_strlen(ft_lstlast(*list)->content);
-	}
-	return (*list);
+    int i = 0;
+    char *input;
+    // ft_lstadd_back(list, ft_lstnew(ft_strdup("", garbage), NULL_TOKEN, garbage));
+    input = ft_strtrim(*in, " \t\n\v\f\r", garbage);
+    while (input && input[i])
+    {
+        if (input[i] && is_withespace(input[i]))
+        {
+            while (input[i] && is_withespace(input[i]))
+                i++;
+            i--;
+            ft_lstadd_back(list, ft_lstnew(ft_strdup(" ", garbage), SPACE, garbage));
+        }
+        else if (input[i] == '>' && input[i + 1] == '>')
+            ft_lstadd_back(list, ft_lstnew(ft_strdup(">>", garbage), APPEND, garbage));
+        else if (input[i] == '<' && input[i + 1] == '<')
+            ft_lstadd_back(list, ft_lstnew(ft_strdup("<<", garbage), HEREDOC, garbage));
+        else if (input[i] == '<')
+            ft_lstadd_back(list, ft_lstnew(ft_strdup("<", garbage), REDIR_IN, garbage));
+        else if (input[i] == '>')
+            ft_lstadd_back(list, ft_lstnew(ft_strdup(">", garbage), REDIR_OUT, garbage));
+        else if (input[i] == '$' && input[i + 1] == '$')
+            ft_lstadd_back(list, ft_lstnew(ft_strdup("$$", garbage), DOUBLE_DLR, garbage));
+        else if (input[i] == '$' && (input[i + 1] == '\"' || input[i + 1] == '\''))
+        {
+            i++;
+            continue;
+        }
+        else if (input[i] == '$')
+            is_a_var(list, input, i, garbage);
+        else if (input[i] == '|')
+            ft_lstadd_back(list, ft_lstnew(ft_strdup("|", garbage), PIPE, garbage));
+        else if (input[i] == '\"')
+            is_a_quot(list, input, i, garbage);
+        else if (input[i] == '\'')
+            is_a_squot(list, input, i, garbage);
+        else if (input[i] == '(')
+            ft_lstadd_back(list, ft_lstnew(ft_strdup("(", garbage), OPENING_PARENTHESIS, garbage));
+        else if (input[i] == ')')
+            ft_lstadd_back(list, ft_lstnew(ft_strdup(")", garbage), CLOSING_PARENTHESIS, garbage));
+        else if (input[i] == '#')
+            ft_lstadd_back(list, ft_lstnew(ft_strdup("#", garbage), HASH, garbage));
+        else if (not_special(input[i]))
+            is_a_word(list, input, i, garbage);
+        i += ft_strlen(ft_lstlast(*list)->content);
+    }
+    // ft_lstadd_back(list, ft_lstnew(ft_strdup("", garbage), NULL_TOKEN, garbage));
+    return (*list);
 }
 
 void is_a_word(t_elem **list, char *input, int index, t_garbage **garbage)

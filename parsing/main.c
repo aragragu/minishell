@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:02:07 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/14 18:07:15 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/17 17:41:41 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ const char* get_token_type_string(t_token type) {
         case VAR: return "VAR";
         case DOUBLE_DLR: return "DOUBLE_DLR";
         case SPACE: return "SPACE";
+        case NULL_TOKEN: return "NULL_TOKEN";
         case PIPE: return "PIPE";
         case REDIR_IN: return "REDIR_IN";
         case REDIR_OUT: return "REDIR_OUT";

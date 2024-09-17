@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/17 16:21:30 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/17 17:53:28 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef enum    s_token
 	VAR,            		// $ASJASD
 	DOUBLE_DLR,				// $$
 	SPACE,					// "_"
+	NULL_TOKEN,
 	PIPE,           		// |
 	REDIR_IN,       		// <
 	REDIR_OUT,      		// >
