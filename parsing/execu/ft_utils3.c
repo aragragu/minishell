@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:38:50 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/14 18:55:54 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/17 17:45:17 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	store_env(t_env *envv, char ***env)
 	i = 0;
 	while (envv)
 	{
-		int len = ft_strlen(envv->key) + ft_strlen(envv->value) + 2;
+		int len = strlen(envv->key) + strlen(envv->value) + 2;
 		(*env)[i] = malloc(len * sizeof(char));
 		if (!(*env)[i])
 		{
@@ -94,26 +94,6 @@ void	store_env(t_env *envv, char ***env)
 	(*env)[i] = NULL;
 }
 
-void	ft_exc2(t_var *var)
-{
-	char	**envp;
-	pid_t	pid;
-
-	store_env(var->env, &envp);
-	pid = fork();
-	if (pid == 0)
-	{
-		
-		// var->list->argc[0] = exec_path;
-		if (execve(var->list->cmd, var->list->argc, envp) == -1)
-		{
-			perror("Execution failed");
-			// free(exec_path);
-		}
-	}
-	waitpid(pid, NULL, 0);
-}
-
 void	ft_exc(t_var *var)
 {
 	char	*exec_path;
@@ -127,7 +107,6 @@ void	ft_exc(t_var *var)
 		pid = fork();
 		if (pid == 0)
 		{
-			
 			var->list->argc[0] = exec_path;
 			if (execve(exec_path, var->list->argc, envp) == -1)
 			{

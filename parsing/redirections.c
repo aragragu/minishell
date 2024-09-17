@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:29:24 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/15 18:21:55 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/17 17:41:10 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void starting_red(t_elem **list, t_env **env,t_garbage **garbage)
                 if (holder->next->type == VAR)
                     open_herdoc(&holder->next, env, garbage, 1);
                 else 
-                    open_herdoc(&holder->next, env, garbage, 0);
+                    open_herdoc(&holder->next, env, garbage, 1);
                 *list = holder->next;
                 return;
             }
@@ -115,7 +115,7 @@ void starting_red(t_elem **list, t_env **env,t_garbage **garbage)
             if (current->next->type == VAR)
                 open_herdoc(&current->next, env, garbage, 1);
             else 
-                open_herdoc(&current->next, env, garbage, 0);
+                open_herdoc(&current->next, env, garbage, 1);
             *list = current->next;
             return;
         }
@@ -204,7 +204,7 @@ void herdoc_list(t_elem **list, t_env **env,t_garbage **garbage)
             if (herdoc->next->type == VAR)
                 open_herdoc(&herdoc->next, env, garbage, 1);
             else 
-                open_herdoc(&herdoc->next, env, garbage, 0);
+                open_herdoc(&herdoc->next, env, garbage, 1);
             current->next = herdoc->next;
             return;
         }
@@ -215,7 +215,7 @@ void herdoc_list(t_elem **list, t_env **env,t_garbage **garbage)
                 if (herdoc->next->next->type == VAR)
                     open_herdoc(&herdoc->next->next, env, garbage, 1);
                 else 
-                    open_herdoc(&herdoc->next->next, env, garbage, 0);
+                    open_herdoc(&herdoc->next->next, env, garbage, 1);
                 current->next = herdoc->next->next;
                 return;
             }

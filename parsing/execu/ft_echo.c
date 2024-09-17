@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:33:11 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/14 18:09:44 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/17 17:44:29 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	check_n_option(const char *str)
 			}
 			return (1);
 		}
-		return (0);
+		str++;
 	}
 	return (0);
 }
