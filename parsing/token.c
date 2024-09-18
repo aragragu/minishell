@@ -6,11 +6,43 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/17 17:53:04 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/18 18:30:20 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	execution(char *input, t_var *var)
+{
+	if (ft_strcmp(input, "env") == 0)
+		ft_env(&var->env);
+	else if (check_builtins(var->list->cmd))
+		ft_builtins(var, var->list->cmd, &var->list);
+	else if (access(var->list->cmd, X_OK) == 0)
+		ft_exc2(var);
+	else
+	{
+		int num_cmds = calculate_num_cmds(input);
+		if (contains_pipe(input))
+			execute_pipe(input, num_cmds, var);
+		else
+			ft_exc(var);
+	}
+}
+
+int is_directory(const char *path) {
+    struct stat path_stat;
+    
+    // Get the status of the file or directory
+    if (stat(path, &path_stat) != 0) {
+        // Error handling if the path does not exist or is inaccessible
+        perror("stat");
+        return 0;
+    }
+
+    // Check if it's a directory
+    return S_ISDIR(path_stat.st_mode);
+}
 
 void read_input(char **env) {
 	t_elem *list = NULL;
@@ -22,11 +54,13 @@ void read_input(char **env) {
 	char *input;
 	
 	fill_env(&var.env, env, &garb);
-	while (1) {
+	while (1)
+	{
 		input = readline("➜ minishell💀$ ");
 		if (!input)
 			break;
-		if (!*input) {
+		if (!*input)
+		{
 			free(input);
 			continue;
 		}
@@ -41,23 +75,33 @@ void read_input(char **env) {
 		handle_redirection(&list, &var.env, &garbage);
 		concatination(&list, &garbage);
 		import_data(&var.list, &list, &garbage);
+		// execution(input, &var);
 		if (ft_strcmp(input, "env") == 0)
 			ft_env(&var.env);
-		else if (check_valid_path(var.list->cmd, &var))
-		{
-			int num_cmds = calculate_num_cmds(input);
-			if (contains_pipe(input))
-				execute_pipe(input, num_cmds, &var);
-			else if (check_builtins(var.list->cmd))
-				ft_builtins(&var, var.list->cmd, &var.list);
-			else
-				ft_exc(&var);
-		}
-		else if (access(var.list->cmd, X_OK) == 0)
-			ft_exc2(&var);
+		else if (check_builtins(var.list->cmd))
+			ft_builtins(&var, var.list->cmd, &var.list);
 		else
-			printf("minishell: %s: command not found\n", var.list->argc[0]);
-
+		{
+			if (is_directory(var.list->cmd))
+    		    printf("%s : is a directory \n", var.list->cmd);
+			if (ft_strchr(var.list->cmd, '/') != NULL)
+			{
+				execve(var.list->cmd, var.list->argc, env);
+				perror(var.list->argc[0]);
+			}
+			else if (access(var.list->cmd, X_OK) == 0)
+				ft_exc2(&var);
+			else if (check_valid_path(var.list->cmd, &var))
+			{
+				int num_cmds = calculate_num_cmds(input);
+				if (contains_pipe(input))
+					execute_pipe(input, num_cmds, &var);
+				else
+					ft_exc(&var);
+			}
+			else
+				fprintf(stderr, "minishell: %s: command not found\n", var.list->argc[0]);
+		}
 		free_garbage(&garbage);
 		list = NULL;
 		garbage = NULL;
@@ -208,3 +252,52 @@ int is_special_character(char c)
 		return (1);
 	return (0);
 }
+
+
+
+// "void	execute_pipe(char *input, int num_cmds, t_var *var)
+// {
+// 	int		pipefd[2];
+// 	int		prev_fd = STDIN_FILENO;
+// 	char	*input_copy;
+// 	char	**envp;
+// 	char	*cmd;
+// 	char	**args;
+// 	char	*cmd_path;
+// 	int		i = 0;
+// 	pid_t pid;
+
+// 	input_copy = strdup(input);
+// 	store_env(var->env, &envp);
+// 	cmd = strtok(input_copy, "|");
+// 	while (i < num_cmds)
+// 	{
+// 		pipe(pipefd);
+// 		pid = fork();
+// 		if (pid == 0)
+// 		{
+// 			dup2(prev_fd, 0);
+// 			if (i < num_cmds - 1)
+// 			{	
+// 				close(pipefd[0]);
+// 				dup2(pipefd[1], 1);
+// 				close(pipefd[1]);
+// 			}
+// 			args = parse_command(cmd);
+// 			cmd_path = excu_in_path(args[0], var);
+// 			if (cmd_path)
+// 			{
+// 				if (execve(cmd_path, args, envp) == -1)
+// 					fprintf(stderr, "minishell: command not found: %s\n", "");
+// 				free(cmd_path);
+// 			}
+// 		}
+// 		close(pipefd[1]);
+// 		prev_fd = pipefd[0];
+// 		cmd = strtok(NULL, "|");
+// 		i++;
+// 	}
+// 	close(prev_fd);
+// 	while (wait(NULL) > 0);
+// 	free(input_copy);
+// }"

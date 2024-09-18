@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:21:52 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/17 17:49:19 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/18 17:34:53 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,35 +53,44 @@ char	**parse_command(char *cmd)
 void	execute_pipe(char *input, int num_cmds, t_var *var)
 {
 	int		pipefd[2];
-	int		prev_fd = 0;
+	int		prev_fd = STDIN_FILENO;
 	char	*input_copy;
 	char	**envp;
 	char	*cmd;
 	char	**args;
 	char	*cmd_path;
 	int		i = 0;
+	pid_t	pid;
 
 	input_copy = strdup(input);
 	store_env(var->env, &envp);
 	cmd = strtok(input_copy, "|");
 	while (i < num_cmds)
 	{
-		pipe(pipefd);
-		if (fork() == 0)
+		if (i < num_cmds - 1)
+			pipe(pipefd);
+		pid = fork();
+		if (pid == 0)
 		{
-			dup2(prev_fd, 0);
+			dup2(prev_fd, STDIN_FILENO);
 			if (i < num_cmds - 1)
-				dup2(pipefd[1], 1);
+				dup2(pipefd[1], STDOUT_FILENO);
 			close(pipefd[0]);
 			close(pipefd[1]);
 			args = parse_command(cmd);
 			cmd_path = excu_in_path(args[0], var);
 			if (cmd_path)
 			{
-				if (execve(cmd_path, args, envp) == -1)
-					fprintf(stderr, "minishell: command not found: %s\n", "");
+				execve(cmd_path, args, envp);
 				free(cmd_path);
 			}
+			else
+				fprintf(stderr, "minishell: %s: command not found\n", args[0]);
+			exit(EXIT_FAILURE);
+		}
+		else if (pid < 0)
+		{
+			perror("fork failed");
 			exit(EXIT_FAILURE);
 		}
 		close(pipefd[1]);
