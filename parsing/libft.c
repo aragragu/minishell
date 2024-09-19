@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 18:45:01 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/17 17:53:44 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/19 12:51:00 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_elem *ft_lstnew(void *content, t_token type, t_garbage **garbage)
 	ft_lstadd_back_garbage(garbage, ft_lstnew_garbage(new_node));
 	new_node->content = content;
 	new_node->type = type;
+	new_node->fd = -1;
 	new_node->next = NULL;
 	return (new_node);
 }
@@ -41,7 +42,7 @@ t_env *ft_lstnew2(char *key, char *value, t_garbage **garbage)
 
 	return (new_node);
 }
-t_redir *ft_lstnew_redi(char *value, t_token type, t_garbage **garbage)
+t_redir *ft_lstnew_redi(char *value, t_token type,	int fd,  t_garbage **garbage)
 {
 	t_redir *new_node;
 
@@ -51,6 +52,7 @@ t_redir *ft_lstnew_redi(char *value, t_token type, t_garbage **garbage)
 	ft_lstadd_back_garbage(garbage, ft_lstnew_garbage(new_node));
 	new_node->value = value;
 	new_node->type = type;
+	new_node->fd = fd;
 	new_node->next = NULL;
 	return (new_node);
 }
