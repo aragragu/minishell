@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:38:50 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/18 17:53:10 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/19 12:00:59 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,8 @@ void	ft_exc2(t_var *var)
 	if (pid == 0)
 	{
 		if (execve(var->list->cmd, var->list->argc, envp) == -1)
-			printf("minishell: %s :is a directory\n", var->list->argc[0]);
+			perror(var->list->argc[0]);
+	
 	}
 	waitpid(pid, NULL, 0);
 }

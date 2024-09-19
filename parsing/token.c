@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/18 18:30:20 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/19 12:51:40 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,16 @@ void	execution(char *input, t_var *var)
 	}
 }
 
-int is_directory(const char *path) {
+int is_directory(const char *path)
+{
     struct stat path_stat;
-    
-    // Get the status of the file or directory
-    if (stat(path, &path_stat) != 0) {
-        // Error handling if the path does not exist or is inaccessible
-        perror("stat");
+    if (stat(path, &path_stat) != 0)
         return 0;
-    }
-
-    // Check if it's a directory
     return S_ISDIR(path_stat.st_mode);
 }
 
-void read_input(char **env) {
+void read_input(char **env)
+{
 	t_elem *list = NULL;
 	t_garbage *garbage = NULL;
 	t_garbage *garb = NULL;
@@ -67,6 +62,7 @@ void read_input(char **env) {
 		ft_lstadd_back_garbage(&garbage, ft_lstnew_garbage(input));
 		add_history(input);
 		list = token_input(&list, &input, &garbage);
+		// print_list()`
 		if (!list)
 			continue;
 		if (!sysntax_error_checker(&garbage, input, &list))
@@ -75,6 +71,7 @@ void read_input(char **env) {
 		handle_redirection(&list, &var.env, &garbage);
 		concatination(&list, &garbage);
 		import_data(&var.list, &list, &garbage);
+		// print_cmd(var.list);
 		// execution(input, &var);
 		if (ft_strcmp(input, "env") == 0)
 			ft_env(&var.env);
@@ -83,14 +80,18 @@ void read_input(char **env) {
 		else
 		{
 			if (is_directory(var.list->cmd))
-    		    printf("%s : is a directory \n", var.list->cmd);
-			if (ft_strchr(var.list->cmd, '/') != NULL)
 			{
-				execve(var.list->cmd, var.list->argc, env);
-				perror(var.list->argc[0]);
+    		    printf("%s : is a directory \n", var.list->cmd);
+				continue;
 			}
-			else if (access(var.list->cmd, X_OK) == 0)
+			// else if (access(var.list->cmd, X_OK) == 0)
+			// 	ft_exc2(&var);
+			else if (ft_strchr(var.list->cmd, '/') != NULL)
+			{
 				ft_exc2(&var);
+				// execve(var.list->cmd, var.list->argc, env);
+				// perror(var.list->argc[0]);
+			}
 			else if (check_valid_path(var.list->cmd, &var))
 			{
 				int num_cmds = calculate_num_cmds(input);
