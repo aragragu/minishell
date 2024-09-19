@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:29:24 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/17 17:41:10 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/19 12:47:12 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,7 @@ void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
         edit_list(current, garbage);
     char *temp;
     char *file_name = (ft_strjoin(ft_strdup("tmp_", garbage), ft_itoa(++i), garbage));
-    int fd;
+    int fd = 0;
     while (1)
     {
         line = readline(">");
@@ -248,7 +248,7 @@ void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
                 break;
             }
             write(fd, buffer, ft_strlen(buffer));
-            // unlink(file_name);
+            unlink(file_name);
             // close(fd);
             break;
         }
@@ -270,9 +270,11 @@ void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
             break;
         buffer = temp;
     }
-    // printf("===%s====\n", buffer);
+    // printf("===[%d]====\n", fd);
     current->content = file_name;
     current->type = HEREDOC;
+    current->fd = fd;
+    // printf("===[%d]====\n", current->fd);
 }
 
 void append_list(t_elem **list)

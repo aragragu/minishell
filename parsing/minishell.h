@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/17 17:41:29 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/19 12:25:03 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct   s_elem
 {
 	char            *content;
 	t_token         type;
+	int				fd;
 	struct s_elem   *next;
 }                   t_elem;
 
@@ -173,7 +174,7 @@ void		herdoc_list(t_elem **list, t_env **env,t_garbage **garbage);
 void		open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag);
 void		append_list(t_elem **list);
 void		starting_red(t_elem **list, t_env **env,t_garbage **garbage);
-t_redir		*ft_lstnew_redi(char *value, t_token type, t_garbage **garbage);
+t_redir		*ft_lstnew_redi(char *value, t_token type,	int fd,  t_garbage **garbage);
 void 		ft_lstadd_back_redi(t_redir **lst, t_redir *new);
 void        import_data(t_cmd **cmd, t_elem **list, t_garbage **garbage);
 void        fill_cmd1(t_cmd  **cmd, t_elem **list, t_garbage **garbage);

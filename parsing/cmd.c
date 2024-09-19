@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:30:40 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/17 17:42:32 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/19 12:46:21 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void fill_cmd1(t_cmd **cmd, t_elem **list, t_garbage **garbage)
         while (current)
         {
             if (current->type >= REDIR_IN && current->type <= APPEND)
-                ft_lstadd_back_redi(&command->redirection, ft_lstnew_redi(current->content, current->type, garbage));
+                ft_lstadd_back_redi(&command->redirection, ft_lstnew_redi(current->content, current->type, current->fd,  garbage));
             else if (current->type == WORD)
             {
                 if (current && current->content && j == 0)
@@ -94,7 +94,11 @@ void fill_cmd1(t_cmd **cmd, t_elem **list, t_garbage **garbage)
                 str[1] = NULL;
             }
             if (current->type >= REDIR_IN && current->type <= APPEND)
-                ft_lstadd_back_redi(&command->redirection, ft_lstnew_redi(current->content, current->type, garbage));
+            {
+                printf("=======[%d]\n", current->fd);
+                ft_lstadd_back_redi(&command->redirection, ft_lstnew_redi(current->content, current->type, current->fd,  garbage));
+                printf("=======[%d]\n", current->fd);
+            }
             current = current->next;
         }
     }
@@ -141,7 +145,7 @@ t_elem *fill_argc(t_cmd **cmd, t_elem **list, t_garbage **garbage)
         while (current && current->type != PIPE)
         {
             if (current->type >= REDIR_IN && current->type <= APPEND)
-                ft_lstadd_back_redi(&command->redirection, ft_lstnew_redi(current->content, current->type, garbage));
+                ft_lstadd_back_redi(&command->redirection, ft_lstnew_redi(current->content, current->type, current->fd,  garbage));
             else if (current->type == WORD)
             {
                 if (j == 0)
@@ -177,7 +181,7 @@ t_elem *fill_argc(t_cmd **cmd, t_elem **list, t_garbage **garbage)
                 str[1] = NULL;
             }
             if (current->type >= REDIR_IN && current->type <= APPEND)
-                ft_lstadd_back_redi(&command->redirection, ft_lstnew_redi(current->content, current->type, garbage));
+                ft_lstadd_back_redi(&command->redirection, ft_lstnew_redi(current->content, current->type, current->fd,  garbage));
             current = current->next;
         }
     }
@@ -219,6 +223,7 @@ void concatination(t_elem **list, t_garbage **garbage)
     if (!*list)
         return;
     t_elem *current = *list;
+    t_elem *holder;
     char *str;
     while (current)
     {
@@ -241,7 +246,14 @@ void concatination(t_elem **list, t_garbage **garbage)
         }
         else
         {
-            ft_lstadd_back(&new_list, ft_lstnew(current->content, current->type, garbage));
+            if (current->fd != -1)
+            {
+                holder = ft_lstnew(current->content, current->type, garbage);
+                holder->fd = current->fd;
+                ft_lstadd_back(&new_list, holder);
+            }
+            else
+                ft_lstadd_back(&new_list, ft_lstnew(current->content, current->type, garbage));
             current = current->next;
         }
     }
