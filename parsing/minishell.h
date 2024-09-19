@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/19 12:25:03 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/19 12:51:10 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <stdint.h>
-// #include <libc.h>
+#include <libc.h>
 #include <limits.h>
 #include <sys/wait.h>
 
@@ -227,11 +227,13 @@ void		ft_exc(t_var *var);
 char		*ft_strchrr(char *str, int c);
 int			check_valid_path(char *filename, t_var *var);
 char		*ft_getenv(t_env *env, char *key);
-char		*ft_strcat(char *dest, const char *src);
-char		*ft_strcpy(char *dest, const char *src);
-void execute_pipeline(t_var *var, char **envp);
-void execute_command(t_var *var, int input_fd, int output_fd, char **envp);
-void	store_env(t_env *envv, char ***env);
-void	ft_exc2(t_var *var);
+char		*ft_strcat(char *dest, char *src);
+char		*ft_strcpy(char *dest, char *src);
+void		execute_pipe(char *input, int num_cmds, t_var *var);
+void		store_env(t_env *envv, char ***env);
+void		ft_exc2(t_var *var);
+char		**parse_command(char *cmd);
+int			contains_pipe(char *input);
+int			calculate_num_cmds(char *input);
 
 #endif

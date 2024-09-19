@@ -3,87 +3,74 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/17 17:40:54 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/17 17:53:04 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void execute_command(t_var *var, int input_fd, int output_fd) {
-//     pid_t pid = fork();
-
-//     if (pid == 0) { // Child process
-//         if (input_fd != 0) { // Redirect input if needed
-//             dup2(input_fd, STDIN_FILENO);
-//             close(input_fd);
-//         }
-
-//         if (output_fd != 1) { // Redirect output if needed
-//             dup2(output_fd, STDOUT_FILENO);
-//             close(output_fd);
-//         }
-//         ft_exc(var);
-//     }
-//     wait(NULL);
-// }
-
-void read_input(char **env)
-{
-    t_elem *list = NULL;
-    t_garbage *garbage = NULL;
-    t_garbage *garb = NULL;
-    t_var var;
-    var.env = NULL;
-    var.list = NULL;
-    char *input;
-    
-    fill_env(&var.env, env, &garb);
-    while (1)
-    {
-        input = readline("➜ minishell💀$ ");
-        if (!input)
-            break;
-        if (!*input)
-        {
-            free(input);
-            continue;
-        }
-        ft_lstadd_back_garbage(&garbage, ft_lstnew_garbage(input));
-        add_history(input);
-        list = token_input(&list, &input, &garbage);
-        if (!list)
-            continue;
-        if (!sysntax_error_checker(&garbage, input, &list))
-            continue;
-        expand_var_list(&list, &var.env, &garbage);
-        handle_redirection(&list, &var.env, &garbage);
-        concatination(&list, &garbage);
-        import_data(&var.list, &list, &garbage);
-        print_cmd(var.list);
-        if (check_builtins(var.list->cmd))
-			ft_builtins(&var, var.list->cmd, &var.list);
-		else if (ft_strcmp(input, "env") == 0)
+void read_input(char **env) {
+	t_elem *list = NULL;
+	t_garbage *garbage = NULL;
+	t_garbage *garb = NULL;
+	t_var var;
+	var.env = NULL;
+	var.list = NULL;
+	char *input;
+	
+	fill_env(&var.env, env, &garb);
+	while (1) {
+		input = readline("➜ minishell💀$ ");
+		if (!input)
+			break;
+		if (!*input) {
+			free(input);
+			continue;
+		}
+		ft_lstadd_back_garbage(&garbage, ft_lstnew_garbage(input));
+		add_history(input);
+		list = token_input(&list, &input, &garbage);
+		if (!list)
+			continue;
+		if (!sysntax_error_checker(&garbage, input, &list))
+			continue;
+		expand_var_list(&list, &var.env, &garbage);
+		handle_redirection(&list, &var.env, &garbage);
+		concatination(&list, &garbage);
+		import_data(&var.list, &list, &garbage);
+		if (ft_strcmp(input, "env") == 0)
 			ft_env(&var.env);
-        else if (check_valid_path(var.list->cmd, &var))
-            ft_exc(&var);
-        else
-            printf("minishell: %s: command not found\n", var.list->argc[0]);
-        free_garbage(&garbage);
-        list = NULL;
-        garbage = NULL;
-        var.list = NULL;
-    }
-    free_garbage(&garb);
+		else if (check_valid_path(var.list->cmd, &var))
+		{
+			int num_cmds = calculate_num_cmds(input);
+			if (contains_pipe(input))
+				execute_pipe(input, num_cmds, &var);
+			else if (check_builtins(var.list->cmd))
+				ft_builtins(&var, var.list->cmd, &var.list);
+			else
+				ft_exc(&var);
+		}
+		else if (access(var.list->cmd, X_OK) == 0)
+			ft_exc2(&var);
+		else
+			printf("minishell: %s: command not found\n", var.list->argc[0]);
+
+		free_garbage(&garbage);
+		list = NULL;
+		garbage = NULL;
+		var.list = NULL;
+	}
+	free_garbage(&garb);
 }
 
 int not_special(char c)
 {
-    if (c == '|' || c == '>' || c == '<' || c == '$' || c == '\"' || c == '\'' || c == ' ')
-        return (0);
-    return (1);
+	if (c == '|' || c == '>' || c == '<' || c == '$' || c == '\"' || c == '\'' || c == ' ')
+		return (0);
+	return (1);
 }
 
 t_elem *token_input(t_elem **list, char **in, t_garbage **garbage)
@@ -140,84 +127,84 @@ t_elem *token_input(t_elem **list, char **in, t_garbage **garbage)
 
 void is_a_word(t_elem **list, char *input, int index, t_garbage **garbage)
 {
-    char *word;
-    int len = 0;
-    while (input[index + len] && not_special(input[index + len]) && !is_withespace(input[index + len]))
-        len++;
-    word = ft_substr(input, index, len, garbage);
-    ft_lstadd_back(list, ft_lstnew(word, WORD, garbage));
+	char *word;
+	int len = 0;
+	while (input[index + len] && not_special(input[index + len]) && !is_withespace(input[index + len]))
+		len++;
+	word = ft_substr(input, index, len, garbage);
+	ft_lstadd_back(list, ft_lstnew(word, WORD, garbage));
 }
 
 void is_a_quot(t_elem **list, char *input, int index, t_garbage **garbage)
 {
-    int len = 0;
-    char *str;
-    while (input[index + 1 + len] && input[index + 1 + len] != '\"')
-        len++;
-    str = ft_substr(input, index, len + 2, garbage);
-    ft_lstadd_back(list, ft_lstnew(str, D_QOUTS, garbage));
+	int len = 0;
+	char *str;
+	while (input[index + 1 + len] && input[index + 1 + len] != '\"')
+		len++;
+	str = ft_substr(input, index, len + 2, garbage);
+	ft_lstadd_back(list, ft_lstnew(str, D_QOUTS, garbage));
 }
 
 void is_a_squot(t_elem **list, char *input, int index, t_garbage **garbage)
 {
-    int len = 0;
-    char *str;
-    while (input[index + 1 + len] && input[index + 1 + len] != '\'')
-        len++;
-    str = ft_substr(input, index, len + 2, garbage);
-    ft_lstadd_back(list, ft_lstnew(str, S_QOUTS, garbage));
+	int len = 0;
+	char *str;
+	while (input[index + 1 + len] && input[index + 1 + len] != '\'')
+		len++;
+	str = ft_substr(input, index, len + 2, garbage);
+	ft_lstadd_back(list, ft_lstnew(str, S_QOUTS, garbage));
 }
 
 void is_a_var(t_elem **list, char *input, int index, t_garbage **garbage)
 {
-    int len = 0;
-    char *str;
-    if (input[index + 1] >= '0' && input[index + 1] <= '9')
-    {
-        str = ft_substr(input, index, 2, garbage);
-        ft_lstadd_back(list, ft_lstnew(str, VAR, garbage));
-        return;
-    }
-    else
-    {
-        while (input[index + 1 + len] && (is_alphanumeric(input[index + 1 + len]) || input[index + 1 + len] == '_' || input[index + 1 + len] == '?'))
-            len++;
-        str = ft_substr(input, index, len + 1, garbage);
-        if (ft_strlen(str) == 1)
-            ft_lstadd_back(list, ft_lstnew(str, WORD, garbage));
-        else
-            ft_lstadd_back(list, ft_lstnew(str, VAR, garbage));
-    }
+	int len = 0;
+	char *str;
+	if (input[index + 1] >= '0' && input[index + 1] <= '9')
+	{
+		str = ft_substr(input, index, 2, garbage);
+		ft_lstadd_back(list, ft_lstnew(str, VAR, garbage));
+		return;
+	}
+	else
+	{
+		while (input[index + 1 + len] && (is_alphanumeric(input[index + 1 + len]) || input[index + 1 + len] == '_' || input[index + 1 + len] == '?'))
+			len++;
+		str = ft_substr(input, index, len + 1, garbage);
+		if (ft_strlen(str) == 1)
+			ft_lstadd_back(list, ft_lstnew(str, WORD, garbage));
+		else
+			ft_lstadd_back(list, ft_lstnew(str, VAR, garbage));
+	}
 }
 
 void is_a_string(t_elem **list, char *input, int index, t_garbage **garbage)
 {
-    char *word;
-    int len = 0;
-    while (input[index + len] && input[index + len] != '$' && !is_withespace(input[index + len]))
-        len++;
-    word = ft_substr(input, index, len, garbage);
-    ft_lstadd_back(list, ft_lstnew(word, WORD, garbage));
+	char *word;
+	int len = 0;
+	while (input[index + len] && input[index + len] != '$' && !is_withespace(input[index + len]))
+		len++;
+	word = ft_substr(input, index, len, garbage);
+	ft_lstadd_back(list, ft_lstnew(word, WORD, garbage));
 }
 
 void edit_list(t_elem *list, t_garbage **garbage)
 {
-    char *str;
-    if (list && list->type == D_QOUTS)
-    {
-        str = ft_strtrim(list->content, "\"", garbage);
-        list->content = str;
-    }
-    if (list && list->type == S_QOUTS)
-    {
-        str = ft_strtrim(list->content, "\'", garbage);
-        list->content = str;
-    }
+	char *str;
+	if (list && list->type == D_QOUTS)
+	{
+		str = ft_strtrim(list->content, "\"", garbage);
+		list->content = str;
+	}
+	if (list && list->type == S_QOUTS)
+	{
+		str = ft_strtrim(list->content, "\'", garbage);
+		list->content = str;
+	}
 }
 
 int is_special_character(char c)
 {
-    if ((c >= 33 && c <= 47) || (c >= 58 && c <= 64) || (c >= 91 && c <= 96) || (c >= 123 && c <= 126))
-        return (1);
-    return (0);
+	if ((c >= 33 && c <= 47) || (c >= 58 && c <= 64) || (c >= 91 && c <= 96) || (c >= 123 && c <= 126))
+		return (1);
+	return (0);
 }

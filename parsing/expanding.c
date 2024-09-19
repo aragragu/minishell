@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/17 17:42:17 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/17 17:54:11 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void expand_var_list(t_elem **list, t_env **env, t_garbage **garbage)
             expand_d_qouts(env, &token->content, garbage);
         token = token->next;
     }
-    
 }
 
 void    fill_env(t_env **env, char **str, t_garbage **garbage)
