@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/17 17:54:11 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/18 17:07:36 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void    fill_env(t_env **env, char **str, t_garbage **garbage)
         *env = ft_lstnewww(ft_strduppp("PWD"), ft_strduppp("/Users/aragragu/Desktop/parss/parsing"));//protection
 		ft_lstadd_backkk(env, ft_lstnewww(ft_strduppp("SHLVL"), ft_strduppp("1")));
 		ft_lstadd_backkk(env, ft_lstnewww(ft_strduppp("_"), ft_strduppp("/usr/bin/env")));
+		ft_lstadd_backkk(env, ft_lstnewww(ft_strduppp("OLDPWD"), NULL));
 		return;
 	}
     while (str[j])

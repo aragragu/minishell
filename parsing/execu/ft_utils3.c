@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:38:50 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/19 12:51:22 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/19 13:03:57 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,8 @@ void	ft_exc2(t_var *var)
 	if (pid == 0)
 	{
 		if (execve(var->list->cmd, var->list->argc, envp) == -1)
-			printf("minishell: %s :is a directory\n", var->list->argc[0]);
+			perror(var->list->argc[0]);
+	
 	}
 	waitpid(pid, NULL, 0);
 }
@@ -116,21 +117,19 @@ void	ft_exc(t_var *var)
 	pid_t	pid;
 
 	store_env(var->env, &envp);
-	exec_path = excu_in_path(var->list->argc[0], var);
-	if (exec_path != NULL)
+	pid = fork();
+	if (pid == 0)
 	{
-		pid = fork();
-		if (pid == 0)
-		{
-			var->list->argc[0] = exec_path;
-			if (execve(exec_path, var->list->argc, envp) == -1)
+		exec_path = excu_in_path(var->list->argc[0], var);
+			if (exec_path)
 			{
-				perror("Execution failed");
+				execve(exec_path, var->list->argc, envp);
 				free(exec_path);
 			}
-		}
-		waitpid(pid, NULL, 0);
+			else
+				fprintf(stderr, "minishell: %s: command not found\n", var->list->argc[0]);
 	}
-	else if (exec_path)
-		return ;
+	waitpid(pid, NULL, 0);
+	// else if (exec_path)
+	// 	return ;
 }

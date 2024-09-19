@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:34:55 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/11 16:06:37 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/18 15:26:11 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,31 +26,39 @@ int	is_num(const char *str)
 long	ft_atoi(char *str, t_var *var)
 {
 	int		i;
-	int		n;
+	int		sign;
 	long	result;
+	long	prev_result;
 
 	i = 0;
-	n = 1;
+	sign = 1;
 	result = 0;
+	prev_result = 0;
 	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
 		i++;
 	if (str[i] == '+' || str[i] == '-')
 	{
 		if (str[i] == '-')
-			n = -n;
+			sign = -1;
 		i++;
 	}
-	while ('0' <= str[i] && str[i] <= '9')
+	while (str[i] >= '0' && str[i] <= '9')
 	{
-		result = (result * 10) + (str[i] - 48);
-		if ((result * n > LONG_MAX && result * n < LONG_MIN))
+		prev_result = result;
+		result = result * 10 + (str[i] - '0');
+		if ((sign == 1 && result < prev_result) || (sign == -1 && -result > prev_result))
 		{
-			printf("exit\nexit: %s: numeric arg required\n", var->list->argc[1]);
+			printf("exit\nexit: %s: numeric argument required\n", var->list->argc[1]);
+			exit(255);
+		}
+		if ((sign == 1 && result > LONG_MAX) || (sign == -1 && -result < LONG_MIN))
+		{
+			printf("exit\nexit: %s: numeric argument required\n", var->list->argc[1]);
 			exit(255);
 		}
 		i++;
 	}
-	return (result * n);
+	return (result * sign);
 }
 
 void	ft_exit(t_var *var)
