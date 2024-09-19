@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:38:50 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/19 12:00:59 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/19 13:03:57 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	store_env(t_env *envv, char ***env)
 	i = 0;
 	while (envv)
 	{
-		int len = strlen(envv->key) + strlen(envv->value) + 2;
+		int len = ft_strlen(envv->key) + ft_strlen(envv->value) + 2;
 		(*env)[i] = malloc(len * sizeof(char));
 		if (!(*env)[i])
 		{

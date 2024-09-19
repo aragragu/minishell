@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:02:07 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/17 17:41:41 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/19 12:28:20 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void print_cmd(t_cmd *cmd)
             t_redir *redir = cmd->redirection;
             while (redir) 
             {
-                printf("  Redirection: [%s] (Type: %s)\n", redir->value, get_token_type_string(redir->type));
+                printf("  Redirection: [%s] (Type: %s) and fd = [%d]\n", redir->value, get_token_type_string(redir->type), redir->fd);
                 redir = redir->next;
             }
         } 
