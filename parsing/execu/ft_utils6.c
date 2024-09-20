@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:21:52 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/19 12:58:52 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/20 17:50:22 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,12 @@ void	execute_pipe(char *input, int num_cmds, t_var *var)
 		if (i < num_cmds - 1)
 			pipe(pipefd);
 		pid = fork();
-		if (pid == 0)
+		if (pid < 0)
+		{
+			perror("fork failed");
+			exit(EXIT_FAILURE);
+		}
+		else if (pid == 0)
 		{
 			dup2(prev_fd, STDIN_FILENO);
 			if (i < num_cmds - 1)
@@ -84,14 +89,12 @@ void	execute_pipe(char *input, int num_cmds, t_var *var)
 				execve(cmd_path, args, envp);
 				free(cmd_path);
 			}
+			else if (check_builtins(var->list->cmd))
+				ft_builtins(var, var->list->cmd, &var->list);
+			else if (access(var->list->cmd, X_OK) == 0)
+					ft_exc2(var);
 			else
 				fprintf(stderr, "minishell: %s: command not found\n", args[0]);
-			exit(EXIT_FAILURE);
-		}
-		else if (pid < 0)
-		{
-			perror("fork failed");
-			exit(EXIT_FAILURE);
 		}
 		close(pipefd[1]);
 		prev_fd = pipefd[0];
@@ -99,7 +102,7 @@ void	execute_pipe(char *input, int num_cmds, t_var *var)
 		i++;
 	}
 	close(prev_fd);
-	while (wait(NULL) > 0);
+	while (waitpid(-1, NULL, 0) > 0)
 	free(input_copy);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/19 12:51:40 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/20 16:29:40 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void read_input(char **env)
 		ft_lstadd_back_garbage(&garbage, ft_lstnew_garbage(input));
 		add_history(input);
 		list = token_input(&list, &input, &garbage);
-		// print_list()`
+		// print_list(&list);
 		if (!list)
 			continue;
 		if (!sysntax_error_checker(&garbage, input, &list))
@@ -75,34 +75,27 @@ void read_input(char **env)
 		// execution(input, &var);
 		if (ft_strcmp(input, "env") == 0)
 			ft_env(&var.env);
-		else if (check_builtins(var.list->cmd))
-			ft_builtins(&var, var.list->cmd, &var.list);
-		else
-		{
-			if (is_directory(var.list->cmd))
-			{
-    		    printf("%s : is a directory \n", var.list->cmd);
-				continue;
-			}
-			// else if (access(var.list->cmd, X_OK) == 0)
-			// 	ft_exc2(&var);
-			else if (ft_strchr(var.list->cmd, '/') != NULL)
-			{
-				ft_exc2(&var);
-				// execve(var.list->cmd, var.list->argc, env);
-				// perror(var.list->argc[0]);
-			}
-			else if (check_valid_path(var.list->cmd, &var))
+		// 	else if (ft_strchr(var.list->cmd, '/') != NULL)
+		// 	{
+		// 		ft_exc2(&var);
+		// 		// execve(var.list->cmd, var.list->argc, env);
+		// 		// perror(var.list->argc[0]);
+		// 	}
+			else if (check_valid_path(var.list->cmd, &var) || check_builtins(var.list->cmd) || access(var.list->cmd, X_OK) == 0)
 			{
 				int num_cmds = calculate_num_cmds(input);
 				if (contains_pipe(input))
 					execute_pipe(input, num_cmds, &var);
 				else
-					ft_exc(&var);
+				{	
+					if (check_builtins(var.list->cmd))
+						ft_builtins(&var, var.list->cmd, &var.list);
+					else
+						ft_exc(&var);
+				}
 			}
 			else
 				fprintf(stderr, "minishell: %s: command not found\n", var.list->argc[0]);
-		}
 		free_garbage(&garbage);
 		list = NULL;
 		garbage = NULL;

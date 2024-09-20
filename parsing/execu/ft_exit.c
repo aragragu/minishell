@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:34:55 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/18 15:26:11 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/20 15:37:06 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,5 @@ void	ft_exit(t_var *var)
 		}
 	}
 	else if (ac > 2)
-		printf("exit\nbash: exit: too many arguments\n");
+		printf("exit\nminishell: exit: too many arguments\n");
 }
