@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:34:55 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/20 15:37:06 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/21 17:19:05 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	ft_exit(t_var *var)
 	ac = 0;
 	while (var->list->argc[ac])
 		ac++;
+	
 	if (ac == 1)
 	{
 		printf("exit\n");

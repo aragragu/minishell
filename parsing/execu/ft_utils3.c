@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:38:50 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/19 15:29:09 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/21 17:57:07 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ int	check_builtins(char *str)
 		return (-1);
 	else if (!ft_strcmp(str, "echo") || !ft_strcmp(str, "cd") || \
 			!ft_strcmp(str, "exit") || !ft_strcmp(str, "pwd") || \
-			!ft_strcmp(str, "export") || !ft_strcmp(str, "unset"))
+			!ft_strcmp(str, "export") || !ft_strcmp(str, "unset") || \
+			!ft_strcmp(str, "env"))
 		return (1);
 	return (0);
 }
@@ -38,6 +39,8 @@ void	ft_builtins(t_var *var, char *str, t_cmd **cmd)
 		ft_unset(var);
 	else if (!ft_strcmp(str, "export"))
 		ft_export(var, 0, 0);
+	else if (!ft_strcmp(str, "env"))
+		ft_env(&var->env);
 }
 
 void	env_key_error(char **cmd, t_env **env, int i, char *msg)
@@ -105,7 +108,6 @@ void	ft_exc2(t_var *var)
 	{
 		if (execve(var->list->cmd, var->list->argc, envp) == -1)
 			perror(var->list->argc[0]);
-	
 	}
 	waitpid(pid, NULL, 0);
 }

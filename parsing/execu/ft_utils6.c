@@ -6,11 +6,63 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:21:52 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/20 17:50:22 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/21 18:43:29 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int handle_input_redirection(char **args)
+{
+    int i = 0;
+    int fd;
+
+    while (args[i])
+    {
+        puts("1");
+        if (ft_strcmp(args[i], "<") == 0)
+        {
+            fd = open(args[i + 1], O_RDONLY);
+            if (fd < 0)
+            {
+                perror("open");
+                exit(EXIT_FAILURE);
+            }
+            dup2(fd, STDIN_FILENO);
+            close(fd);
+            args[i] = NULL;
+            return 1;
+        }
+        i++;
+    }
+    return 0;
+}
+
+int handle_output_redirection(char **args)
+{
+    int i = 0;
+    int fd;
+
+    while (args[i])
+    {
+        puts("2");
+        if (strcmp(args[i], ">") == 0)
+        {
+            fd = open(args[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+            if (fd < 0)
+            {
+                perror("open");
+                exit(EXIT_FAILURE);
+            }
+            dup2(fd, STDOUT_FILENO);
+            close(fd);
+            args[i] = NULL;
+            return 1;
+        }
+        i++;
+    }
+    return 0;
+}
 
 int	calculate_num_cmds(char *input)
 {
@@ -83,27 +135,33 @@ void	execute_pipe(char *input, int num_cmds, t_var *var)
 			close(pipefd[0]);
 			close(pipefd[1]);
 			args = parse_command(cmd);
+            // handle_input_redirection(args);
+            // handle_output_redirection(args);
 			cmd_path = excu_in_path(args[0], var);
 			if (cmd_path)
 			{
 				execve(cmd_path, args, envp);
 				free(cmd_path);
 			}
-			else if (check_builtins(var->list->cmd))
+			if (check_builtins(var->list->cmd))
 				ft_builtins(var, var->list->cmd, &var->list);
 			else if (access(var->list->cmd, X_OK) == 0)
 					ft_exc2(var);
 			else
+            {
 				fprintf(stderr, "minishell: %s: command not found\n", args[0]);
+                exit(0);
+            }
 		}
-		close(pipefd[1]);
+        close(pipefd[1]);
+        if (i != 0)
+            close(prev_fd);
 		prev_fd = pipefd[0];
 		cmd = strtok(NULL, "|");
 		i++;
 	}
-	close(prev_fd);
 	while (waitpid(-1, NULL, 0) > 0)
-	free(input_copy);
+        ;
 }
 
 int	contains_pipe(char *input)
