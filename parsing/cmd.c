@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:30:40 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/19 12:50:51 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/21 18:38:06 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,9 @@ void fill_cmd1(t_cmd **cmd, t_elem **list, t_garbage **garbage)
             }
             if (current->type >= REDIR_IN && current->type <= APPEND)
             {
-                printf("=======[%d]\n", current->fd);
+                // printf("=======[%d]\n", current->fd);
                 ft_lstadd_back_redi(&command->redirection, ft_lstnew_redi(current->content, current->type, current->fd,  garbage));
-                printf("=======[%d]\n", current->fd);
+                // printf("=======[%d]\n", current->fd);
             }
             current = current->next;
         }
