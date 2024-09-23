@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/21 18:42:06 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/23 17:19:48 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,18 @@
 void	execution(char *input, t_var *var)
 {
 	if (check_valid_path(var->list->cmd, var) || check_builtins(var->list->cmd) \
-		|| access(var->list->cmd, X_OK) == 0 || !ft_strchr(var->list->cmd, '>'))
+		|| access(var->list->cmd, X_OK) == 0)
 	{
-		int num_cmds = calculate_num_cmds(input);
-		if (contains_pipe(input) || !ft_strchr(var->list->cmd, '>'))
-			execute_pipe(input, num_cmds, var);
+		// int num_cmds = calculate_num_cmds(input);
+		int num_cmd = 0;
+		t_cmd *list = var->list;
+		while (list)
+		{
+			num_cmd++;
+			list = list->next;
+		}
+		if (num_cmd > 1 || access(var->list->cmd, X_OK) == 0)
+			execute_pipe(input, num_cmd, var);
 		else
 		{	
 			if (check_builtins(var->list->cmd))
@@ -50,6 +57,7 @@ void read_input(char **env)
 	t_var var;
 	var.env = NULL;
 	var.list = NULL;
+	var.exit_num = 0;
 	char *input;
 	
 	fill_env(&var.env, env, &garb);
@@ -70,13 +78,16 @@ void read_input(char **env)
 		if (!list)
 			continue;
 		if (!sysntax_error_checker(&garbage, input, &list))
+		{
+			var.exit_num = 258;
 			continue;
+		}
 		expand_var_list(&list, &var.env, &garbage);
 		handle_redirection(&list, &var.env, &garbage);
 		concatination(&list, &garbage);
 		import_data(&var.list, &list, &garbage);
 		// print_cmd(var.list);
-		execution(input, &var);
+		execution(*var.list->argc, &var);
 		// if (ft_strcmp(input, "env") == 0)
 		// 	ft_env(&var.env);
 		

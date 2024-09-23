@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/19 15:13:32 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/23 17:16:22 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef enum    s_token
 	VAR,            		// $ASJASD
 	DOUBLE_DLR,				// $$
 	SPACE,					// "_"
-	NULL_TOKEN,
+	EXIT_STATUS,			// $?
 	PIPE,           		// |
 	REDIR_IN,       		// <
 	REDIR_OUT,      		// >
@@ -58,6 +58,7 @@ typedef enum    s_token
 	OPENING_PARENTHESIS,	// '('
 	CLOSING_PARENTHESIS,	// ')'
 	HASH					// #
+	
 }                t_token;
 
 typedef struct   s_env
@@ -104,6 +105,7 @@ typedef struct s_var
 {
 	t_cmd			*list;
 	t_env			*env;
+	int				exit_num;
 }					t_var;
 ///////////////////////////////////////
 
