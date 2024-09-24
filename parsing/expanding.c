@@ -6,13 +6,13 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/19 15:35:28 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/24 18:18:01 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void expand_var_list(t_elem **list, t_env **env, t_garbage **garbage)
+void expand_var_list(t_elem **list, t_var container, t_garbage **garbage)
 {
     t_elem *token;
     if (!*list)
@@ -44,11 +44,12 @@ void expand_var_list(t_elem **list, t_env **env, t_garbage **garbage)
                 }
             }
         }
-        else if (token && token->type == VAR){
-            expand_var(list, token, env, garbage);
-        }
+        else if (token && token->type == VAR)
+            expand_var(list, token, &container.env, garbage);
+        else if (token && token->type == EXIT_STATUS)
+            token->content = ft_itoa(container.exit_num);
         else if (token && token->type == D_QOUTS)
-            expand_d_qouts(env, &token->content, garbage);
+            expand_d_qouts(&container.env, &token->content, garbage);
         token = token->next;
     }
 }

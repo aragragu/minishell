@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/23 17:19:48 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/24 19:22:57 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,11 @@ void read_input(char **env)
 			var.exit_num = 258;
 			continue;
 		}
-		expand_var_list(&list, &var.env, &garbage);
+		expand_var_list(&list, var, &garbage);
 		handle_redirection(&list, &var.env, &garbage);
 		concatination(&list, &garbage);
 		import_data(&var.list, &list, &garbage);
-		// print_cmd(var.list);
+		print_cmd(var.list);
 		execution(*var.list->argc, &var);
 		// if (ft_strcmp(input, "env") == 0)
 		// 	ft_env(&var.env);
@@ -108,6 +108,7 @@ void read_input(char **env)
 		// 	ft_exc2(&var);
 		// else
 		// 	fprintf(stderr, "minishell: %s: command not found\n", var.list->argc[0]);
+		var.exit_num = 0;
 		free_garbage(&garbage);
 		list = NULL;
 		garbage = NULL;
@@ -148,6 +149,8 @@ t_elem *token_input(t_elem **list, char **in, t_garbage **garbage)
             ft_lstadd_back(list, ft_lstnew(ft_strdup(">", garbage), REDIR_OUT, garbage));
         else if (input[i] == '$' && input[i + 1] == '$')
             ft_lstadd_back(list, ft_lstnew(ft_strdup("$$", garbage), DOUBLE_DLR, garbage));
+        else if (input[i] == '$' && input[i + 1] == '?')
+            ft_lstadd_back(list, ft_lstnew(ft_strdup("$?", garbage), EXIT_STATUS, garbage));
         else if (input[i] == '$' && (input[i + 1] == '\"' || input[i + 1] == '\''))
         {
             i++;
