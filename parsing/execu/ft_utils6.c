@@ -6,11 +6,36 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:21:52 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/23 17:04:09 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/24 19:23:54 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+// void handle_redirection(const char *filename, int type) {
+//     int fd;
+//     if (type == REDIR_OU)
+// 	{ // '>'
+//         fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+//         if (fd < 0) perror("open");
+//         dup2(fd, STDOUT_FILENO);  // Redirect stdout
+//     }
+// 	else if (type == REDIR_IN)
+// 	{ // '<'
+//         fd = open(filename, O_RDONLY);
+//         if (fd < 0) perror("open");
+//         dup2(fd, STDIN_FILENO);  // Redirect stdin
+//     }
+// 	else if (type == APPEND)
+// 	{ // '>>'
+//         fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+//         if (fd < 0) perror("open");
+//         dup2(fd, STDOUT_FILENO);  // Redirect stdout
+//     }
+// 	else if (type == HEREDOC)
+//             write(pipe_fd[1], line, read);
+//     close(fd);  // Close file descriptor after redirecting
+// }
 
 void handle_input_redirection(char **args)
 {
@@ -96,6 +121,63 @@ char	**parse_command(char *cmd)
 	return (args);
 }
 
+int	contains_red(t_var *var)
+{
+	t_redir *redir = var->list->redirection;
+	
+	if (redir && redir->type == REDIR_OUT)
+		return (0);
+	else if (redir && redir->type == REDIR_IN)
+		return (0);
+	else if (redir && redir->type == APPEND)
+		return (0);
+	return (1);
+}
+
+void	handle_redirection2(t_var *var)
+{
+	t_redir *redir = var->list->redirection;
+	int fd;
+
+	while (redir)
+	{
+		if (redir->type == REDIR_OUT) // Handle `>`
+		{
+			fd = open(redir->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (fd < 0)
+			{
+				perror("open failed");
+				exit(EXIT_FAILURE);
+			}
+			dup2(fd, STDOUT_FILENO); // Redirect stdout to file
+			close(fd);
+		}
+		else if (redir->type == REDIR_IN) // Handle `<`
+		{
+			fd = open(redir->value, O_RDONLY);
+			if (fd < 0)
+			{
+				perror("open failed");
+				exit(EXIT_FAILURE);
+			}
+			dup2(fd, STDIN_FILENO); // Redirect stdin to file
+			close(fd);
+		}
+		else if (redir->type == APPEND) // Handle `>>`
+		{
+			fd = open(redir->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			if (fd < 0)
+			{
+				perror("open failed");
+				exit(EXIT_FAILURE);
+			}
+			dup2(fd, STDOUT_FILENO); // Redirect stdout to file (append mode)
+			close(fd);
+		}
+		redir = redir->next;
+	}
+}
+
 void	execute_pipe(char *input, int num_cmds, t_var *var)
 {
 	(void)input;
@@ -124,8 +206,8 @@ void	execute_pipe(char *input, int num_cmds, t_var *var)
 				dup2(pipefd[1], STDOUT_FILENO);
 			close(pipefd[0]);
 			close(pipefd[1]);
-            handle_input_redirection(var->list->argc);
-            handle_output_redirection(var->list->argc);
+			if (contains_red(var) == 0)
+				handle_redirection2(var);
 			cmd_path = excu_in_path(var->list->argc[0], var);
 			if (cmd_path)
 			{
@@ -138,7 +220,10 @@ void	execute_pipe(char *input, int num_cmds, t_var *var)
 				exit(0);
 			}
 			else if (access(var->list->cmd, X_OK) == 0)
+			{
 				ft_exc2(var);
+				exit(0);
+			}
 			else
             {
 				fprintf(stderr, "minishell: %s: command not found\n", var->list->argc[0]);
@@ -153,10 +238,6 @@ void	execute_pipe(char *input, int num_cmds, t_var *var)
 		i++;
 	}
 	while (waitpid(-1, NULL, 0) > 0)
-        ;
+		;
 }
 
-int	contains_pipe(char *input)
-{
-    return (ft_strchr(input, '|') != NULL);
-}

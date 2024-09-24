@@ -6,26 +6,32 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/23 17:19:48 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/24 17:36:44 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	calculate_cmd(t_var *var)
+{
+	int num_cmd = 0;
+	t_cmd *list = var->list;
+	while (list)
+	{
+		num_cmd++;
+		list = list->next;
+	}
+	return(num_cmd);
+}
+
 void	execution(char *input, t_var *var)
 {
 	if (check_valid_path(var->list->cmd, var) || check_builtins(var->list->cmd) \
-		|| access(var->list->cmd, X_OK) == 0)
+		|| access(var->list->cmd, X_OK) == 0 || contains_red(var) == 0)
 	{
-		// int num_cmds = calculate_num_cmds(input);
-		int num_cmd = 0;
-		t_cmd *list = var->list;
-		while (list)
-		{
-			num_cmd++;
-			list = list->next;
-		}
-		if (num_cmd > 1 || access(var->list->cmd, X_OK) == 0)
+		int num_cmd = calculate_cmd(var);
+		
+		if (num_cmd > 1 || access(var->list->cmd, X_OK) == 0 || contains_red(var) == 0)
 			execute_pipe(input, num_cmd, var);
 		else
 		{	
@@ -87,7 +93,8 @@ void read_input(char **env)
 		concatination(&list, &garbage);
 		import_data(&var.list, &list, &garbage);
 		// print_cmd(var.list);
-		execution(*var.list->argc, &var);
+		if (var.list->argc)
+			execution(*var.list->argc, &var);
 		// if (ft_strcmp(input, "env") == 0)
 		// 	ft_env(&var.env);
 		

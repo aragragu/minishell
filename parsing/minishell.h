@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/23 17:16:22 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/24 17:26:27 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,12 @@
 #define BLUE    "\e[1;38;5;87m"
 #define RESET   "\x1b[0m"
 
-#undef SPACE //remove if u are using macos
-#undef PIPE //remove if u are using macos
-#undef REDIR_IN //remove if u are using macos
-#undef REDIR_OUT //remove if u are using macos
-#undef HEREDOC //remove if u are using macos
-#undef APPEND //remove if u are using macos
-
-#define MAX_CMD_LEN 100
-#define MAX_ARGS 10
-#define MAX_CMDS 10
+// #undef SPACE //remove if u are using macos
+// #undef PIPE //remove if u are using macos
+// #undef REDIR_IN //remove if u are using macos
+// #undef REDIR_OUT //remove if u are using macos
+// #undef HEREDOC //remove if u are using macos
+// #undef APPEND //remove if u are using macos
 
 typedef enum    s_token
 {
@@ -235,7 +231,9 @@ void		execute_pipe(char *input, int num_cmds, t_var *var);
 void		store_env(t_env *envv, char ***env);
 void		ft_exc2(t_var *var);
 char		**parse_command(char *cmd);
-int			contains_pipe(char *input);
+int			contains_red(t_var *var);
 int			calculate_num_cmds(char *input);
+void handle_input_redirection(char **args);
+void handle_output_redirection(char **args);
 
 #endif
