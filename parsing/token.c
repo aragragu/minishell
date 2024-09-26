@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/24 17:36:44 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/26 15:17:25 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,15 @@ int	calculate_cmd(t_var *var)
 	return(num_cmd);
 }
 
-void	execution(char *input, t_var *var)
+void	execution(t_var *var)
 {
 	if (check_valid_path(var->list->cmd, var) || check_builtins(var->list->cmd) \
 		|| access(var->list->cmd, X_OK) == 0 || contains_red(var) == 0)
 	{
 		int num_cmd = calculate_cmd(var);
 		
-		if (num_cmd > 1 || access(var->list->cmd, X_OK) == 0 || contains_red(var) == 0)
-			execute_pipe(input, num_cmd, var);
+		if ((num_cmd > 1 || access(var->list->cmd, X_OK) == 0 || contains_red(var) == 0))
+			execute_pipe(num_cmd, var);
 		else
 		{	
 			if (check_builtins(var->list->cmd))
@@ -65,8 +65,10 @@ void read_input(char **env)
 	var.list = NULL;
 	var.exit_num = 0;
 	char *input;
-	
+	int p[2];
 	fill_env(&var.env, env, &garb);
+	p[0] = dup(STDIN_FILENO);
+	p[1] = dup(STDOUT_FILENO);
 	while (1)
 	{
 		input = readline("➜ minishell💀$ ");
@@ -93,8 +95,11 @@ void read_input(char **env)
 		concatination(&list, &garbage);
 		import_data(&var.list, &list, &garbage);
 		// print_cmd(var.list);
-		if (var.list->argc)
-			execution(*var.list->argc, &var);
+			execution(&var);
+		// else
+		// 	execution(NULL, &var); 
+		// else 
+		// 	handle_redirection2(&var);
 		// if (ft_strcmp(input, "env") == 0)
 		// 	ft_env(&var.env);
 		
@@ -119,6 +124,8 @@ void read_input(char **env)
 		list = NULL;
 		garbage = NULL;
 		var.list = NULL;
+		dup2(p[0], STDIN_FILENO);
+		dup2(p[1], STDOUT_FILENO);
 	}
 	free_garbage(&garb);
 }

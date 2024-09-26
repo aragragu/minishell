@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/24 17:26:27 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/25 17:35:20 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,7 +227,7 @@ int			check_valid_path(char *filename, t_var *var);
 char		*ft_getenv(t_env *env, char *key);
 char		*ft_strcat(char *dest, char *src);
 char		*ft_strcpy(char *dest, char *src);
-void		execute_pipe(char *input, int num_cmds, t_var *var);
+void		execute_pipe(int num_cmds, t_var *var);
 void		store_env(t_env *envv, char ***env);
 void		ft_exc2(t_var *var);
 char		**parse_command(char *cmd);
@@ -235,5 +235,6 @@ int			contains_red(t_var *var);
 int			calculate_num_cmds(char *input);
 void handle_input_redirection(char **args);
 void handle_output_redirection(char **args);
+void	handle_redirection2(t_var *var);
 
 #endif
