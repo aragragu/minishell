@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:38:50 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/24 18:04:40 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/27 15:01:54 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ void	ft_exc(t_var *var)
 	{
 		if (!var->list->argc[0][0])
 		{
-			fprintf(stderr, "minishell: %s: command not found\n", var->list->argc[0]);
+			ft_printf("minishell: %s: command not found\n", var->list->argc[0]);
 			exit(0);
 		}
 		exec_path = excu_in_path(var->list->argc[0], var);
@@ -135,7 +135,7 @@ void	ft_exc(t_var *var)
 			free(exec_path);
 		}
 		else
-			fprintf(stderr, "minishell: %s: command not found\n", var->list->argc[0]);
+			ft_printf("minishell: %s: command not found\n", var->list->argc[0]);
 	}
 	waitpid(pid, NULL, 0);
 }

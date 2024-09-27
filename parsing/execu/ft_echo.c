@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:33:11 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/18 20:24:52 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/27 18:28:58 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ int	check_n_option(const char *str)
 {
 	int	i;
 
-	i = 2;
+	i = 1;
 	while (*str)
 	{
-		if (str[0] == '-' && str[1] == 'n')
+		if (str[0] == '-')
 		{
 			while (str[i])
 			{

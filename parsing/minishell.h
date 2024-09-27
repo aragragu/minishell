@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/25 17:35:20 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/27 15:27:32 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <stdint.h>
-#include <libc.h>
+#include <stdarg.h>
 #include <limits.h>
 #include <sys/wait.h>
 
@@ -227,14 +227,20 @@ int			check_valid_path(char *filename, t_var *var);
 char		*ft_getenv(t_env *env, char *key);
 char		*ft_strcat(char *dest, char *src);
 char		*ft_strcpy(char *dest, char *src);
-void		execute_pipe(int num_cmds, t_var *var);
+void		execute_pipe(int num_cmds, t_var *var, int i);
 void		store_env(t_env *envv, char ***env);
 void		ft_exc2(t_var *var);
-char		**parse_command(char *cmd);
 int			contains_red(t_var *var);
-int			calculate_num_cmds(char *input);
-void handle_input_redirection(char **args);
-void handle_output_redirection(char **args);
-void	handle_redirection2(t_var *var);
+// void		handle_input_redirection(char **args);
+// void		handle_output_redirection(char **args);
+void		handle_redirection2(t_var *var);
+int			calculate_cmd(t_var *var);
+int			ft_printf(const char *format, ...);
+int			ft_putnbr(int n);
+int			ft_putnbr_hexa(unsigned long n, int a);
+int			ft_putnbr_unsd(unsigned int n);
+void		execution(t_var *var);
+int			ft_putstr2(char *s);
+int			ft_putchar(char c);
 
 #endif

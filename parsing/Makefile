@@ -6,7 +6,7 @@
 #    By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/13 11:48:28 by aragragu          #+#    #+#              #
-#    Updated: 2024/09/19 12:59:11 by ykasmi           ###   ########.fr        #
+#    Updated: 2024/09/27 14:58:44 by ykasmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@ RM = rm -rf
 SRC = main.c split.c libft.c token.c syntax_error.c expanding.c redirections.c ft_itoa.c cmd.c \
 	  execu/ft_cd.c execu/ft_exit.c execu/ft_echo.c execu/ft_pwd.c execu/ft_export.c execu/ft_env.c\
 	  execu/ft_unset.c execu/ft_utils1.c execu/ft_utils2.c execu/ft_utils3.c execu/ft_excu.c\
-	  execu/ft_utils5.c execu/ft_utils6.c
+	  execu/ft_utils5.c execu/ft_utils6.c ft_printf/ft_printf.c ft_printf/ft_utils.c \
+	  execu/ft_excu2.c
 	   	
 OBJ = $(SRC:%.c=%.o)
 	
