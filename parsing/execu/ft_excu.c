@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:53:26 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/17 17:55:30 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/27 14:45:25 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,19 @@ char	*excu_in_path(char *filename, t_var *var)
 		start = end + 1;
 	}
 	return (free(c_path), NULL);
+}
+
+int	calculate_cmd(t_var *var)
+{
+	int		num_cmd;
+	t_cmd	*list;
+
+	num_cmd = 0;
+	list = var->list;
+	while (list)
+	{
+		num_cmd++;
+		list = list->next;
+	}
+	return (num_cmd);
 }

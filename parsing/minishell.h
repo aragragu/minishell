@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/24 18:17:21 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/28 08:12:35 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <stdint.h>
-#include <libc.h>
+#include <stdarg.h>
 #include <limits.h>
 #include <sys/wait.h>
 
@@ -30,16 +30,12 @@
 #define BLUE    "\e[1;38;5;87m"
 #define RESET   "\x1b[0m"
 
-#undef SPACE //remove if u are using macos
-#undef PIPE //remove if u are using macos
-#undef REDIR_IN //remove if u are using macos
-#undef REDIR_OUT //remove if u are using macos
-#undef HEREDOC //remove if u are using macos
-#undef APPEND //remove if u are using macos
-
-#define MAX_CMD_LEN 100
-#define MAX_ARGS 10
-#define MAX_CMDS 10
+// #undef SPACE //remove if u are using macos
+// #undef PIPE //remove if u are using macos
+// #undef REDIR_IN //remove if u are using macos
+// #undef REDIR_OUT //remove if u are using macos
+// #undef HEREDOC //remove if u are using macos
+// #undef APPEND //remove if u are using macos
 
 typedef enum    s_token
 {
@@ -231,11 +227,20 @@ int			check_valid_path(char *filename, t_var *var);
 char		*ft_getenv(t_env *env, char *key);
 char		*ft_strcat(char *dest, char *src);
 char		*ft_strcpy(char *dest, char *src);
-void		execute_pipe(char *input, int num_cmds, t_var *var);
+void		execute_pipe(int num_cmds, t_var *var, int i);
 void		store_env(t_env *envv, char ***env);
 void		ft_exc2(t_var *var);
-char		**parse_command(char *cmd);
-int			contains_pipe(char *input);
-int			calculate_num_cmds(char *input);
+int			contains_red(t_var *var);
+// void		handle_input_redirection(char **args);
+// void		handle_output_redirection(char **args);
+void		handle_redirection2(t_var *var);
+int			calculate_cmd(t_var *var);
+int			ft_printf(const char *format, ...);
+int			ft_putnbr(int n);
+int			ft_putnbr_hexa(unsigned long n, int a);
+int			ft_putnbr_unsd(unsigned int n);
+void		execution(t_var *var);
+int			ft_putstr2(char *s);
+int			ft_putchar(char c);
 
 #endif
