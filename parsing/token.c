@@ -6,48 +6,11 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/23 17:19:48 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/27 15:24:01 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	execution(char *input, t_var *var)
-{
-	if (check_valid_path(var->list->cmd, var) || check_builtins(var->list->cmd) \
-		|| access(var->list->cmd, X_OK) == 0)
-	{
-		// int num_cmds = calculate_num_cmds(input);
-		int num_cmd = 0;
-		t_cmd *list = var->list;
-		while (list)
-		{
-			num_cmd++;
-			list = list->next;
-		}
-		if (num_cmd > 1 || access(var->list->cmd, X_OK) == 0)
-			execute_pipe(input, num_cmd, var);
-		else
-		{	
-			if (check_builtins(var->list->cmd))
-				ft_builtins(var, var->list->cmd, &var->list);
-			else
-				ft_exc(var);
-		}
-	}
-	else if (ft_strchr(var->list->cmd, '/') != NULL)
-		ft_exc2(var);
-	else
-		fprintf(stderr, "minishell: %s: command not found\n", var->list->argc[0]);
-}
-
-int is_directory(const char *path)
-{
-    struct stat path_stat;
-    if (stat(path, &path_stat) != 0)
-        return 0;
-    return S_ISDIR(path_stat.st_mode);
-}
 
 void read_input(char **env)
 {
@@ -59,8 +22,10 @@ void read_input(char **env)
 	var.list = NULL;
 	var.exit_num = 0;
 	char *input;
-	
+	int p[2];
 	fill_env(&var.env, env, &garb);
+	p[0] = dup(STDIN_FILENO);
+	p[1] = dup(STDOUT_FILENO);
 	while (1)
 	{
 		input = readline("➜ minishell💀$ ");
@@ -87,31 +52,13 @@ void read_input(char **env)
 		concatination(&list, &garbage);
 		import_data(&var.list, &list, &garbage);
 		// print_cmd(var.list);
-		execution(*var.list->argc, &var);
-		// if (ft_strcmp(input, "env") == 0)
-		// 	ft_env(&var.env);
-		
-		// if (check_valid_path(var.list->cmd, &var) || check_builtins(var.list->cmd) || access(var.list->cmd, X_OK) == 0)
-		// {
-		// 	int num_cmds = calculate_num_cmds(input);
-		// 	if (contains_pipe(input))
-		// 		execute_pipe(input, num_cmds, &var);
-		// 	else
-		// 	{	
-		// 		if (check_builtins(var.list->cmd))
-		// 			ft_builtins(&var, var.list->cmd, &var.list);
-		// 		else
-		// 			ft_exc(&var);
-		// 	}
-		// }
-		// else if (ft_strchr(var.list->cmd, '/') != NULL)
-		// 	ft_exc2(&var);
-		// else
-		// 	fprintf(stderr, "minishell: %s: command not found\n", var.list->argc[0]);
+		execution(&var);
 		free_garbage(&garbage);
 		list = NULL;
 		garbage = NULL;
 		var.list = NULL;
+		dup2(p[0], STDIN_FILENO);
+		dup2(p[1], STDOUT_FILENO);
 	}
 	free_garbage(&garb);
 }
@@ -258,52 +205,3 @@ int is_special_character(char c)
 		return (1);
 	return (0);
 }
-
-
-
-// "void	execute_pipe(char *input, int num_cmds, t_var *var)
-// {
-// 	int		pipefd[2];
-// 	int		prev_fd = STDIN_FILENO;
-// 	char	*input_copy;
-// 	char	**envp;
-// 	char	*cmd;
-// 	char	**args;
-// 	char	*cmd_path;
-// 	int		i = 0;
-// 	pid_t pid;
-
-// 	input_copy = strdup(input);
-// 	store_env(var->env, &envp);
-// 	cmd = strtok(input_copy, "|");
-// 	while (i < num_cmds)
-// 	{
-// 		pipe(pipefd);
-// 		pid = fork();
-// 		if (pid == 0)
-// 		{
-// 			dup2(prev_fd, 0);
-// 			if (i < num_cmds - 1)
-// 			{	
-// 				close(pipefd[0]);
-// 				dup2(pipefd[1], 1);
-// 				close(pipefd[1]);
-// 			}
-// 			args = parse_command(cmd);
-// 			cmd_path = excu_in_path(args[0], var);
-// 			if (cmd_path)
-// 			{
-// 				if (execve(cmd_path, args, envp) == -1)
-// 					fprintf(stderr, "minishell: command not found: %s\n", "");
-// 				free(cmd_path);
-// 			}
-// 		}
-// 		close(pipefd[1]);
-// 		prev_fd = pipefd[0];
-// 		cmd = strtok(NULL, "|");
-// 		i++;
-// 	}
-// 	close(prev_fd);
-// 	while (wait(NULL) > 0);
-// 	free(input_copy);
-// }"

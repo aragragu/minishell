@@ -6,104 +6,117 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:21:52 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/23 17:04:09 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/27 18:26:57 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void handle_input_redirection(char **args)
+int	contains_red(t_var *var)
 {
-    int i = 0;
-    int fd;
+	t_redir *redir = var->list->redirection;
 
-    while (args[i])
-    {
-        if (ft_strcmp(args[i], "<") == 0)
-        {
-            fd = open(args[i + 1], O_RDONLY);
-            if (fd < 0)
-            {
-                perror("open");
-                exit(EXIT_FAILURE);
-            }
-            dup2(fd, STDIN_FILENO);
-            close(fd);
-            args[i] = NULL;
-        }
-        i++;
-    }
+	if (redir && redir->type == REDIR_OUT)
+		return (0);
+	else if (redir && redir->type == REDIR_IN)
+		return (0);
+	else if (redir && redir->type == APPEND)
+		return (0);
+	else if (redir && redir->type == HEREDOC)
+		return (0);
+	return (1);
 }
 
-void handle_output_redirection(char **args)
+void	handle_redirection2(t_var *var)
 {
-    int i = 0;
-    int fd;
+	t_redir *redir = var->list->redirection;
+	int fd;
 
-    while (args[i])
-    {
-        if (ft_strcmp(args[i], ">") == 0)
-        {
-            fd = open(args[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-            if (fd < 0)
-            {
-                perror("open");
-                exit(EXIT_FAILURE);
-            }
-            dup2(fd, STDOUT_FILENO);
-            close(fd);
-            args[i] = NULL;
-        }
-        i++;
-    }
-}
-
-int	calculate_num_cmds(char *input)
-{
-	int		num_cmds;
-	char	*input_copy;
-	char	*token;
-
-	num_cmds = 0;
-	input_copy = strdup(input);
-	if (!input_copy)
-		return(0);
-	token = strtok(input_copy, "|");
-	while (token != NULL)
+	while (redir)
 	{
-		num_cmds++;
-		token = strtok(NULL, "|");
+		if (redir->type == REDIR_OUT)
+		{
+			fd = open(redir->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (fd < 0)
+			{
+				perror("open failed");
+				exit(EXIT_FAILURE);
+			}
+			dup2(fd, STDOUT_FILENO);
+			close(fd);
+		}
+		else if (redir->type == REDIR_IN)
+		{
+			fd = open(redir->value, O_RDONLY);
+			if (fd < 0)
+			{
+				perror("open failed");
+				exit(EXIT_FAILURE);
+			}
+			dup2(fd, STDIN_FILENO);
+			close(fd);
+		}
+		else if (redir->type == APPEND)
+		{
+			fd = open(redir->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			if (fd < 0)
+			{
+				perror("open failed");
+				exit(EXIT_FAILURE);
+			}
+			dup2(fd, STDOUT_FILENO);
+			close(fd);
+		}
+		else if (redir->type == HEREDOC)
+		{
+			if (redir->fd < 0)
+			{
+				perror("open failed");
+				exit(EXIT_FAILURE);
+			}
+			dup2(redir->fd, STDIN_FILENO);
+			close(redir->fd);
+		}
+		redir = redir->next;
 	}
-	return (free(input_copy), num_cmds);
 }
 
-char	**parse_command(char *cmd)
+void	norm_excu_pipe(t_var *var, char **envp)
 {
-	int		size;  
-	char	**args;
-	char	*arg;
-	int		i;
+	char	*cmd_path;
 
-	i = 0;
-	size = ft_strlen(cmd) + 1;
-	args = malloc(size * sizeof(char *));
-	arg = strtok(cmd, " ");
-	while (arg != NULL) {
-		args[i++] = arg;
-		arg = strtok(NULL, " ");
+	if (var->list->argc)
+	{
+		cmd_path = excu_in_path(var->list->argc[0], var);
+		if (check_builtins(var->list->cmd))
+		{
+			ft_builtins(var, var->list->cmd, &var->list);
+			exit(0);
+		}
+		else if (cmd_path)
+		{
+			execve(cmd_path, var->list->argc, envp);
+			free(cmd_path);
+		}
+		else if (access(var->list->cmd, X_OK) == 0)
+		{
+			ft_exc2(var);
+			exit(0);
+		}
+		else
+		{
+			fprintf(stderr, "minishell: %s: command not found\n", var->list->argc[0]);
+			exit(0);
+		}
 	}
-	args[i] = NULL;
-	return (args);
 }
 
-void	execute_pipe(char *input, int num_cmds, t_var *var)
+void	execute_pipe(int num_cmds, t_var *var, int i)
 {
-	(void)input;
 	int		pipefd[2];
 	int		prev_fd = STDIN_FILENO;
 	char	**envp;
-	char	*cmd_path;
-	int		i = 0;
+	// char	*cmd_path;
 	pid_t	pid;
 
 	store_env(var->env, &envp);
@@ -124,26 +137,14 @@ void	execute_pipe(char *input, int num_cmds, t_var *var)
 				dup2(pipefd[1], STDOUT_FILENO);
 			close(pipefd[0]);
 			close(pipefd[1]);
-            handle_input_redirection(var->list->argc);
-            handle_output_redirection(var->list->argc);
-			cmd_path = excu_in_path(var->list->argc[0], var);
-			if (cmd_path)
+
+			if (contains_red(var) == 0)
 			{
-				execve(cmd_path, var->list->argc, envp);
-				free(cmd_path);
+				handle_redirection2(var);
+				if (!var->list->argc || !var->list->argc[0])
+					exit(0);
 			}
-			else if (check_builtins(var->list->cmd))
-			{
-				ft_builtins(var, var->list->cmd, &var->list);
-				exit(0);
-			}
-			else if (access(var->list->cmd, X_OK) == 0)
-				ft_exc2(var);
-			else
-            {
-				fprintf(stderr, "minishell: %s: command not found\n", var->list->argc[0]);
-                exit(0);
-            }
+			norm_excu_pipe(var, envp);
 		}
         close(pipefd[1]);
         if (i != 0)
@@ -153,10 +154,5 @@ void	execute_pipe(char *input, int num_cmds, t_var *var)
 		i++;
 	}
 	while (waitpid(-1, NULL, 0) > 0)
-        ;
-}
-
-int	contains_pipe(char *input)
-{
-    return (ft_strchr(input, '|') != NULL);
+		;
 }

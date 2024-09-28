@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:32:21 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/17 17:55:19 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/27 15:01:35 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,9 @@ void	sort_env(t_env **env)
 			tmp = tmp->next;
 		}
 		if (first->value)
-			printf("declare -x %s=\"%s\"\n", first->key, first->value);
+			ft_printf("declare -x %s=\"%s\"\n", first->key, first->value);
 		else
-			printf("declare -x %s\n", first->key);
+			ft_printf("declare -x %s\n", first->key);
 		first->flag = 1;
 		j++;
 	}
