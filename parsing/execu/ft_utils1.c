@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:35:50 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/10 16:35:59 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/28 15:33:21 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,21 +38,21 @@ void	ft_putstr(char *str)
 	}
 }
 
-void	ft_putstr_fd(char *s, int fd)
-{
-	int	i;
+// void	ft_putstr_fd(char *s, int fd)
+// {
+// 	int	i;
 
-	i = 0;
-	if (fd < 0)
-		return ;
-	if (!s)
-		return ;
-	while (s[i] != '\0')
-	{
-		write(fd, &s[i], 1);
-		i++;
-	}
-}
+// 	i = 0;
+// 	if (fd < 0)
+// 		return ;
+// 	if (!s)
+// 		return ;
+// 	while (s[i] != '\0')
+// 	{
+// 		write(fd, &s[i], 1);
+// 		i++;
+// 	}
+// }
 
 char	*ft_strjoinnn(char *s1, char *s2)
 {

@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:33:35 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/11 21:15:21 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/28 15:54:06 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,10 @@ void	norm_init_env(t_env **envr, char **env)
 				break ;
 			}
 		}
+		if (env[i][j] != '=')
+        {
+            printf("env: %s: No such file or directory\n", env[i]);
+        }
 		i++;
 	}
 }
@@ -96,11 +100,28 @@ char	*ft_cat(char *str, int len, int flag)
 	return (strn);
 }
 
-void	ft_env(t_env **env)
+void	ft_env(t_var *var)
 {
 	t_env	*tmp;
 
-	tmp = *env;
+	// Check if env is properly initialized
+	if (!var || !var->env)
+	{
+		fprintf(stderr, "Error: env not initialized.\n");
+		return;
+	}
+
+	// Access environment variables list
+	tmp = var->env;
+
+	// If any argument is passed with 'env', handle it with a proper message
+	if (var->list->argc[1])
+	{
+		printf("env: %s: No such file or directory\n", var->list->argc[1]);
+		return;
+	}
+
+	// Iterate through the environment linked list and print key=value pairs
 	while (tmp)
 	{
 		if (tmp->value)

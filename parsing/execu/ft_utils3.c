@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:38:50 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/27 15:01:54 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/28 15:54:23 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_builtins(t_var *var, char *str, t_cmd **cmd)
 	else if (!ft_strcmp(str, "export"))
 		ft_export(var, 0, 0);
 	else if (!ft_strcmp(str, "env"))
-		ft_env(&var->env);
+		ft_env(var);
 }
 
 void	env_key_error(char **cmd, t_env **env, int i, char *msg)
@@ -124,7 +124,7 @@ void	ft_exc(t_var *var)
 	{
 		if (!var->list->argc[0][0])
 		{
-			ft_printf("minishell: %s: command not found\n", var->list->argc[0]);
+			ft_fprintf(2, "minishell: %s: command not found\n", var->list->argc[0]);
 			exit(0);
 		}
 		exec_path = excu_in_path(var->list->argc[0], var);
@@ -135,7 +135,7 @@ void	ft_exc(t_var *var)
 			free(exec_path);
 		}
 		else
-			ft_printf("minishell: %s: command not found\n", var->list->argc[0]);
+			ft_fprintf(2, "minishell: %s: command not found\n", var->list->argc[0]);
 	}
 	waitpid(pid, NULL, 0);
 }

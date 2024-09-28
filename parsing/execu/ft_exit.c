@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:34:55 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/27 17:15:16 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/28 15:34:34 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,12 @@ long	ft_atoi(char *str, t_var *var)
 		result = result * 10 + (str[i] - '0');
 		if ((sign == 1 && result < prev_result) || (sign == -1 && -result > prev_result))
 		{
-			ft_printf("exit\nexit: %s: numeric argument required\n", var->list->argc[1]);
+			printf("exit\nexit: %s: numeric argument required\n", var->list->argc[1]);
 			exit(255);
 		}
 		if ((sign == 1 && result > LONG_MAX) || (sign == -1 && -result < LONG_MIN))
 		{
-			ft_printf("exit\nexit: %s: numeric argument required\n", var->list->argc[1]);
+			printf("exit\nexit: %s: numeric argument required\n", var->list->argc[1]);
 			exit(255);
 		}
 		i++;
@@ -74,7 +74,7 @@ void	ft_exit(t_var *var)
 		ac++;
 	if (ac == 1)
 	{
-		ft_printf("exit\n");
+		printf("exit\n");
 		exit(0);
 	}
 	else if (ac < 3)
@@ -82,15 +82,15 @@ void	ft_exit(t_var *var)
 		num = ft_atoi(var->list->argc[1], var);
 		if (is_num(var->list->argc[1]))
 		{
-			ft_printf("exit\n");
+			printf("exit\n");
 			exit(num);
 		}
 		else
 		{
-			ft_printf("exit\nexit: %s: numeric arg required\n", var->list->argc[1]);
+			printf("exit\nexit: %s: numeric arg required\n", var->list->argc[1]);
 			exit(255);
 		}
 	}
 	else if (ac > 2)
-		ft_printf("exit\nminishell: exit: too many arguments\n");
+		printf("exit\nminishell: exit: too many arguments\n");
 }
