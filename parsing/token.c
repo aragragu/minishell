@@ -6,12 +6,14 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/28 08:12:29 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/29 15:53:08 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+//export var ="cat Makefile | grep >"
+//export "test=ici"=coucou
+//c$var Makefile
 void read_input(char **env)
 {
 	t_elem *list = NULL;
@@ -46,7 +48,8 @@ void read_input(char **env)
 			var.exit_num = 258;
 			continue;
 		}
-		expand_var_list(&list, &var.env, &garbage);
+		expand_var_list(&list, var, &garbage);
+		print_list(&list);
 		concatination(&list, &garbage);
 		handle_redirection(&list, &var.env, &garbage);
 		import_data(&var.list, &list, &garbage);

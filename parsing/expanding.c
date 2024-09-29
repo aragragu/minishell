@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/24 18:18:01 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/29 19:33:44 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void    fill_env(t_env **env, char **str, t_garbage **garbage)
     int end;
     int i;
     int j;
-    // t_env *list = NULL;
 
     j = 0;
 	if (!str || !str[0])
@@ -96,6 +95,7 @@ void expand_var(t_elem **elem ,t_elem *node, t_env **env, t_garbage **garbage)
 {
     int i = 0;
     char *gtr = node->content;
+    t_elem *chekcer = *elem;
     int flag = 0;
 
     if (gtr[i] == '$')
@@ -112,9 +112,14 @@ void expand_var(t_elem **elem ,t_elem *node, t_env **env, t_garbage **garbage)
             {
                 if (!ft_strcmp(list->key, gtr + 1))
                 {
-                    node->content = ft_strdup(list->value, garbage);
-                    flag = 1;
-                    break;
+                    if (list->value)
+                    {
+                        node->content = ft_strdup(list->value, garbage);
+                        flag = 1;
+                        break;
+                    }
+                    else
+                        break;
                 }
                 list = list->next;
             }
@@ -122,9 +127,8 @@ void expand_var(t_elem **elem ,t_elem *node, t_env **env, t_garbage **garbage)
                 node->content = NULL;
         }
     }
-    if (node->content && ft_strchr(node->content, ' '))
+    if (node->content && ft_strchr(node->content, ' ') && ft_strcmp((*chekcer).content, "export"))
         ft_split_var(elem, node, garbage);
-    
 }
 
 void expand_d_qouts(t_env **env, char **ptr, t_garbage **garbage)
