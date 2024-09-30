@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:53:26 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/27 14:45:25 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/30 20:57:37 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,28 +59,30 @@ char	*build_path(char *dir, char *filename)
 char	*excu_in_path(char *filename, t_var *var)
 {
 	char	*path;
-	char	*c_path;
 	char	*start;
 	char	*end;
 	char	*full_path;
 
 	path = ft_getenv(var->env, "PATH");
-	c_path = ft_strduppp(path);
-	if (!path || !c_path)
+	start = ft_strduppp(path);
+	if (!path)
 		return (NULL);
-	start = c_path;
-	while ((end = ft_strchr(start, ':')) || (*start != '\0' && (end = ft_strchr(start, '\0'))))
+	end = ft_strchr(start, ':');
+	while (end || (*start != '\0'))
 	{
+		if (!end)
+			end = ft_strchr(start, '\0');
 		if (!end || !end[0])
 			return (NULL);
 		*end = '\0';
 		full_path = build_path(start, filename);
 		if (full_path && access(full_path, X_OK) == 0)
-			return (free(c_path), full_path);
+			return (full_path);
 		free(full_path);
 		start = end + 1;
+		end = ft_strchr(start, ':');
 	}
-	return (free(c_path), NULL);
+	return (free(start), NULL);
 }
 
 int	calculate_cmd(t_var *var)
@@ -97,3 +99,48 @@ int	calculate_cmd(t_var *var)
 	}
 	return (num_cmd);
 }
+
+
+// char	*excu_in_path(char *filename, t_var *var)
+// {
+// 	char	*path;
+// 	// char	*start;
+// 	// char	*end;
+// 	char	*full_path;
+// 	char 	**tab;
+// 	int		i;
+
+// 	i = 0;
+// 	(void)filename;
+// 	path = ft_getenv(var->env, "PATH");
+// 	if (!path)
+// 		return (NULL);
+// 	tab = ft_split2(path, ':');
+// 	if (!tab)
+// 		return(NULL);
+// 	while (tab[i])
+// 	{
+// 		full_path = ft_strjoinnn(tab[i], var->list->cmd);
+// 		if (access(full_path, X_OK))
+// 			return (full_path);
+// 	}
+// 	return ("");
+// 	// start = ft_strduppp(path);
+// 	// end = ft_strchr(start, ':');
+// 	// while (end || (*start != '\0'))
+// 	// {
+// 	// 	if (!end)
+// 	// 		end = ft_strchr(start, '\0');
+// 	// 	if (!end || !end[0])
+// 	// 		return (NULL);
+// 	// 	*end = '\0';
+// 	// 	full_path = build_path(start, filename);
+// 	// 	if (full_path && access(full_path, X_OK) == 0)
+// 	// 		return (full_path);
+// 	// 	free(full_path);
+// 	// 	start = end + 1;
+// 	// 	end = ft_strchr(end, ':');
+// 	// 	printf ("%s\n", start);
+// 	// }
+// 	// return (free(start), NULL);
+// }

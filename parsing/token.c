@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/28 14:54:44 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/30 18:42:26 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void read_input(char **env)
 		ft_lstadd_back_garbage(&garbage, ft_lstnew_garbage(input));
 		add_history(input);
 		list = token_input(&list, &input, &garbage);
-		// print_list(&list);
 		if (!list)
 			continue;
 		if (!sysntax_error_checker(&garbage, input, &list))
@@ -48,6 +47,7 @@ void read_input(char **env)
 			continue;
 		}
 		expand_var_list(&list, &var.env, &garbage);
+		// print_list(&list);
 		concatination(&list, &garbage);
 		handle_redirection(&list, &var.env, &garbage);
 		import_data(&var.list, &list, &garbage);
@@ -164,7 +164,7 @@ void is_a_var(t_elem **list, char *input, int index, t_garbage **garbage)
 	}
 	else
 	{
-		while (input[index + 1 + len] && (is_alphanumeric(input[index + 1 + len]) || input[index + 1 + len] == '_' || input[index + 1 + len] == '?'))
+		while (input[index + 1 + len] && (is_alphanumeric(input[index + 1 + len]) || input[index + 1 + len] == '_'))
 			len++;
 		str = ft_substr(input, index, len + 1, garbage);
 		if (ft_strlen(str) == 1)

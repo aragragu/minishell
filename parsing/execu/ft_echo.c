@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:33:11 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/27 18:28:58 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/30 12:57:48 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ void	ft_echo(t_var *var)
 
 	i = 1;
 	newline = 1;
-	while (var->list->argc && var->list->argc[i] && check_n_option(var->list->argc[i]))
+	while (var->list->argc && var->list->argc[i] \
+		&& check_n_option(var->list->argc[i]))
 	{
 		newline = 0;
 		i++;

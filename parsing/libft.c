@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 18:45:01 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/19 12:51:00 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/30 10:40:25 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,7 +299,7 @@ char *ft_strdup(char *s1, t_garbage **garbage)
 	if (!ptr)
 		return (NULL);
 	ft_lstadd_back_garbage(garbage, ft_lstnew_garbage(ptr));
-	while (s1[z])
+	while (s1 && s1[z])
 	{
 		ptr[z] = s1[z];
 		z++;

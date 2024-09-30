@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:45:58 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/28 15:29:05 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/30 21:05:39 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,17 @@
 
 void	execution(t_var *var)
 {
+	int	num_cmd;
+
 	if (check_valid_path(var->list->cmd, var) || check_builtins(var->list->cmd) \
 		|| access(var->list->cmd, X_OK) == 0 || contains_red(var) == 0)
 	{
-		int num_cmd = calculate_cmd(var);
-		
-		if ((num_cmd > 1 || access(var->list->cmd, X_OK) == 0 || contains_red(var) == 0))
-			execute_pipe(num_cmd, var, -1);
+		num_cmd = calculate_cmd(var);
+		if ((num_cmd > 1 || access(var->list->cmd, X_OK) == 0 \
+			|| contains_red(var) == 0))
+			execute_pipe(num_cmd, var, -1, STDIN_FILENO);
 		else
-		{	
+		{
 			if (check_builtins(var->list->cmd))
 				ft_builtins(var, var->list->cmd, &var->list);
 			else

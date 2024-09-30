@@ -510,3 +510,5 @@ SUMMARY: AddressSanitizer: SEGV (minishell:x86_64+0x1000075a0) in ft_strdup+0xd0
 ==52152==ABORTING
 [1]    52152 abort      ./minishell
 
+
+

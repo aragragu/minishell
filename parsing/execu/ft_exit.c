@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:34:55 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/28 15:34:34 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/30 13:03:18 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	is_num(const char *str)
 {
 	if (*str == '-' && *(str + 1) == '\0')
-        return (0);
+		return (0);
 	while (*str)
 	{
 		if (!ft_digits(*str) && *str != '-')
@@ -48,14 +48,16 @@ long	ft_atoi(char *str, t_var *var)
 	{
 		prev_result = result;
 		result = result * 10 + (str[i] - '0');
-		if ((sign == 1 && result < prev_result) || (sign == -1 && -result > prev_result))
+		if ((sign == 1 && result < prev_result) \
+			|| (sign == -1 && - result > prev_result))
 		{
-			printf("exit\nexit: %s: numeric argument required\n", var->list->argc[1]);
+			printf("exit\n%s: numeric arg required\n", var->list->argc[1]);
 			exit(255);
 		}
-		if ((sign == 1 && result > LONG_MAX) || (sign == -1 && -result < LONG_MIN))
+		if ((sign == 1 && result > LONG_MAX) \
+			|| (sign == -1 && - result < LONG_MIN))
 		{
-			printf("exit\nexit: %s: numeric argument required\n", var->list->argc[1]);
+			printf("exit\n%s: numeric arg required\n", var->list->argc[1]);
 			exit(255);
 		}
 		i++;
@@ -74,7 +76,7 @@ void	ft_exit(t_var *var)
 		ac++;
 	if (ac == 1)
 	{
-		printf("exit\n");
+		ft_fprintf(1, "exit\n");
 		exit(0);
 	}
 	else if (ac < 3)
@@ -82,15 +84,19 @@ void	ft_exit(t_var *var)
 		num = ft_atoi(var->list->argc[1], var);
 		if (is_num(var->list->argc[1]))
 		{
-			printf("exit\n");
+			ft_fprintf(0, "exit\n");
 			exit(num);
 		}
 		else
 		{
-			printf("exit\nexit: %s: numeric arg required\n", var->list->argc[1]);
+			ft_fprintf(0, "exit\n");
+			printf("exit: %s: numeric arg required\n", var->list->argc[1]);
 			exit(255);
 		}
 	}
 	else if (ac > 2)
-		printf("exit\nminishell: exit: too many arguments\n");
+	{
+		ft_fprintf(0, "exit\n");
+		printf("minishell: exit: too many arguments\n");
+	}
 }
