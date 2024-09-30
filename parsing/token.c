@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/29 15:53:08 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/09/30 18:33:36 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,11 @@ void read_input(char **env)
 			continue;
 		}
 		expand_var_list(&list, var, &garbage);
-		print_list(&list);
 		concatination(&list, &garbage);
+		print_list(&list);
 		handle_redirection(&list, &var.env, &garbage);
 		import_data(&var.list, &list, &garbage);
-		// print_cmd(var.list);
+		print_cmd(var.list);
 		execution(&var);
 		free_garbage(&garbage);
 		list = NULL;

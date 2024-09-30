@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:30:40 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/21 18:38:06 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/09/30 18:36:39 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,6 +231,7 @@ void concatination(t_elem **list, t_garbage **garbage)
         {
             if (!current->content)
             {
+                ft_lstadd_back(&new_list, ft_lstnew(NULL, current->type, garbage));
                 current = current->next;
                 continue;
             }
