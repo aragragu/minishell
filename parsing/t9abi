@@ -111,7 +111,7 @@ cat | cat | caaat | ls  ///works at 11.34  ✅
  > a ls > b < Makefile ✅
  echo > a Hello World!  ✅
  > a echo Hello World! ✅
- cat < Makefile | grep gcc > output  ❌
+ cat < Makefile | grep gcc > output  ✅
  exit 0 | exit 1
  exit 1 | exit 0
 

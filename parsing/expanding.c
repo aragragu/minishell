@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/01 17:10:50 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/01 17:45:02 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void expand_var_list(t_elem **list, t_env **env, t_garbage **garbage)
+void expand_var_list(t_elem **list, t_var container, t_garbage **garbage)
 {
     t_elem *token;
     if (!*list)
@@ -44,11 +44,12 @@ void expand_var_list(t_elem **list, t_env **env, t_garbage **garbage)
                 }
             }
         }
-        else if (token && token->type == VAR){
-            expand_var(list, token, env, garbage);
-        }
+        else if (token && token->type == VAR)
+            expand_var(list, token, &container.env, garbage);
+        else if (token && token->type == EXIT_STATUS)
+            token->content = ft_itoa(container.exit_num);
         else if (token && token->type == D_QOUTS)
-            expand_d_qouts(env, &token->content, garbage);
+            expand_d_qouts(&container.env, &token->content, garbage);
         token = token->next;
     }
 }
@@ -60,7 +61,6 @@ void    fill_env(t_env **env, char **str, t_garbage **garbage)
     int end;
     int i;
     int j;
-    // t_env *list = NULL;
 
     j = 0;
 	if (!str || !str[0])
@@ -91,10 +91,24 @@ void    fill_env(t_env **env, char **str, t_garbage **garbage)
     // return (list);
 }
 
+static int     has_a_char(char *str)
+{
+    int i = 0;
+    while (str[i])
+    {
+        if ((str[i] >= 'a' && str[i] <= 'z') || (str[i] >= 'A' && str[i] <= 'Z'))
+            return (1);
+        i++;
+    }
+    return (0);
+}
+
+
 void expand_var(t_elem **elem ,t_elem *node, t_env **env, t_garbage **garbage)
 {
     int i = 0;
     char *gtr = node->content;
+    t_elem *chekcer = *elem;
     int flag = 0;
 
     if (gtr[i] == '$')
@@ -111,9 +125,14 @@ void expand_var(t_elem **elem ,t_elem *node, t_env **env, t_garbage **garbage)
             {
                 if (!ft_strcmp(list->key, gtr + 1))
                 {
-                    node->content = ft_strdup(list->value, garbage);
-                    flag = 1;
-                    break;
+                    if (list->value)
+                    {
+                        node->content = ft_strtrim(ft_strdup(list->value, garbage), " \t\n\v\f\r", garbage);
+                        flag = 1;
+                        break;
+                    }
+                    else
+                        break;
                 }
                 list = list->next;
             }
@@ -121,9 +140,11 @@ void expand_var(t_elem **elem ,t_elem *node, t_env **env, t_garbage **garbage)
                 node->content = NULL;
         }
     }
-    if (node->content && ft_strchr(node->content, ' '))
+    if (node->content && has_a_char(node->content) && ft_strchr(node->content, ' ') && ft_strcmp((*chekcer).content, "export"))
         ft_split_var(elem, node, garbage);
 }
+
+
 
 void expand_d_qouts(t_env **env, char **ptr, t_garbage **garbage)
 {

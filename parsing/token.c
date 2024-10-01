@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/01 17:36:11 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/01 17:44:17 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,10 @@ void read_input(char **env)
 			var.exit_num = 258;
 			continue;
 		}
-		expand_var_list(&list, &var.env, &garbage);
+		expand_var_list(&list, var, &garbage);
 		concatination(&list, &garbage);
 		handle_redirection(&list, &var.env, &garbage);
 		import_data(&var.list, &list, &garbage);
-		// print_cmd(var.list);
 		execution(&var);
 		free_garbage(&garbage);
 		list = NULL;
@@ -93,6 +92,8 @@ t_elem *token_input(t_elem **list, char **in, t_garbage **garbage)
             ft_lstadd_back(list, ft_lstnew(ft_strdup(">", garbage), REDIR_OUT, garbage));
         else if (input[i] == '$' && input[i + 1] == '$')
             ft_lstadd_back(list, ft_lstnew(ft_strdup("$$", garbage), DOUBLE_DLR, garbage));
+        else if (input[i] == '$' && input[i + 1] == '?')
+            ft_lstadd_back(list, ft_lstnew(ft_strdup("$?", garbage), EXIT_STATUS, garbage));
         else if (input[i] == '$' && (input[i + 1] == '\"' || input[i + 1] == '\''))
         {
             i++;

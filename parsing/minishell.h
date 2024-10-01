@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/01 16:55:24 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/01 17:44:37 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ typedef enum    s_token
 	S_QOUTS,        		// ' '
 	VAR,            		// $ASJASD
 	DOUBLE_DLR,				// $$
-	SPACE,					// "_"
 	EXIT_STATUS,			// $?
+	SPACE,					// "_"
 	PIPE,           		// |
 	REDIR_IN,       		// <
 	REDIR_OUT,      		// >
@@ -160,7 +160,7 @@ int			has_invalid_heredoc(t_elem **list);
 int 		has_invalid_append(t_elem **list);
 int     	has_logical_operators(char *str);
 void		edit_list(t_elem *list, t_garbage **garbage);
-void		expand_var_list(t_elem **list, t_env **env, t_garbage **garbage);
+void		expand_var_list(t_elem **list, t_var container, t_garbage **garbage);
 void		ft_lstadd_back2(t_env **lst, t_env *new);
 void		print_env_list(t_env *head);
 int			ft_strcmp(char *s1, char *s2);
