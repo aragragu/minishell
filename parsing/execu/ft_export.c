@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:32:21 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/27 15:01:35 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/01 13:58:33 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,9 @@ void	sort_env(t_env **env)
 			tmp = tmp->next;
 		}
 		if (first->value)
-			ft_printf("declare -x %s=\"%s\"\n", first->key, first->value);
+			ft_fprintf(2, "declare -x %s=\"%s\"\n", first->key, first->value);
 		else
-			ft_printf("declare -x %s\n", first->key);
+			ft_fprintf(2, "declare -x %s\n", first->key);
 		first->flag = 1;
 		j++;
 	}
@@ -99,7 +99,7 @@ void	ft_export(t_var *var, int i, int error)
 	int		k;
 	int		flag_plus;
 	char	*new_val;
-	char	*key;
+	char	*key = NULL;
 	t_env	*index;
 
 	flag_plus = 0;
@@ -118,7 +118,7 @@ void	ft_export(t_var *var, int i, int error)
 					while (var->list->argc[i][++j])
 					{
 						if (var->list->argc[i][j] == '=')
-							break ;
+							break;
 					}
 					if (var->list->argc[i][j - 1] == '+')
 					{
@@ -132,12 +132,13 @@ void	ft_export(t_var *var, int i, int error)
 					if (!(var->list->argc[i][k] == '_' || ft_isalpha(var->list->argc[i][k]) || ft_digits(var->list->argc[i][k])))
 					{
 						error = 1;
-						break ;
+						break;
 					}
 				}
 			}
 			else
 				error = 1;
+
 			if (!error)
 			{
 				if (ft_strchr(var->list->argc[i], '='))
@@ -147,28 +148,37 @@ void	ft_export(t_var *var, int i, int error)
 						new_val = ft_cat(var->list->argc[i], j + 2, 1);
 						key = ft_cat(var->list->argc[i], j, 0);
 						index = index_key(var->env, key);
+
 						if (index && var->list->argc[i][j] == '+' && var->list->argc[i][j + 1] == '=')
 						{
 							if (!index->value)
 								index->value = new_val;
 							else
+							{
 								index->value = ft_strjoinnn(index->value, new_val);
+								free(new_val);
+							}
+							free(key);
 						}
 						else
-							ft_lstadd_backkk(&var->env, ft_lstnewww(ft_cat(var->list->argc[i], j, 0), ft_cat(var->list->argc[i], j + 2, 1)));
+						{
+							ft_lstadd_backkk(&var->env, ft_lstnewww(key, new_val));
+						}
 					}
 					else
 					{
 						new_val = ft_cat(var->list->argc[i], j + 1, 1);
 						key = ft_cat(var->list->argc[i], j, 0);
 						index = index_key(var->env, key);
+
 						if (index)
 						{
 							free(index->value);
 							index->value = new_val;
 						}
 						else
-							ft_lstadd_backkk(&var->env, ft_lstnewww(ft_cat(var->list->argc[i], j, 0), ft_cat(var->list->argc[i], j + 1, 1)));
+							ft_lstadd_backkk(&var->env, ft_lstnewww(key, new_val));
+						free(key);
 					}
 				}
 				else
@@ -176,13 +186,21 @@ void	ft_export(t_var *var, int i, int error)
 					key = ft_cat(var->list->argc[i], j, 0);
 					index = index_key(var->env, key);
 					if (!index)
-						ft_lstadd_backkk(&var->env, ft_lstnewww(ft_cat(var->list->argc[i], j, 0), NULL));
+					{
+						ft_lstadd_backkk(&var->env, ft_lstnewww(key, NULL));
+					}
+					else
+						free(key);
 				}
 			}
 			else
 				env_key_error(var->list->argc, &var->env, i, "export");
+
+			// Reset for next iteration
 			flag_plus = 0;
 			error = 0;
 		}
 	}
+	// free(key);
 }
+

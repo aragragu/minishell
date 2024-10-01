@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:29:24 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/27 13:28:27 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/01 13:13:00 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,7 +250,7 @@ void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
             }
             write(fd, buffer, ft_strlen(buffer));
             close (fd);
-            fd = open(file_name, O_CREAT | O_RDWR, 0644);
+            fd = open(file_name, O_RDONLY);
             unlink(file_name);
             // close(fd);
             break;
