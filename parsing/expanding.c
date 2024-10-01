@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/30 17:30:27 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/01 17:10:50 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,6 @@ void expand_var(t_elem **elem ,t_elem *node, t_env **env, t_garbage **garbage)
     }
     if (node->content && ft_strchr(node->content, ' '))
         ft_split_var(elem, node, garbage);
-    
 }
 
 void expand_d_qouts(t_env **env, char **ptr, t_garbage **garbage)

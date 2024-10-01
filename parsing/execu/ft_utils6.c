@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:21:52 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/30 21:22:42 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/01 16:08:27 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	norm_excu_pipe(t_var *var, char **envp)
 		}
 		else if (cmd_path)
 		{
-			puts("sf");
 			execve(cmd_path, var->list->argc, envp);
 			free(cmd_path);
 		}

@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:53:26 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/30 20:57:37 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/01 13:06:33 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,25 +64,31 @@ char	*excu_in_path(char *filename, t_var *var)
 	char	*full_path;
 
 	path = ft_getenv(var->env, "PATH");
-	start = ft_strduppp(path);
 	if (!path)
 		return (NULL);
-	end = ft_strchr(start, ':');
+	var->flag = 0;
+	start = ft_strduppp(path);
+	end = ft_strchrr(start, ':');
 	while (end || (*start != '\0'))
 	{
 		if (!end)
-			end = ft_strchr(start, '\0');
+			end = ft_strchrr(start, '\0');
 		if (!end || !end[0])
-			return (NULL);
+			return (free(var->ptr),  NULL);
 		*end = '\0';
 		full_path = build_path(start, filename);
+		if (var->flag == 0)
+		{
+			var->flag = 1;
+			var->ptr = start;
+		}
 		if (full_path && access(full_path, X_OK) == 0)
-			return (full_path);
+			return (free(var->ptr), full_path);
 		free(full_path);
 		start = end + 1;
-		end = ft_strchr(start, ':');
+		end = ft_strchrr(start, ':');
 	}
-	return (free(start), NULL);
+	return (free(var->ptr), free(start), NULL);
 }
 
 int	calculate_cmd(t_var *var)

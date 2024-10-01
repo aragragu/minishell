@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:38:50 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/30 21:22:30 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/01 11:47:09 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	ft_exc2(t_var *var)
 		if (execve(var->list->cmd, var->list->argc, envp) == -1)
 			perror(var->list->argc[0]);
 	}
+	ft_free(envp);
 	waitpid(pid, NULL, 0);
 }
 
@@ -101,5 +102,6 @@ void	ft_exc(t_var *var)
 		else
 			ft_fprintf(2, "%s: command not found\n", var->list->argc[0]);
 	}
+	ft_free(envp);
 	waitpid(pid, NULL, 0);
 }
