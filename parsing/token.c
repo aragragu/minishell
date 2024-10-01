@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/30 18:42:26 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/01 17:36:11 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void read_input(char **env)
 			continue;
 		}
 		expand_var_list(&list, &var.env, &garbage);
-		// print_list(&list);
 		concatination(&list, &garbage);
 		handle_redirection(&list, &var.env, &garbage);
 		import_data(&var.list, &list, &garbage);
@@ -74,7 +73,6 @@ t_elem *token_input(t_elem **list, char **in, t_garbage **garbage)
 {
     int i = 0;
     char *input;
-    // ft_lstadd_back(list, ft_lstnew(ft_strdup("", garbage), NULL_TOKEN, garbage));
     input = ft_strtrim(*in, " \t\n\v\f\r", garbage);
     while (input && input[i])
     {
@@ -118,7 +116,6 @@ t_elem *token_input(t_elem **list, char **in, t_garbage **garbage)
             is_a_word(list, input, i, garbage);
         i += ft_strlen(ft_lstlast(*list)->content);
     }
-    // ft_lstadd_back(list, ft_lstnew(ft_strdup("", garbage), NULL_TOKEN, garbage));
     return (*list);
 }
 
