@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:31:11 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/02 15:17:59 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/02 18:41:57 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,15 @@ void	ft_cd(t_var *var)
 		if (chdir("..") != 0)
 		{
 			ft_fprintf(2, "minishell: cd: No such file or directory\n");
+			return ;
+		}
+	}
+	if (!ft_strcmp(var->list->argc[1], "~"))
+	{
+		home = getenv("HOME");
+		if (chdir(home) != 0)
+		{
+			ft_fprintf(2, "minishell: cd: %s: No such file or directory\n", home);
 			return ;
 		}
 	}

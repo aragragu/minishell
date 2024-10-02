@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/02 16:13:51 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/02 17:44:11 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct   s_env
 	char            *key;
 	char			*value;
 	int				flag;
+	int				flag2;
 	struct s_env	*next;
 }                   t_env;
 
