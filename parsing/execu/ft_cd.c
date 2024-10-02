@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:31:11 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/28 15:28:51 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/02 15:17:59 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	ft_cd(t_var *var)
 		if (home == NULL)
 		{
 			ft_fprintf(2, "minishell: cd: HOME not set\n");
-			return ;
+			return ;	
 		}
 		if (chdir(home) != 0)
 		{

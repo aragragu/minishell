@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/01 17:45:02 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/02 16:13:11 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ void expand_var_list(t_elem **list, t_var container, t_garbage **garbage)
             token->content = ft_itoa(container.exit_num);
         else if (token && token->type == D_QOUTS)
             expand_d_qouts(&container.env, &token->content, garbage);
+        else if (token && token->type == TILDE)
+            token->content = ft_getenv(container.env, "HOME");
         token = token->next;
     }
 }

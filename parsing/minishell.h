@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/01 17:44:37 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/02 16:13:51 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef enum    s_token
 	S_QOUTS,        		// ' '
 	VAR,            		// $ASJASD
 	DOUBLE_DLR,				// $$
+	TILDE,					// ~
 	EXIT_STATUS,			// $?
 	SPACE,					// "_"
 	PIPE,           		// |
@@ -56,6 +57,7 @@ typedef enum    s_token
 	APPEND,         		// >>
 	OPENING_PARENTHESIS,	// '('
 	CLOSING_PARENTHESIS,	// ')'
+	AND,					// &
 	HASH					// #
 	
 }                t_token;
@@ -194,6 +196,8 @@ void		concatination(t_elem **list, t_garbage **garbage);
 int			is_special_character(char c);
 int ft_strlen2(char **str);
 void    ft_split_var(t_elem **elem, t_elem *node, t_garbage **garbage);
+int has_invalid_logical_operator1(t_elem **list);	
+int has_invalid_logical_operator2(t_elem **list);
 
 //////////////////////////////////////////////////////////////////////////////
 

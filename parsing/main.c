@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:02:07 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/24 18:58:56 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/02 16:00:20 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ const char* get_token_type_string(t_token type) {
         case REDIR_OUT: return "REDIR_OUT";
         case HEREDOC: return "HEREDOC";
         case APPEND: return "APPEND";
+        case TILDE: return "TILDE";
+        case AND: return "AND";
         default: return "UNKNOWN";
     }
 }
