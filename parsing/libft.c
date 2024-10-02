@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 18:45:01 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/11 17:26:06 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/01 17:10:03 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_elem *ft_lstnew(void *content, t_token type, t_garbage **garbage)
 	ft_lstadd_back_garbage(garbage, ft_lstnew_garbage(new_node));
 	new_node->content = content;
 	new_node->type = type;
+	new_node->fd = -1;
 	new_node->next = NULL;
 	return (new_node);
 }
@@ -41,7 +42,7 @@ t_env *ft_lstnew2(char *key, char *value, t_garbage **garbage)
 
 	return (new_node);
 }
-t_redir *ft_lstnew_redi(char *value, t_token type, t_garbage **garbage)
+t_redir *ft_lstnew_redi(char *value, t_token type,	int fd,  t_garbage **garbage)
 {
 	t_redir *new_node;
 
@@ -51,6 +52,7 @@ t_redir *ft_lstnew_redi(char *value, t_token type, t_garbage **garbage)
 	ft_lstadd_back_garbage(garbage, ft_lstnew_garbage(new_node));
 	new_node->value = value;
 	new_node->type = type;
+	new_node->fd = fd;
 	new_node->next = NULL;
 	return (new_node);
 }
@@ -227,6 +229,16 @@ int ft_strlen(char *str)
 	}
 	return (i);
 }
+int ft_strlen2(char **str)
+{
+	int i;
+	if (!str)
+		return (0);
+	i = 0;
+	while (str[i] != NULL)
+		i++;
+	return (i);
+}
 
 char *ft_substr(char *s, int start, int len, t_garbage **garbage)
 {
@@ -287,7 +299,7 @@ char *ft_strdup(char *s1, t_garbage **garbage)
 	if (!ptr)
 		return (NULL);
 	ft_lstadd_back_garbage(garbage, ft_lstnew_garbage(ptr));
-	while (s1[z])
+	while (s1 && s1[z])
 	{
 		ptr[z] = s1[z];
 		z++;
@@ -352,7 +364,7 @@ int	ft_strcmp(char *s1, char *s2)
 	int i;
 
 	if (!s1 || !s2)
-		return (0);
+		return (1);
 	i = 0;
 	while (s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0')
 		i++;

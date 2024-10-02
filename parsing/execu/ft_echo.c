@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:33:11 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/14 15:59:49 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/01 17:31:36 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ int	check_n_option(const char *str)
 {
 	int	i;
 
-	i = 2;
+	i = 1;
 	while (*str)
 	{
-		if (str[0] == '-' && str[1] == 'n')
+		if (str[0] == '-')
 		{
 			while (str[i])
 			{
@@ -29,7 +29,7 @@ int	check_n_option(const char *str)
 			}
 			return (1);
 		}
-		return (0);
+		str++;
 	}
 	return (0);
 }
@@ -41,7 +41,8 @@ void	ft_echo(t_var *var)
 
 	i = 1;
 	newline = 1;
-	while (var->list->argc && var->list->argc[i] && check_n_option(var->list->argc[i]))
+	while (var->list->argc && var->list->argc[i] \
+		&& check_n_option(var->list->argc[i]))
 	{
 		newline = 0;
 		i++;

@@ -1,92 +1,79 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <sys/wait.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_utils6.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/17 16:21:52 by ykasmi            #+#    #+#             */
+/*   Updated: 2024/10/02 15:06:58 by ykasmi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-// Function to split the input into individual commands based on the pipe character '|'
-void split_commands(char *input, char **commands) {
-    int i = 0;
-    char *command = strtok(input, "|");
-    while (command != NULL) {
-        commands[i++] = command;
-        command = strtok(NULL, "|");
-    }
-    commands[i] = NULL; // Terminate the commands array with NULL
+#include "../minishell.h"
+
+void	norm_excu_pipe(t_var *var, char **envp)
+{
+	char	*cmd_path;
+
+	if (var->list->argc)
+	{
+		cmd_path = excu_in_path(var->list->argc[0], var);
+		if (check_builtins(var->list->cmd))
+		{
+			ft_builtins(var, var->list->cmd, &var->list);
+			exit(0);
+		}
+		else if (cmd_path)
+		{
+			execve(cmd_path, var->list->argc, envp);
+			free(cmd_path);
+		}
+		else if (access(var->list->cmd, X_OK) == 0)
+		{
+			ft_exc2(var);
+			exit(0);
+		}
+		else
+			error_function(var);
+	}
 }
 
-// Function to execute a command
-void execute_command(char *command, int input_fd, int output_fd) {
-    pid_t pid = fork();
-
-    if (pid == 0) { // Child process
-        if (input_fd != 0) { // Redirect input if needed
-            dup2(input_fd, STDIN_FILENO);
-            close(input_fd);
-        }
-
-        if (output_fd != 1) { // Redirect output if needed
-            dup2(output_fd, STDOUT_FILENO);
-            close(output_fd);
-        }
-
-        char *args[100];
-        int i = 0;
-        char *arg = strtok(command, " ");
-        while (arg != NULL) {
-            args[i++] = arg;
-            arg = strtok(NULL, " ");
-        }
-        args[i] = NULL;
-
-        execvp(args[0], args); // Execute the command
-        perror("execvp failed"); // If execvp returns, there was an error
-        exit(1);
-    } else if (pid < 0) {
-        perror("fork failed");
-        exit(1);
-    }
-
-    wait(NULL); // Parent process waits for the child process to finish
+void	norm_excu_pipe2(int prev_fd, int i, int num_cmds, int pipefd[2])
+{
+	dup2(prev_fd, STDIN_FILENO);
+	if (i < num_cmds - 1)
+		dup2(pipefd[1], STDOUT_FILENO);
+	close(pipefd[0]);
+	// close(pipefd[1]);
 }
 
-// Function to execute a pipeline of commands
-void execute_pipeline(char **commands) {
-    int i = 0;
-    int input_fd = 0; // The input file descriptor, starts with STDIN
+void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd)
+{
+	int		pipefd[2];
+	char	**envp;
+	pid_t	pid;
 
-    while (commands[i] != NULL) {
-        int pipefd[2];
-        pipe(pipefd); // Create a pipe
+	store_env(var->env, &envp, 0, 0);
+	while (++i < num_cmds)
+	{
+		if (i < num_cmds - 1)
+			pipe(pipefd);
+		pid = fork();
+		error_fork(pid);
+		if (pid == 0)
+		{
+			norm_excu_pipe2(prev_fd, i, num_cmds, pipefd);
+			norm_excu_pipe3(&var);
 
-        // If it's the last command, the output should go to STDOUT
-        if (commands[i + 1] == NULL) {
-            execute_command(commands[i], input_fd, STDOUT_FILENO);
-        } else {
-            execute_command(commands[i], input_fd, pipefd[1]);
-        }
-
-        close(pipefd[1]); // Close the write end of the pipe
-
-        // The input for the next command comes from the read end of the pipe
-        input_fd = pipefd[0];
-
-        i++;
-    }
+			norm_excu_pipe(var, envp);
+		}
+		close(pipefd[1]);
+		if (i != 0)
+			close(prev_fd);
+		prev_fd = pipefd[0];
+		var->list = var->list->next;
+	}
+	ft_free(envp);
+	waitpid_func();
 }
-
-// int main() {
-//     char input[1024];
-//     printf("Enter a command: ");
-//     fgets(input, sizeof(input), stdin);
-
-//     // Remove the newline character from the input
-//     input[strlen(input) - 1] = '\0';
-
-//     char *commands[100];
-//     split_commands(input, commands);
-
-//     execute_pipeline(commands);
-
-//     return 0;
-// }

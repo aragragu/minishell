@@ -1,436 +1,514 @@
-export export
-export=1337
-env -i ./minishell 
-minishell: ls: env
+$echo bonjour > test\ 1 ✅
+
+passing
+cat Makefile | grep pr | head -n 5 | cd test (mybin)
 
 
-./
+
+/************/*/*/*/*/*/*/*/*//*/*/*//*/*/*/*
+/ls
+ echo -nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn -nn ------------n
+ cat | caat | ls
+
+ 
 
 
-////////////////////////////////////
-echo ---------------nnnnnnnnnnnnnnnnn nsaad
-
-/bin/ls
-➜ minishell💀$ cd ..
-➜ minishell💀$ export
-declare -x PWD="/Users/ykasmi/Desktop/parss"
-declare -x SHLVL="1"
-declare -x _="/usr/bin/env"
-declare -x PWD="/Users/ykasmi/Desktop/parss"
-_=hello
-touch said
-➜ minishell💀$ ./said
-minishell: ./said: command not found
-➜ minishell💀$ chmod +x said
-➜ minishell💀$ ./said
-minishell: ./said: command not found  check Errno    
-
-check if is a directory
-➜ minishell💀$ saad/
-minishell: saad/: command not found 
 
 
-///////////////////////////////////////////////////////
 
-Minishell$ echo "gello$$test$1gds$USER-L" gello$$test$1gds$USER-L$'hell$"' gello$$test$1gds$USER-L$'hell$'     //its not error
-------------------------------------------------------------------------------------------------------------------------------------------
-➜ Minishell$ unset PWD            **********************************
-➜ Minishell$ cd ../
-➜ Minishell$ $PWD
-➜ Minishell$ echo $PWD
-------------------------------------------------------------------------------------------------------------------------------------------
-➜ Minishell$ export a="b c= d="
-➜ Minishell$ export $a
-➜ Minishell$ export p=$a
-➜ Minishell$ export
-declare -x COLORTERM="truecolor"
-declare -x __CF_USER_TEXT_ENCODING="0x194C4:0x0:0x0"
-declare -x a="b c= d="
-declare -x b
-declare -x c=""
-declare -x d=""
-declare -x p="b"
-➜ Minishell$ export p=$a
-------------------------------------------------------------------------------------------------------------------------------------------
-➜ Minishell$ echo -n $USER >> a
-ozahdi➜ Minishell$
-------------------------------------------------------------------------------------------------------------------------------------------
-➜ Minishell$ export p='"'                ***************************
-➜ Minishell$ echo $p
-------------------------------------------------------------------------------------------------------------------------------------------
-➜ Minishell$ export l="src libft"
-➜ Minishell$ ls $l
-ls: src libft: No such file or directory
-------------------------------------------------------------------------------------------------------------------------------------------
-➜ Minishell$ cgjgc
-cgjgc: command not found
-➜ Minishell$ ls | fgjcv | echo $?
-fgjcv: command not found
-127
-------------------------------------------------------------------------------------------------------------------------------------------
-➜ Minishell$ ./minishell            ********************************
-➜ Minishell$ djf
-djf: command not found
-➜ Minishell$ exit 
-exit
-➜ Minishell$ echo $?
+echo 2 >> out1 > out2  ✅
+echo 2 > out1 >> out2   ✅
+./minishell < /dev/urandom✅
+
+ echo bonjour ; | ✅
+ echo bonjour | | ✅
+ |
+ echo bonjour |; ✅
+  echo bonjour |;  ❌
+ cd $HOME/Documents  ✅
+ echo "\s" & echo "\s" ✅
+ echo >   ✅
+ echo -n -n -nnnn -nnnnm ✅
+ cat /dev/random | head -n 1 | cat -e   ✅
+ unset var1 # with undefined var1 ✅
+ export "" et unset ""   ✅
+ echo test > file test1 ✅
+ $ ✅
+ not_cmd bonjour > salut  ✅ 
+ env puis export puis env # vars aren't sorted ✅
+ cat Makefile | grep pr | head -n 5 | cd test (mybin) # check status code ✅
+ cat Makefile | grep pr | head -n 5 | cat test (bin) # check status code ✅
+ cat Makefile | grep pr | head -n 5 | hello (NA) # check status code ✅
+ echo bonjour >>> test ✅
+ echo bonjour > > out ✅
+ cat < test # with non-existent test   ✅
+ export var; export var=test   ✅
+ echo bonjour > $test # with test not defined  ✅
+ file_name_in_current_dir
+ cd ../../../../../.. ; pwd ✅
+ ctrl-C . 130 sur bin(ex : sleep 10)&line vide
+ ctrl-\ .131 sur bin
+ echo "bip | bip" ✅
+ echo "bip | bip ; coyotte > < "  ✅
+ cat | cat | cat | ls # check outputs order ✅
+cat | cat | caaat | ls  ///works at 11.34  ✅
+  $bla # with bla not defined ✅
+ export var ="cat Makefile | grep >" ✅
+ export "test=ici"=coucou  ✅
+ c$var Makefile # with var=at   ❌
+ $LESS$VAR ✅
+ /bin/echo bonjour ✅
+ not_cmd ✅
+ sleep 5 | exit  ✅
+ "exit retour a la ligne"
+ minishell # binary not in path without "./" before ✅
+ cat diufosgid # check exit code
+ exit # should return the last exit code value
+ exit -10
+ exit +10
+ ;
+ echo "$HOME" ✅
+ echo '$HOME' ✅
+ export ; env ✅
+ echo $HOME ✅
+ > log echo coucou  ✅
+ echo hudifg d | | hugdfihd ✅
+ echo ✅
+ echo simple ✅
+ echo -n simple ✅
+ echo '' ✅
+ echo "" ✅
+ echo "\" ✅
+ echo "\n \n \n" ✅
+ echo "\n \n \\n"    ✅
+ echo ;;  ✅
+ echo hi";" hihi ✅
+ echo hi " ; " hihi ✅
+ cd ✅
+ cd . ✅
+ cd ~ ✅
+ cd / ✅
+ cd no_file ✅
+ cd a b c d ✅
+ pwd a ✅
+ pwd a b c d ✅
+ export LOL=lala ROR=rara ✅
+ unset LOL ROR  ✅
+ export "HI= hi"  ✅
+ export "HI =hi" ✅
+ /bin/ls ✅
+ # write something the press ctrl+c ✅
+ # write something then press ctrl+d ✅
+ # write something then press ctrl+\ ✅
+ echo $?
+ l^Ds  ✅
+ echo | ✅
+ | echo ✅
+ sort | ls # check output order ✅ 
+ cat < > ✅ 
+ cat < < ✅ 
+ cat > > ✅ 
+ > a ls > b < Makefile ✅
+ echo > a Hello World!  ✅
+ > a echo Hello World! ✅
+ cat < Makefile | grep gcc > output  ✅
+ exit 0 | exit 1
+ exit 1 | exit 0
+
+ls > file > file1 ✅
+ls > f7 < nofile > f3 > f4 ✅
+
+echo bonjour > $tes    
+
+////////////////////////////////
+export SHLVL=999 ✅ 
+minishell  ✅ 
+export == it should be empty like that SHLVL="" ✅ 
+and in negative number should be 0 and then start from 0  ✅ 
+
+Mini$hell$: cd ..
+cd: error retrieving current directory: No such file or directory
+Mini$hell$: env | grep PWD
+PWD=/Users/sfellahi/Desktop/DEATH/1/2/3/4
+OLDPWD=/Users/sfellahi/Desktop/DEATH /* add .. at the end of PWD when you inside deleted directory */
+ echo -n -n -n -n ✅
+ echo -nnnnnn n- hello ✅ 
+ ls | > filenotfound | wc -l  ❌ it should not printf command not found just 0
+ ls | << filenotfound | wc -l  ❌
+ ls | $notvar  | wc -l   ❌ it should not printf command not found just 0
+
+
+//////////////////////////
+Mini$hell$: touch ggg ✅
+Mini$hell$: ./ggg ✅
+access: Permission denied ✅
+Mini$hell$: chmod +x ggg ✅
+Mini$hell$: ggg ✅
+command not found: Bad address ✅
+Mini$hell$: ./ggg ✅
+command not found: Exec format error  ✅
+
+
+
+declare -x _="./minishell" dont print this freacking variable in export nigga
+
+
+Mini$hell$: echo $$$$USER ✅ 
+USER ✅ 
+
+Mini$hell$: export tt="ls -al" ✅ 
+Mini$hell$: $tt ✅ 
+
+declare -x _="./minishell"
+declare -x __CF_USER_TEXT_ENCODING="0x1940A:0x0:0x0"
+declare -x tt="ls -al"
+declare -x ttt
+Mini$hell$: export ttt=$ttt
+
+
+Mini$hell$: unset  SECURITYSESSIONID USER MallocNanoZone COMMAND_MODE PATH HOME SHELL LaunchInstanceID __CF_USER_TEXT_ENCODING XPC_SERVICE_NAME SSH_AUTH_SOCK XPC_FLAGS LOGNAME TMPDIR ORIGINAL_XDG_CURRENT_DESKTOP SHLVL PWD OLDPWD ZSH PAGER LESS LSCOLORS LS_COLORS HOMEBREW_CACHE HOMEBREW_TEMP TERM_PROGRAM TERM_PROGRAM_VERSION LANG COLORTERM GIT_ASKPASS VSCODE_GIT_ASKPASS_NODE VSCODE_GIT_ASKPASS_EXTRA_ARGS VSCODE_GIT_ASKPASS_MAIN VSCODE_GIT_IPC_HANDLE VSCODE_INJECTION ZDOTDIR USER_ZDOTDIR TERM _ ✅
+Mini$hell$: export✅
+
+Mini$hell$: echo $$$"CUSER"✅
+$"CUSER"✅
+
+Mini$hell$: exit "88 55 98" ✅
+
+Mini$hell$: mkdir ttt ✅
+Mini$hell$: ttt/ ✅
+is a directory: ttt/ ✅
+
+
+Mini$hell$: cd .. ✅
+Mini$hell$: env | grep PWD ✅
+// pwd and oldpwd should not be added ✅
+
+
+
+//////////////////////////////////////////////////////
+Mini$hell$: cat << . << .. << ... ✅
+
+
+Mini$hell$: export a=" " ✅ 
+Mini$hell$: $a ✅ 
+command not found: Bad address ✅ 
+
+
+Mini$hell$: export a="ls -la < Makefile" ✅ 
+Mini$hell$: $a ✅ 
+ls: <: No such file or directory ✅
+-rw-r--r--  1 sfellahi  candidate  2584 Sep  3 14:04 Makefile ✅
+
+
+
+ls > saad <<< ls   ASK ILYASSSSSSSSSS
+
+bash-3.2$ ./minishell_saad ✅ 
+bash: ./minishell_saad: is a directory -> use stat function to check if it a directory ✅
+
+env -i ./minishell -> SHLVL should  be shown only once command should work ✅
+
+
+unset PATH  ✅
+    --> bash : minishell -> run minishell ✅
+    -> minishell: minishell -> command not found ✅
+
+   ls > cat > ik | ls | cat | caat | ls ✅
+
+Mini$hell$: echo $"$HOME" ✅
+$/Users/sfellahi ✅
+
+Mini$hell$: << $HOME ✅
+> os ✅
+> skos ✅
+> $HOME ✅
+
+
+<<ha ✅
+
+cat<home ✅
+<< < ✅
+<<< ✅
+
+export this=" "'HOME'""  ✅
+Mini$hell$: echo $this  ✅
+  'HOME'  ✅
+bash-3.2$ exit "q" ✅
+
+
+
+Mini$hell$: unset SECURITYSESSIONID USER MallocNanoZone COMMAND_MODE PATH HOME SHELL LaunchInstanceID __CF_USER_TEXT_ENCODING XPC_SERVICE_NAME SSH_AUTH_SOCK XPC_FLAGS LOGNAME TMPDIR ORIGINAL_XDG_CURRENT_DESKTOP SHLVL PWD OLDPWD ZSH PAGER LESS LSCOLORS LS_COLORS HOMEBREW_CACHE HOMEBREW_TEMP TERM_PROGRAM TERM_PROGRAM_VERSION LANG COLORTERM GIT_ASKPASS VSCODE_GIT_ASKPASS_NODE VSCODE_GIT_ASKPASS_EXTRA_ARGS VSCODE_GIT_ASKPASS_MAIN VSCODE_GIT_IPC_HANDLE VSCODE_INJECTION ZDOTDIR USER_ZDOTDIR TERM _
+Mini$hell$: env ✅
+Mini$hell$: export th ygq gqwe giqweb iujqwbek q ✅
+Mini$hell$: echo $th ✅
+
+Mini$hell$: export this=" "'HOME'"" ✅
+Mini$hell$: echo $this ✅
+'HOME' ✅
+
+bash-3.2$ echo 'hello \\n'✅
+hello \\n ✅
+cat Makefile feefe > outfile | cat outfile ✅
+
+
+
+
+
+/////////////////////////////////////
+
+
+Mini$hell$: < sfdf cat | wc -l ✅
+minishell: <: command not found ✅
+       0✅
+
+
+exit "4    5    7" ✅
+
+exit 44 hh 44 ✅
+
+
+
+echo hell''o"'' '" "'''"''"" ✅
+exit ksdhfk khk hfkdh kdhkh kdfkdh ✅
+exit 3 33 333 44 4 5 55 ✅
+
+
+ls > a > b >b >> r✅
+
+ls > a >> b < dsfkdskf < dkfdklf > c | cat ❌
+
+ls > a > b >b >> r ✅
+
+ls >>b ✅
+
+ls > a > b >'b'
+
+ls > a > b >' b'
+
+ls > a > b > b ✅
+ls >'  ' ✅
+
+ls >' b'  ❌
+
+
+export a b c -d | wc  ✅
+
+
+export a=' '❌
+Mini$hell$: $a❌
+
+
+<< $""
+ << a << b << c cat | cat -e
+ 
+bash-3.2$ export a=" a     a     a   " b="   b     b       b   "
+bash-3.2$ $a$b
+bash: a: command not found
+bash-3.2$ "$a$b"
+bash:  a     a     a      b     b       b   : command not found
+
+
+Mini$hell$: $_
+
+Mini$hell$: 88
+command not found: 88
+Mini$hell$: echo $?
 0
-➜ Minishell$ 
-------------------------------------------------------------------------------------------------------------------------------------------
-➜  push git:(master) ✗ env -i ./minishell                           (oussama)
-➜ Minishell$ unset USER
-➜ Minishell$ unset PWD 
-=================================================================
-==56480==ERROR: AddressSanitizer: heap-use-after-free on address 0x6040000000d0 at pc 0x00010184a6b2 bp 0x7ffeee3c6610 sp 0x7ffeee3c6608
-READ of size 8 at 0x6040000000d0 thread T0
-    #0 0x10184a6b1 in ft_add_enver+0x2a1 (/Users/ozahdi/Desktop/push/./minishell:x86_64+0x1000116b1)
-    #1 0x101852017 in unset_builtin+0x2f7 (/Users/ozahdi/Desktop/push/./minishell:x86_64+0x100019017)
 
-------------------------------------------------------------------------------------------------------------------------------------------
-➜ Minishell$ cat
-^C
-➜ Minishell$ ➜ Minishell$ echo $?
-2
-➜ Minishell$ cat
-^\^\^\^\^\^\^C
-➜ Minishell$ ➜ Minishell$ 
-➜ Minishell$ echo $?
-2
-➜ Minishell$ 
-------------------------------------------------------------------------------------------------------------------------------------------
-update $_              ****************************************
-------------------------------------------------------------------------------------------------------------------------------------------
-➜ Minishell$ mkdir -p 1/1/1/1
-➜ Minishell$ cd 1/1/1/1
-➜ Minishell$ pwd
-/Users/ozahdi/Desktop/push/1/1/1/1
-➜ Minishell$ cd ..
-cd: ..: No such file or directory
-➜ Minishell$ pwd
-minishell: pwd: : No such file or directory
-➜ Minishell$ echo $PWD
-/Users/ozahdi/Desktop/push
-➜ Minishell$ echo $OLDPWD
-/Users/ozahdi/Desktop/push
-➜ Minishell$ cd ..
-cd: error retrieving current directory
-➜ Minishell$ cd ..
-cd: error retrieving current directory
+Mini$hell$: t9abi
+command not found: t9abi
+Mini$hell$: ./t9abi
+Minishell: ./t9abi: Permission denied
+Mini$hell$: env | grep PATH
+PATH=/Users/sfellahi/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki:/Library/Apple/usr/bin:/Users/sfellahi/.brew/bin:.
+
+Mini$hell$: grep ff
+efwef
+rgerg
+ff
+ff
+heher
+^X^C
+Mini$hell$: Mini$hell$:       //signals
+
+Mini$hell$: ./ls
+Minishell: ./ls: Permission denied
+Mini$hell$: echo $?
+1
+
+signals in heredoc
+
+Mini$hell$: export t="ff    fff" ✅
+Mini$hell$: > $t  ✅
+
+echo "<< fin | << fin"
+
+Mini$hell$: "    ls "  ✅
+
+Mini$hell$: ls   << f"  "  
+> ewfheiu
+> f
+command not found: ls
+
+Mini$hell$: ls -al "gggg     "    
+command not found: ls
+
+xport ana+="1337"
+
+ ""
+Error: Failed to parse commands
+
+declare -x aa="a  b"
+declare -x saad="a  b"
+Mini$hell$: export $saad
+minishell: export: `a  b': not a valid identifier
+
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*\
+
+Mini$hell$: cat << "   "
+>  
+>  
+>  
+>  
+>   
+>  
+>   
+>    
+cat:    : No such file or directory 
+
+
+
+Mini$hell$: << ""
+> 
 AddressSanitizer:DEADLYSIGNAL
 =================================================================
-==28585==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000000 (pc 0x000109f95fc7 bp 0x7ffee5c8c950 sp 0x7ffee5c8c950 T0)
-==28585==The signal is caused by a READ memory access.
-==28585==Hint: address points to the zero page.
-    #0 0x109f95fc7 in ft_strncmp+0x47 (minishell:x86_64+0x100023fc7)
-    #1 0x109f8c3f2 in handle_cd_directory+0x482 (minishell:x86_64+0x10001a3f2)
-    #2 0x109f8bab3 in handle_cd_with_args+0x103 (minishell:x86_64+0x100019ab3)
-    #3 0x109f8f6e5 in cd_builtin+0x115 (minishell:x86_64+0x10001d6e5)
-------------------------------------------------------------------------------------------------------------------------------------------
-➜ Minishell$ exit | exit 100 | exit 1 2
-exit: too many arguments
-➜ Minishell$ echo $?
+==20738==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000000 (pc 0x0001049d6f6b bp 0x7ffeeb230f60 sp 0x7ffeeb230f40 T0)
+
+
+Mini$hell$: export a=""ls -la""
+minishell: export: `-la': not a valid identifier
+
+Mini$hell$: echo ll >  test 
+open: Permission denied
+Minishell: No such file or directory
+Mini$hell$: echo $?
 0
-➜ Minishell$ exit | exit 100 | exit o
-exit: numeric argument required
-➜ Minishell$ echo $?
-1
-➜ Minishell$ 
-------------------------------------------------------------------------------------------------------------------------------------------
-bash-3.2$ exit 31423 fdf
-exit
-bash: exit: too many arguments
-bash-3.2$ $?
-bash: 1: command not found
-------------------------------------------------------------------------------------------------------------------------------------------
-./minishell
-./minishell
-ctr+c
-------------------------------------------------------------------------------------------------------------------------------------------
-bash-3.2$ exit gfd 312
-exit
-bash: exit: gfd: numeric argument required
-➜  push git:(master) ✗ $?
-zsh: command not found: 255
-------------------------------------------------------------------------------------------------------------------------------------------
-bash-3.2$ exit -92233720368547758081 # min/max long long
-exit
-bash: exit: -92233720368547758081: numeric argument required
-------------------------------------------------------------------------------------------------------------------------------------------
-bash-3.2$ exit 3123 312312 
-exit
-bash: exit: too many arguments
-bash-3.2$ $?
-bash: 1: command not found
-------------------------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------------------------
-➜ Minishell$ unset  USER MallocNanoZone PATH LOGNAME SSH_AUTH_SOCK HOME SHELL __CF_USER_TEXT_ENCODING TMPDIR XPC_SERVICE_NAME XPC_FLAGS ORIGINAL_XDG_CURRENT_DESKTOP SHLVL PWD OLDPWDZSH PAGER LESS LSCOLORS LS_COLORS HOMEBREW_CACHE HOMEBREW_TEMP TERM_PROGRAM TERM_PROGRAM_VERSION LANG COLORTERM GIT_ASKPASS VSCODE_GIT_ASKPASS_NODE VSCODE_GIT_ASKPASS_EXTRA_ARGSVSCODE_GIT_ASKPASS_MAIN VSCODE_GIT_IPC_HANDLE VSCODE_INJECTION ZDOTDIR USER_ZDOTDIR TERM _
-=================================================================
-==16755==ERROR: AddressSanitizer: heap-use-after-free on address 0x604000000c90 at pc 0x0001058eb39a bp 0x7ffeea32cfa0 sp 0x7ffeea32cf98
-READ of size 8 at 0x604000000c90 thread T0
-    #0 0x1058eb399 in ft_find+0x89 (minishell:x86_64+0x100019399)
-    #1 0x1058eaf40 in unset_builtin+0x220 (minishell:x86_64+0x100018f40)
-    #2 0x1058e8c90 in execute_builtin+0x410 (minishell:x86_64+0x100016c90)
-------------------------------------------------------------------------------------------------------------------------------------------
-_=/Users/ozahdi/Desktop/new_vers/./minishell
-------------------------------------------------------------------------------------------------------------------------------------------
-➜ Minishell$ ^C
-➜ Minishell$ echo $?
-0
-------------------------------------------------------------------------------------------------------------------------------------------
-➜ Minishell$ export ggg uuu+ lll                   
-export: 'uuu+': not a valid identifier
-➜ Minishell$ echo $?
-0
-------------------------------------------------------------------------------------------------------------------------------------------
-➜  new_vers git:(master) ✗ ./minishell           *******************************************
-➜ Minishell$ wewef
-wewef: command not found
-➜ Minishell$ 
-exit
-➜  new_vers git:(master) ✗ echo $?
-0
-------------------------------------------------------------------------------------------------------------------------------------------
-➜ Minishell$ cat
-^\^\^\^\^\^\
-------------------------------------------------------------------------------------------------------------------------------------------
-➜ Minishell$ cat
-^\^\^\^\^\^\^C
-➜ Minishell$ ➜ Minishell$ 
-------------------------------------------------------------------------------------------------------------------------------------------
-// update OLDPWD
-➜ Minishell$ cd ..
-➜ Minishell$ export
-declare -x OLDPWD
-declare -x PWD="/Users/ozahdi/Desktop"
-declare -x SHLVL="1"
-declare -x yyy
-------------------------------------------------------------------------------------------------------------------------------------------
-➜ Minishell$ $PWD                     ************************************
-/Users/ozahdi/Desktop: permission denied
-------------------------------------------------------------------------------------------------------------------------------------------
-➜ Minishell$ env jjj   ************************ env: jjj: No such file or directory
-------------------------------------------------------------------------------------------------------------------------------------------
-➜ Minishell$ exit " 77 88 99 "
-exit
-------------------------------------------------------------------------------------------------------------------------------------------
-➜ Minishell$ touch ls              *************************
-➜ Minishell$ export PATH+=:.
-➜ Minishell$ ls
-ls: permission denied
-------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Mini$hell$: echo -nnnnnn ff
 
 
 
+Mini$hell$: cat < Makefile 
+open: Permission denied
+Minishell: No such file or directory
 
 
+ < Makefile  cat  | wc -l
+
+ Mini$hell$: ./mini   exprect  No such file or directory
 
 
+exit ggggg  (minishel wast minishell khaso yakhraj 4ir mn wahda )
+
+exit eeeeeeee
+
+Mini$hell$: cat < Makefile | wc -l
+
+cat < Makefile Makefile < Makefile | wc -l > test
 
 
-
-
-
-
-
-
-
-
-
-------------------------------------------------------------------------------------------------------------------------------------------
-~ : change this with HOME PATH
-------------------------------------------------------------------------------------------------------------------------------------------
-bash-3.2$ << a | << b  | < > | << r
-bash: syntax error near unexpected token `>'
-> a
-> b
-------------------------------------------------------------------------------------------------------------------------------------------
-bash-3.2$ << $"USER"
+Mini$hell$: cat << $USER
+> $uuuuu
 > $USER
-> USER
-------------------------------------------------------------------------------------------------------------------------------------------
-➜ Minishell$ cat << $USER
-herdoc > $PWD
-herdoc > $?
-herdoc > ozahdi
-herdoc > '$USER'
-herdoc > $USER
-/Users/ozahdi/Desktop/new_vers
-?
-ozahdi
-'ozahdi'
-------------------------------------------------------------------------------------------------------------------------------------------
-➜ Minishell$ << $"USER" => delemeter is USER
-herdoc > USER
-herdoc > $USER
-------------------------------------------------------------------------------------------------------------------------------------------
-bash-3.2$ echo $~""
-$~
-bash-3.2$ echo $-""
-himBH
-bash-3.2$ echo $!""
-bash: !"": event not found
-bash-3.2$ echo $@""
-
-bash-3.2$ echo $#""
-0
-bash-3.2$ echo $.""
-$.
-bash-3.2$ echo $,""
-$,
-bash-3.2$ echo $""
-------------------------------------------------------------------------------------------------------------------------------------------
-
-bash-3.2$ echo "$"$
-$$
-bash-3.2$ echo $"$"$
-$$
-bash-3.2$ echo "$$$"
-58168$
-bash-3.2$ echo "$$"
-58168
-bash-3.2$ echo "$"
-$
-bash-3.2$ $$$"$"$$$
-bash: 58168$58168$: command not found
-bash-3.2$ echo $$$"$"$$$
-58168$58168$
-bash-3.2$ echo $$"$"$$$
-58168$58168$
-bash-3.2$ echo $$$""
-58168
-bash-3.2$ echo $$$"$"
-58168$
-bash-3.2$ echo $""
-
-bash-3.2$ echo $
-$
-bash-3.2$ 
-bash-3.2$ echo $''
-
-bash-3.2$ echo $'$'
-$
-bash-3.2$ echo $'$$'
-$$
-bash-3.2$ echo $'$$$'
-$$$
-bash-3.2$ echo "$'$'"
-$'$'
-bash-3.2$ echo "$'$USER'"
-$'ozahdi'
-bash-3.2$ echo "$'$USER$'"
-$'ozahdi$'
-bash-3.2$ echo "$'$USER$'$"
-$'ozahdi$'$
-bash-3.2$ echo "$'$USER$'$"$ --------- check
-$'ozahdi$'$$
-bash-3.2$ echo "$$'$USER$'$"
-58168'ozahdi$'$
-bash-3.2$ echo "$$$'$USER$'$"
-58168$'ozahdi$'$
-bash-3.2$ echo "$$$""'$USER$'$"
-58168$'ozahdi$'$
-bash-3.2$ echo "$''$"
-$''$
-bash-3.2$ echo $""
-
-bash-3.2$ echo "$"
-$
-bash-3.2$ echo $""
-
-bash-3.2$ echo $""$
-$
-bash-3.2$ echo ''$""
-
-bash-3.2$ echo  "'$USER'$"""
-'ozahdi'$
-bash-3.2$ echo  "'$USER'$""$"
-'ozahdi'$$
-bash-3.2$ echo  "'$USER'$"$""
-'ozahdi'$
-bash-3.2$ echo  "'$USER'$"$s""
-'ozahdi'$
-bash-3.2$ echo  "'$USER'$"$1""
-'ozahdi'$
-bash-3.2$ echo  "'$USER'$"$12""
-'ozahdi'$2
-bash-3.2$ echo  "'$USER'$"$12s""
-'ozahdi'$2s
-bash-3.2$ echo  ""$
-$
-bash-3.2$ echo  $""$
-$
-bash-3.2$ echo  $"$"$
-$$
-bash-3.2$ echo  "$"$
-$$
-bash-3.2$ $$$USER
-bash: 58168ozahdi: command not found
-bash-3.2$ ECHO $USER
-ozahdi
-bash-3.2$ << $""
-> $
-> 
-bash-3.2$ << ''
-> 
-bash-3.2$ << ' '
-> 
->  
-bash-3.2$ 
+$uuuuu
+Mini$hell$: 
 
 
+ cat <<           |      <<  ll
 
-➜ Minishell$ ls
-Makefile        include         libft           main.c          minishell       parsing         src             ztest.c
-➜ Minishell$ echo 
 
-➜ Minishell$ echo ""
+cat Makefile >> | cat 
 
-➜ Minishell$ echo $""
-
-➜ Minishell$ echo $""$
-$
-➜ Minishell$ echo $"$"$
-$
-➜ Minishell$ echo "$"
-
-➜ Minishell$ echo $
-$
-➜ Minishell$ echo "$"
-
-➜ Minishell$ echo "$$"
-
-➜ Minishell$ echo "$$$"
-$
-➜ Minishell$ echo $""
-
-➜ Minishell$  echo "$$$""'$USER$'$"
-$'ozahdi'
-➜ Minishell$ echo $''
-
-➜ Minishell$ echo "$''"
-''
-➜ Minishell$ echo "$''$"
-''
-➜ Minishell$ echo ''$""
-
-➜ Minishell$ echo '$USER'$""
-$USER
-➜ Minishell$ echo "'$USER'$"""
-'ozahdi'
-➜ Minishell$ $$$USER
-ozahdi: command not found
-➜ Minishell$ $$$$USER
-USER: command not found
-➜ Minishell$ ECHO $$$$USER
-USER
-➜ Minishell$ ECHO $$$$USER
-➜ Minishell$ 
-exit
+ << l > |  cat 
 
 
 
 
 
 
+ ➜ minishell💀$ exit | exit h
+AddressSanitizer:DEADLYSIGNAL
+AddressSanitizer:DEADLYSIGNAL
+=================================================================
+=================================================================
+==77128==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000018 (pc 0x0001084ffe36 bp 0x7ffee7722290 sp 0x7ffee7722230 T0)
+==77173==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000010 (pc 0x0001084fee4a bp 0x7ffee7722290 sp 0x7ffee7722220 T0)
+==77128==The signal is caused by a READ memory access.
+==77128==Hint: address points to the zero page.
+==77173==The signal is caused by a READ memory access.
+==77173==Hint: address points to the zero page.
+    #0 0x1084ffe36 in norm_excu_pipe3+0x156 (minishell:x86_64+0x100022e36)
+    #0 0x1084fee4a in contains_red+0x7a (minishell:x86_64+0x100021e4a)
+    #1 0x108500207 in execute_pipe+0x377 (minishell:x86_64+0x100023207)
+    #1 0x108500058 in execute_pipe+0x1c8 (minishell:x86_64+0x100023058)
+    #2 0x108502494 in execution+0x244 (minishell:x86_64+0x100025494)
+    #2 0x108502494 in execution+0x244 (minishell:x86_64+0x100025494)
+    #3 0x1084e61fe in read_input+0x79e (minishell:x86_64+0x1000091fe)
+    #3 0x1084e61fe in read_input+0x79e (minishell:x86_64+0x1000091fe)
+    #4 0x1084e243c in main+0x2c (minishell:x86_64+0x10000543c)
+    #4 0x1084e243c in main+0x2c (minishell:x86_64+0x10000543c)
+    #5 0x7fff6bd66cc8 in start+0x0 (libdyld.dylib:x86_64+0x1acc8)
+    #5 0x7fff6bd66cc8 in start+0x0 (libdyld.dylib:x86_64+0x1acc8)
 
-errors.txt
+
+==77128==Register values:
+==77173==Register values:
+rax = 0x0000000000000018  rax = 0x0000000000000010  rbx = 0x00007ffee7722300  rbx = 0x00007ffee7722300  rcx = 0x0000000000000018  rcx = 0x0000000000000010  rdx = 0x0000100000000003  rdx = 0x0000100000000002  
+
+rdi = 0x0000100000000000  rdi = 0x00007ffee7722520  rsi = 0x0000100000000000  rsi = 0x0000100000000000  rbp = 0x00007ffee7722290  rbp = 0x00007ffee7722290  rsp = 0x00007ffee7722220  rsp = 0x00007ffee7722230  
+
+  r8 = 0x0000000000000400  r8 = 0x00000000032d9600    r9 = 0x0000000000000000  r9 = 0xffffffff00000000  r10 = 0x00007ffee77222c4  r10 = 0x00001fffdcee4458  r11 = 0x0000000000000246  r11 = 0x0000000000000246  
+
+r12 = 0x0000000000000000  r12 = 0x0000000000000000  r13 = 0x0000000000000000  r13 = 0x0000000000000000  r14 = 0x00001fffdcee4498  r14 = 0x00001fffdcee4498  r15 = 0x0000000000000000  r15 = 0x0000000000000000  
+
+AddressSanitizer can not provide additional info.
+AddressSanitizer can not provide additional info.
+SUMMARY: AddressSanitizer: SEGV (minishell:x86_64+0x100022e36) in norm_excu_pipe3+0x156
+SUMMARY: AddressSanitizer: SEGV (minishell:x86_64+0x100021e4a) in contains_red+0x7a
+==77173==ABORTING
+==77128==ABORTING
+[1]    77128 abort      ./minishell
+
+
+
+***************************************************************************************
+
+
+
+➜ minishell💀$  c$var Makefile
+AddressSanitizer:DEADLYSIGNAL
+=================================================================
+==52152==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000000 (pc 0x00010a7fb5a0 bp 0x7ffee540b1f0 sp 0x7ffee540b170 T0)
+==52152==The signal is caused by a READ memory access.
+==52152==Hint: address points to the zero page.
+    #0 0x10a7fb5a0 in ft_strdup+0xd0 (minishell:x86_64+0x1000075a0)
+    #1 0x10a80228f in expand_var+0x2ff (minishell:x86_64+0x10000e28f)
+    #2 0x10a801e8a in expand_var_list+0xb7a (minishell:x86_64+0x10000de8a)
+    #3 0x10a7fcc92 in read_input+0x742 (minishell:x86_64+0x100008c92)
+    #4 0x10a7f8f2c in main+0x2c (minishell:x86_64+0x100004f2c)
+    #5 0x7fff730becc8 in start+0x0 (libdyld.dylib:x86_64+0x1acc8)
+
+==52152==Register values:
+rax = 0x0000000000000000  rbx = 0x00007ffee540b5a0  rcx = 0x0000100000000000  rdx = 0x0000100000000000  
+rdi = 0x00007ffee540b4e0  rsi = 0x0000100000000000  rbp = 0x00007ffee540b1f0  rsp = 0x00007ffee540b170  
+ r8 = 0x0000200000000000   r9 = 0x0000000000000000  r10 = 0xffffffffffffffff  r11 = 0x00000fffffffffff  
+r12 = 0x0000000000000000  r13 = 0x0000000000000000  r14 = 0x00001fffdca81698  r15 = 0x0000000000000000  
+AddressSanitizer can not provide additional info.
+SUMMARY: AddressSanitizer: SEGV (minishell:x86_64+0x1000075a0) in ft_strdup+0xd0
+==52152==ABORTING
+[1]    52152 abort      ./minishell
+
+
+

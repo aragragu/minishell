@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:31:11 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/12 15:54:06 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/02 15:17:59 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,18 @@ void	ft_cd(t_var *var)
 	char	cwd[PATH_MAX];
 	char	old_pwd[PATH_MAX];
 	char	*home;
-	// char	**envp;
 
-	// store_env(var->env, &envp);
 	if (var->list->argc[1] != NULL && !ft_strcmp(var->list->argc[1], ".") \
 		&& getcwd(old_pwd, sizeof(old_pwd)) == NULL)
 	{
-		printf("minishell: cd: No such file or directory\n");
+		ft_fprintf(2, "minishell: cd: No such file or directory\n");
 		return ;
 	}
 	else if (getcwd(old_pwd, sizeof(old_pwd)) == NULL)
 	{
 		if (chdir("..") != 0)
 		{
-			printf("minishell: cd: No such file or directory\n");
+			ft_fprintf(2, "minishell: cd: No such file or directory\n");
 			return ;
 		}
 	}
@@ -66,12 +64,12 @@ void	ft_cd(t_var *var)
 		home = ft_getenv(var->env, "HOME");
 		if (home == NULL)
 		{
-			printf("minishell: cd: HOME not set\n");
-			return ;
+			ft_fprintf(2, "minishell: cd: HOME not set\n");
+			return ;	
 		}
 		if (chdir(home) != 0)
 		{
-			printf("minishell: cd: %s: No such file or directory\n", home);
+			ft_fprintf(2, "minishell: cd: %s: No such file or directory\n", home);
 			return ;
 		}
 	}
@@ -79,7 +77,7 @@ void	ft_cd(t_var *var)
 	{
 		if (chdir(var->list->argc[1]) != 0)
 		{
-			printf("cd: %s: Not a directory\n", var->list->argc[1]);
+			perror(var->list->argc[1]);
 			return ;
 		}
 	}

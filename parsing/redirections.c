@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:29:24 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/11 12:05:59 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/02 13:53:23 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void starting_red(t_elem **list, t_env **env,t_garbage **garbage)
                 if (holder->next->type == VAR)
                     open_herdoc(&holder->next, env, garbage, 1);
                 else 
-                    open_herdoc(&holder->next, env, garbage, 0);
+                    open_herdoc(&holder->next, env, garbage, 1);
                 *list = holder->next;
                 return;
             }
@@ -115,7 +115,7 @@ void starting_red(t_elem **list, t_env **env,t_garbage **garbage)
             if (current->next->type == VAR)
                 open_herdoc(&current->next, env, garbage, 1);
             else 
-                open_herdoc(&current->next, env, garbage, 0);
+                open_herdoc(&current->next, env, garbage, 1);
             *list = current->next;
             return;
         }
@@ -204,7 +204,7 @@ void herdoc_list(t_elem **list, t_env **env,t_garbage **garbage)
             if (herdoc->next->type == VAR)
                 open_herdoc(&herdoc->next, env, garbage, 1);
             else 
-                open_herdoc(&herdoc->next, env, garbage, 0);
+                open_herdoc(&herdoc->next, env, garbage, 1);
             current->next = herdoc->next;
             return;
         }
@@ -215,7 +215,7 @@ void herdoc_list(t_elem **list, t_env **env,t_garbage **garbage)
                 if (herdoc->next->next->type == VAR)
                     open_herdoc(&herdoc->next->next, env, garbage, 1);
                 else 
-                    open_herdoc(&herdoc->next->next, env, garbage, 0);
+                    open_herdoc(&herdoc->next->next, env, garbage, 1);
                 current->next = herdoc->next->next;
                 return;
             }
@@ -233,7 +233,8 @@ void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
         edit_list(current, garbage);
     char *temp;
     char *file_name = (ft_strjoin(ft_strdup("tmp_", garbage), ft_itoa(++i), garbage));
-    int fd;
+    int fd = 0;
+    
     while (1)
     {
         line = readline(">");
@@ -248,6 +249,8 @@ void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
                 break;
             }
             write(fd, buffer, ft_strlen(buffer));
+            close (fd);
+            fd = open(file_name, O_RDONLY);
             unlink(file_name);
             // close(fd);
             break;
@@ -270,9 +273,11 @@ void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
             break;
         buffer = temp;
     }
-    printf("%s", buffer);
+    // printf("===[%d]====\n", fd);
     current->content = file_name;
     current->type = HEREDOC;
+    current->fd = fd;
+    // printf("===[%d]====\n", current->fd);
 }
 
 void append_list(t_elem **list)

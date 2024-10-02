@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:35:50 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/10 16:35:59 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/01 20:49:53 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,22 +34,6 @@ void	ft_putstr(char *str)
 	while (str[i])
 	{
 		write(1, &str[i], 1);
-		i++;
-	}
-}
-
-void	ft_putstr_fd(char *s, int fd)
-{
-	int	i;
-
-	i = 0;
-	if (fd < 0)
-		return ;
-	if (!s)
-		return ;
-	while (s[i] != '\0')
-	{
-		write(fd, &s[i], 1);
 		i++;
 	}
 }

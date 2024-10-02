@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:02:07 by aragragu          #+#    #+#             */
-/*   Updated: 2024/09/12 15:59:24 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/02 16:00:20 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ const char* get_token_type_string(t_token type) {
         case REDIR_OUT: return "REDIR_OUT";
         case HEREDOC: return "HEREDOC";
         case APPEND: return "APPEND";
+        case TILDE: return "TILDE";
+        case AND: return "AND";
         default: return "UNKNOWN";
     }
 }
@@ -100,7 +102,7 @@ void print_cmd(t_cmd *cmd)
             t_redir *redir = cmd->redirection;
             while (redir) 
             {
-                printf("  Redirection: [%s] (Type: %s)\n", redir->value, get_token_type_string(redir->type));
+                printf("  Redirection: [%s] (Type: %s) and fd = [%d]\n", redir->value, get_token_type_string(redir->type), redir->fd);
                 redir = redir->next;
             }
         } 
@@ -110,6 +112,16 @@ void print_cmd(t_cmd *cmd)
     }
 }
 
+
+void    print_array(char **ptr)
+{
+    int i = 0;
+    while (ptr[i])
+    {
+        printf("%s and i = %d\n", ptr[i], i);
+        i++;
+    }
+}
 
 int main(int argc, char *argv[], char **env)
 {
