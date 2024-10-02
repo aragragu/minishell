@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:21:52 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/01 16:08:27 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/02 15:06:58 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd)
 		{
 			norm_excu_pipe2(prev_fd, i, num_cmds, pipefd);
 			norm_excu_pipe3(&var);
+
 			norm_excu_pipe(var, envp);
 		}
 		close(pipefd[1]);

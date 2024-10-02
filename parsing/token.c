@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/01 17:36:11 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/02 16:02:03 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void read_input(char **env)
 		concatination(&list, &garbage);
 		handle_redirection(&list, &var.env, &garbage);
 		import_data(&var.list, &list, &garbage);
+		// print_list(&list);
 		// print_cmd(var.list);
 		execution(&var);
 		free_garbage(&garbage);
@@ -93,6 +94,8 @@ t_elem *token_input(t_elem **list, char **in, t_garbage **garbage)
             ft_lstadd_back(list, ft_lstnew(ft_strdup(">", garbage), REDIR_OUT, garbage));
         else if (input[i] == '$' && input[i + 1] == '$')
             ft_lstadd_back(list, ft_lstnew(ft_strdup("$$", garbage), DOUBLE_DLR, garbage));
+        else if (input[i] && input[i] == '~' && (is_withespace(input[i + 1]) || input[i + 1] == '\0'))
+			ft_lstadd_back(list, ft_lstnew(ft_strdup("~", garbage), TILDE, garbage));
         else if (input[i] == '$' && (input[i + 1] == '\"' || input[i + 1] == '\''))
         {
             i++;
@@ -110,6 +113,8 @@ t_elem *token_input(t_elem **list, char **in, t_garbage **garbage)
             ft_lstadd_back(list, ft_lstnew(ft_strdup("(", garbage), OPENING_PARENTHESIS, garbage));
         else if (input[i] == ')')
             ft_lstadd_back(list, ft_lstnew(ft_strdup(")", garbage), CLOSING_PARENTHESIS, garbage));
+        else if (input[i] == '&')
+            ft_lstadd_back(list, ft_lstnew(ft_strdup("&", garbage), AND, garbage));
         else if (input[i] == '#')
             ft_lstadd_back(list, ft_lstnew(ft_strdup("#", garbage), HASH, garbage));
         else if (not_special(input[i]))
@@ -118,6 +123,7 @@ t_elem *token_input(t_elem **list, char **in, t_garbage **garbage)
     }
     return (*list);
 }
+
 
 void is_a_word(t_elem **list, char *input, int index, t_garbage **garbage)
 {

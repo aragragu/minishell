@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/01 17:10:50 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/02 15:21:17 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ void expand_var_list(t_elem **list, t_env **env, t_garbage **garbage)
         }
         else if (token && token->type == D_QOUTS)
             expand_d_qouts(env, &token->content, garbage);
+        else if (token && token->type == TILDE)
+            token->content = ft_getenv(*env, "HOME");
         token = token->next;
     }
 }

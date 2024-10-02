@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 11:51:38 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/01 17:28:31 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/02 13:54:01 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,5 +102,5 @@ void	handle_redirection2(t_var *var)
 		red_herd_appen(redir, fd);
 		redir = redir->next;
 	}
-	close(fd);
+	// close(fd);
 }
