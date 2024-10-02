@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/02 16:02:03 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/02 16:09:24 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void read_input(char **env)
 			var.exit_num = 258;
 			continue;
 		}
-		expand_var_list(&list, &var.env, &garbage);
+		expand_var_list(&list, var, &garbage);
 		concatination(&list, &garbage);
 		handle_redirection(&list, &var.env, &garbage);
 		import_data(&var.list, &list, &garbage);
