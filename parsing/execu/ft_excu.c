@@ -6,11 +6,12 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:53:26 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/01 13:06:33 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/03 20:09:42 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include <libc.h>
 
 int	check_valid_path(char *filename, t_var *var)
 {
@@ -62,10 +63,45 @@ char	*excu_in_path(char *filename, t_var *var)
 	char	*start;
 	char	*end;
 	char	*full_path;
+	// struct stat f_stat;
 
+	// if (filename[0] == '/')
+    // {
+    //     if (stat(filename, &f_stat) == 0)
+    //     {
+    //         if (S_ISDIR(f_stat.st_mode))
+    //         {
+    //             fprintf(stderr, "%s: is a directory\n", filename);
+    //             return NULL;
+    //         }
+    //         if (access(filename, X_OK) == 0)
+    //             return (strdup(filename));
+    //     }
+    //     perror(filename);
+    //     return NULL;
+    // }
+    // if (filename[0] == '.' && filename[1] == '/')
+    // {
+    //     if (stat(filename, &f_stat) == 0)
+    //     {
+    //         if (S_ISDIR(f_stat.st_mode))
+    //         {
+    //             fprintf(stderr, "%s: is a directory\n", filename);
+    //             return NULL;
+    //         }
+    //         if (access(filename, X_OK) == 0)
+    //             return (strdup(filename));
+    //     }
+    //     perror(filename);
+    //     return NULL;
+    // }
 	path = ft_getenv(var->env, "PATH");
 	if (!path)
-		return (NULL);
+	{
+		if (var->path == NULL)
+			return (NULL);
+		path = var->path;
+	}
 	var->flag = 0;
 	start = ft_strduppp(path);
 	end = ft_strchrr(start, ':');
@@ -82,8 +118,17 @@ char	*excu_in_path(char *filename, t_var *var)
 			var->flag = 1;
 			var->ptr = start;
 		}
-		if (full_path && access(full_path, X_OK) == 0)
-			return (free(var->ptr), full_path);
+		// if (stat(full_path, &f_stat) == 0)
+        // {
+        //     if (S_ISDIR(f_stat.st_mode))
+        //     {
+        //         fprintf(stderr, "%s: is a directory\n", full_path);
+        //         free(full_path);
+        //         return NULL;
+        //     }
+            if (access(full_path, X_OK) == 0)
+                return (free(var->ptr), full_path);
+        // }
 		free(full_path);
 		start = end + 1;
 		end = ft_strchrr(start, ':');
@@ -105,48 +150,3 @@ int	calculate_cmd(t_var *var)
 	}
 	return (num_cmd);
 }
-
-
-// char	*excu_in_path(char *filename, t_var *var)
-// {
-// 	char	*path;
-// 	// char	*start;
-// 	// char	*end;
-// 	char	*full_path;
-// 	char 	**tab;
-// 	int		i;
-
-// 	i = 0;
-// 	(void)filename;
-// 	path = ft_getenv(var->env, "PATH");
-// 	if (!path)
-// 		return (NULL);
-// 	tab = ft_split2(path, ':');
-// 	if (!tab)
-// 		return(NULL);
-// 	while (tab[i])
-// 	{
-// 		full_path = ft_strjoinnn(tab[i], var->list->cmd);
-// 		if (access(full_path, X_OK))
-// 			return (full_path);
-// 	}
-// 	return ("");
-// 	// start = ft_strduppp(path);
-// 	// end = ft_strchr(start, ':');
-// 	// while (end || (*start != '\0'))
-// 	// {
-// 	// 	if (!end)
-// 	// 		end = ft_strchr(start, '\0');
-// 	// 	if (!end || !end[0])
-// 	// 		return (NULL);
-// 	// 	*end = '\0';
-// 	// 	full_path = build_path(start, filename);
-// 	// 	if (full_path && access(full_path, X_OK) == 0)
-// 	// 		return (full_path);
-// 	// 	free(full_path);
-// 	// 	start = end + 1;
-// 	// 	end = ft_strchr(end, ':');
-// 	// 	printf ("%s\n", start);
-// 	// }
-// 	// return (free(start), NULL);
-// }

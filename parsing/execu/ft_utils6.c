@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:21:52 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/02 15:06:58 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/03 18:15:31 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,25 @@ void	norm_excu_pipe(t_var *var, char **envp)
 		if (check_builtins(var->list->cmd))
 		{
 			ft_builtins(var, var->list->cmd, &var->list);
+			var->exit_num = 0;
 			exit(0);
 		}
 		else if (cmd_path)
 		{
 			execve(cmd_path, var->list->argc, envp);
+			var->exit_num = 0;
 			free(cmd_path);
 		}
 		else if (access(var->list->cmd, X_OK) == 0)
 		{
 			ft_exc2(var);
+			var->exit_num = 0;
 			exit(0);
 		}
 		else
 			error_function(var);
 	}
+	var->exit_num = 0;
 }
 
 void	norm_excu_pipe2(int prev_fd, int i, int num_cmds, int pipefd[2])
@@ -65,8 +69,8 @@ void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd)
 		{
 			norm_excu_pipe2(prev_fd, i, num_cmds, pipefd);
 			norm_excu_pipe3(&var);
-
 			norm_excu_pipe(var, envp);
+			var->exit_num = 0;
 		}
 		close(pipefd[1]);
 		if (i != 0)

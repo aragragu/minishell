@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/02 16:13:51 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/03 18:15:16 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 #include <limits.h>
 #include <sys/wait.h>
 #include <string.h>
+#include <paths.h>
 
 #define RED     "\x1b[31m"
 #define GREEN   "\e[1;32m"
@@ -67,6 +68,7 @@ typedef struct   s_env
 	char            *key;
 	char			*value;
 	int				flag;
+	int				flag2;
 	struct s_env	*next;
 }                   t_env;
 
@@ -108,6 +110,7 @@ typedef struct s_var
 	t_env			*env;
 	int				flag;
 	void			*ptr;
+	char			*path;
 	int				exit_num;
 }					t_var;
 ///////////////////////////////////////
@@ -258,6 +261,6 @@ void	norm_excu_pipe3(t_var **var);
 int	check_builtins(char *str);
 void	ft_builtins(t_var *var, char *str, t_cmd **cmd);
 int	count_env(t_env *envv);
-char	**ft_split2(char const *s, char c);
+void	ft_exc3(t_var *var);
 
 #endif

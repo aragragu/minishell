@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:34:55 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/01 17:30:29 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/03 13:29:06 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,14 @@ long	ft_atoi(char *str, t_var *var)
 			|| (sign == -1 && - result > prev_result))
 		{
 			printf("exit\n%s: numeric arg required\n", var->list->argc[1]);
+			var->exit_num = 255;
 			exit(255);
 		}
 		if ((sign == 1 && result > LONG_MAX) \
 			|| (sign == -1 && - result < LONG_MIN))
 		{
 			printf("exit\n%s: numeric arg required\n", var->list->argc[1]);
+			var->exit_num = 255;
 			exit(255);
 		}
 		i++;
@@ -85,12 +87,14 @@ void	ft_exit(t_var *var)
 		if (is_num(var->list->argc[1]))
 		{
 			ft_fprintf(0, "exit\n");
+			var->exit_num = num;
 			exit(num);
 		}
 		else
 		{
 			ft_fprintf(0, "exit\n");
 			printf("exit: %s: numeric arg required\n", var->list->argc[1]);
+			var->exit_num = 255;
 			exit(255);
 		}
 	}

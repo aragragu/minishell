@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/02 16:09:24 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/03 17:48:26 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,12 @@ void read_input(char **env)
 	var.exit_num = 0;
 	char *input;
 	int p[2];
+	var.path = ft_strduppp(_PATH_STDPATH);
 	fill_env(&var.env, env, &garb);
-	p[0] = dup(STDIN_FILENO);
-	p[1] = dup(STDOUT_FILENO);
 	while (1)
 	{
+		p[0] = dup(STDIN_FILENO);
+		p[1] = dup(STDOUT_FILENO);
 		input = readline("➜ minishell💀$ ");
 		if (!input)
 			break;
@@ -59,6 +60,9 @@ void read_input(char **env)
 		var.list = NULL;
 		dup2(p[0], STDIN_FILENO);
 		dup2(p[1], STDOUT_FILENO);
+		close(p[0]);
+		close(p[1]);
+		// var.exit_num = 0;
 	}
 	free_garbage(&garb);
 }
@@ -94,8 +98,8 @@ t_elem *token_input(t_elem **list, char **in, t_garbage **garbage)
             ft_lstadd_back(list, ft_lstnew(ft_strdup(">", garbage), REDIR_OUT, garbage));
         else if (input[i] == '$' && input[i + 1] == '$')
             ft_lstadd_back(list, ft_lstnew(ft_strdup("$$", garbage), DOUBLE_DLR, garbage));
-        else if (input[i] && input[i] == '~' && (is_withespace(input[i + 1]) || input[i + 1] == '\0'))
-			ft_lstadd_back(list, ft_lstnew(ft_strdup("~", garbage), TILDE, garbage));
+        else if (input[i] == '$' && input[i + 1] == '?')
+            ft_lstadd_back(list, ft_lstnew(ft_strdup("$?", garbage), EXIT_STATUS, garbage));
         else if (input[i] == '$' && (input[i + 1] == '\"' || input[i + 1] == '\''))
         {
             i++;
@@ -113,8 +117,6 @@ t_elem *token_input(t_elem **list, char **in, t_garbage **garbage)
             ft_lstadd_back(list, ft_lstnew(ft_strdup("(", garbage), OPENING_PARENTHESIS, garbage));
         else if (input[i] == ')')
             ft_lstadd_back(list, ft_lstnew(ft_strdup(")", garbage), CLOSING_PARENTHESIS, garbage));
-        else if (input[i] == '&')
-            ft_lstadd_back(list, ft_lstnew(ft_strdup("&", garbage), AND, garbage));
         else if (input[i] == '#')
             ft_lstadd_back(list, ft_lstnew(ft_strdup("#", garbage), HASH, garbage));
         else if (not_special(input[i]))
@@ -123,7 +125,6 @@ t_elem *token_input(t_elem **list, char **in, t_garbage **garbage)
     }
     return (*list);
 }
-
 
 void is_a_word(t_elem **list, char *input, int index, t_garbage **garbage)
 {
