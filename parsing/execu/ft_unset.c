@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:33:33 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/03 14:22:33 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/05 18:15:57 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,20 @@ void	norm_unset_2(t_env **prev, t_env **curr, t_var **var)
 	(*curr) = (*var)->env;
 }
 
+void	norm_unset_3(t_env *curr, t_var *var, t_env *prev, int i)
+{
+	while (curr)
+	{
+		if (ft_strcmp(curr->key, var->list->argc[i]) == 0)
+		{
+			norm_unset(prev, curr, var);
+			break ;
+		}
+		prev = curr;
+		curr = curr->next;
+	}
+}
+
 void	ft_unset(t_var *var, int i)
 {
 	t_env	*prev;
@@ -43,17 +57,7 @@ void	ft_unset(t_var *var, int i)
 		{
 			if (ft_strcmp(var->list->argc[i], "PATH"))
 				var->path = NULL;
-			while (curr)
-			{
-				if (ft_strcmp(curr->key, var->list->argc[i]) == 0)
-				{
-					var->env->flag2 = 0;
-					norm_unset(prev, curr, var);
-					break ;
-				}
-				prev = curr;
-				curr = curr->next;
-			}
+			norm_unset_3(curr, var, prev, i);
 			norm_unset_2(&prev, &curr, &var);
 		}
 		else

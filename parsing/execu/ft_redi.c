@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 11:51:38 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/03 13:40:16 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/05 19:08:53 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,14 @@ void	red_herd_appen(t_redir *redir, int fd)
 	}
 	else if (redir->type == HEREDOC)
 	{
+		redir->fd = open(redir->value, O_RDONLY);
 		if (redir->fd < 0)
 		{
 			perror("open failed");
 			exit(1);
 		}
 		dup2(redir->fd, STDIN_FILENO);
+		unlink(redir->value);
 		close(redir->fd);
 	}
 }
@@ -102,7 +104,7 @@ void	handle_redirection2(t_var *var)
 		{
 			ft_fprintf(2, "minishell: ambiguous redirect\n");
 			var->exit_num = 1;
-			exit(1);	
+			exit(1);
 		}
 		red_out_in(redir, fd);
 		red_herd_appen(redir, fd);

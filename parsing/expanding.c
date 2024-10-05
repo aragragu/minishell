@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/03 14:19:50 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/05 19:12:54 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void expand_var_list(t_elem **list, t_var container, t_garbage **garbage)
             {
                 if (token->next->next && (token->next->next->type == VAR || token->next->next->type == S_QOUTS || token->next->next->type == D_QOUTS))
                 {
+                    if (token->next->next->type == S_QOUTS || token->next->next->type == D_QOUTS)
+                        edit_list(token->next->next, garbage);
                     if (token->next->next->next)
                         token = token->next->next->next;
                     else
@@ -37,6 +39,8 @@ void expand_var_list(t_elem **list, t_var container, t_garbage **garbage)
             {
                 if (token->next && (token->next->type == VAR || token->next->type == S_QOUTS || token->next->type == D_QOUTS))
                 {
+                    if (token->next->type == S_QOUTS || token->next->type == D_QOUTS)
+                        edit_list(token->next, garbage);
                     if (token->next->next)
                         token = token->next->next;
                     else

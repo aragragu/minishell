@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/03 17:48:26 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/05 19:11:50 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void read_input(char **env)
 		import_data(&var.list, &list, &garbage);
 		// print_list(&list);
 		// print_cmd(var.list);
+		
 		execution(&var);
 		free_garbage(&garbage);
 		list = NULL;
@@ -190,17 +191,10 @@ void is_a_string(t_elem **list, char *input, int index, t_garbage **garbage)
 
 void edit_list(t_elem *list, t_garbage **garbage)
 {
-	char *str;
 	if (list && list->type == D_QOUTS)
-	{
-		str = ft_strtrim(list->content, "\"", garbage);
-		list->content = str;
-	}
+		list->content = ft_strtrim(list->content, "\"", garbage);
 	if (list && list->type == S_QOUTS)
-	{
-		str = ft_strtrim(list->content, "\'", garbage);
-		list->content = str;
-	}
+		list->content = ft_strtrim(list->content, "\'", garbage);
 }
 
 int is_special_character(char c)
