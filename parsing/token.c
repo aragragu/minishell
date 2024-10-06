@@ -6,12 +6,24 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/06 18:15:33 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/06 20:08:53 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	signal_handler(int sig)
+{
+	if (sig == SIGINT)
+	{
+		write(1, "\n", 1);
+		rl_replace_line("", 0);
+        rl_on_new_line();
+        rl_redisplay();
+	}
+	if (sig == SIGQUIT)
+		return ;
+}
 void read_input(char **env)
 {
 	t_elem *list = NULL;
@@ -25,8 +37,11 @@ void read_input(char **env)
 	int p[2];
 	var.path = ft_strduppp(_PATH_STDPATH);
 	fill_env(&var.env, env, &garb);
+	rl_catch_signals = 0;
 	while (1)
 	{
+		signal(SIGINT, signal_handler);
+		signal(SIGQUIT, signal_handler);
 		p[0] = dup(STDIN_FILENO);
 		p[1] = dup(STDOUT_FILENO);
 		input = readline("➜ minishell💀$ ");
@@ -51,9 +66,6 @@ void read_input(char **env)
 		concatination(&list, &garbage);
 		handle_redirection(&list, &var.env, &garbage);
 		import_data(&var.list, &list, &garbage);
-		// print_list(&list);
-		// print_cmd(var.list);
-		
 		execution(&var);
 		free_garbage(&garbage);
 		list = NULL;
@@ -67,6 +79,7 @@ void read_input(char **env)
 	}
 	free_garbage(&garb);
 }
+
 
 int not_special(char c)
 {
@@ -82,12 +95,12 @@ t_elem *token_input(t_elem **list, char **in, t_garbage **garbage)
     input = ft_strtrim(*in, " \t\n\v\f\r", garbage);
     while (input && input[i])
     {
-        if (input[i] && is_withespace(input[i]))
+        if (input[i] && is_witheS_PACE(input[i]))
         {
-            while (input[i] && is_withespace(input[i]))
+            while (input[i] && is_witheS_PACE(input[i]))
                 i++;
             i--;
-            ft_lstadd_back(list, ft_lstnew(ft_strdup(" ", garbage), SPACE, garbage));
+            ft_lstadd_back(list, ft_lstnew(ft_strdup(" ", garbage), S_PACE, garbage));
         }
         else if (input[i] == '>' && input[i + 1] == '>')
             ft_lstadd_back(list, ft_lstnew(ft_strdup(">>", garbage), APPEND, garbage));
@@ -131,7 +144,7 @@ void is_a_word(t_elem **list, char *input, int index, t_garbage **garbage)
 {
 	char *word;
 	int len = 0;
-	while (input[index + len] && not_special(input[index + len]) && !is_withespace(input[index + len]))
+	while (input[index + len] && not_special(input[index + len]) && !is_witheS_PACE(input[index + len]))
 		len++;
 	word = ft_substr(input, index, len, garbage);
 	ft_lstadd_back(list, ft_lstnew(word, WORD, garbage));
@@ -183,7 +196,7 @@ void is_a_string(t_elem **list, char *input, int index, t_garbage **garbage)
 {
 	char *word;
 	int len = 0;
-	while (input[index + len] && input[index + len] != '$' && !is_withespace(input[index + len]))
+	while (input[index + len] && input[index + len] != '$' && !is_witheS_PACE(input[index + len]))
 		len++;
 	word = ft_substr(input, index, len, garbage);
 	ft_lstadd_back(list, ft_lstnew(word, WORD, garbage));

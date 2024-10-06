@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/10/06 18:04:21 by aragragu         ###   ########.fr       */
-=======
-/*   Updated: 2024/10/05 19:12:54 by ykasmi           ###   ########.fr       */
->>>>>>> 9702c849079b2288453d3d9e878a2718380f9f79
+/*   Updated: 2024/10/06 19:12:13 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +23,7 @@ void expand_var_list(t_elem **list, t_var container, t_garbage **garbage)
         edit_list(token, garbage);
         if (token && token->type == HEREDOC)
         {
-            if (token->next && token->next->type == SPACE)
+            if (token->next && token->next->type == S_PACE)
             {
                 if (token->next->next && (token->next->next->type == VAR || token->next->next->type == S_QOUTS || token->next->next->type == D_QOUTS))
                 {
@@ -151,20 +147,20 @@ void expand_var(t_elem **elem ,t_elem *node, t_env **env, t_garbage **garbage)
                 node->content = NULL;
         }
     }
-    // if (node->content && has_a_char(node->content) && ft_strchr(node->content, ' ') && ft_strcmp((*checker).content, "export"))
-    //     ft_split_var(elem, node, garbage);
     if (node->content)
     {
-        if (has_a_char(node->content) && ft_strchr(node->content, ' ') && ft_strcmp((*checker).content, "export"))
+        if (has_a_char(node->content) && ft_strchr(node->content, ' ') && !ft_strcmp((*checker).content, "export"))
         {
-            if (checker->next && checker->next->type == SPACE)
+            if (checker->next && checker->next->type == S_PACE)
             {
-                if (checker->next->next && checker->next->next->type == WORD && ft_strchr(checker->next->next->content, '='))
-                    return ;
+                if (checker->next->next && checker->next->next->type == VAR && !ft_strchr(checker->next->next->content, '='))
+                    ft_split_var(elem, node, garbage);
+                else
+                    return;
             }
-            else
-                ft_split_var(elem, node, garbage);
         }
+        else
+            ft_split_var(elem, node, garbage);
     }
 }
 
@@ -218,13 +214,13 @@ t_elem *token_quots(t_elem **list, char *in, t_garbage **garbage)
 
     while (in && in[i])
     {
-        if (in[i] && is_withespace(in[i]))
-            ft_lstadd_back(list, ft_lstnew(ft_strdup(" ", garbage), SPACE, garbage));
+        if (in[i] && is_witheS_PACE(in[i]))
+            ft_lstadd_back(list, ft_lstnew(ft_strdup(" ", garbage), S_PACE, garbage));
         else if (in[i] == '$' && in[i + 1] == '$')
             ft_lstadd_back(list, ft_lstnew(ft_strdup("$$", garbage), DOUBLE_DLR, garbage));
         else if (in[i] == '$')
             is_a_var(list, in, i, garbage);
-        else if (in[i] && !is_withespace(in[i]) && in[i] != '$')
+        else if (in[i] && !is_witheS_PACE(in[i]) && in[i] != '$')
             is_a_string(list, in, i, garbage);
         i += ft_strlen(ft_lstlast(*list)->content);
     }
@@ -244,7 +240,7 @@ void    ft_split_var(t_elem **elem, t_elem *node, t_garbage **garbage)
     {
         ft_lstadd_back(&new_list, ft_lstnew(str[j], WORD, garbage));
         if (j != (i - 1))
-            ft_lstadd_back(&new_list, ft_lstnew(ft_strdup(" ", garbage), SPACE, garbage));
+            ft_lstadd_back(&new_list, ft_lstnew(ft_strdup(" ", garbage), S_PACE, garbage));
         j++;
     }
     while (current)

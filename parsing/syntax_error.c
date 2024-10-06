@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 13:19:54 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/02 16:10:09 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/06 19:12:13 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int sysntax_error_checker(t_garbage **garbage, char *str, t_elem **list)
     return (1);
 }
 
-int is_withespace(char c)
+int is_witheS_PACE(char c)
 {
     if ((c >= 9 && c <= 13) || c == 32)
         return (1);
@@ -80,7 +80,7 @@ int has_unclosed_quots(char *str)
     int sign = 0;
     while (str[i])
     {
-        while (str[i] && is_withespace(str[i]))
+        while (str[i] && is_witheS_PACE(str[i]))
             i++;
         ft_sign(str[i], &sign);
         i++;
@@ -99,7 +99,7 @@ int has_invalid_redirection_in(t_elem **list)
     {
         if (current && current->type == REDIR_IN)
         {
-            if (current->next && current->next->type == SPACE)
+            if (current->next && current->next->type == S_PACE)
             {
                 current = current->next->next;
                 if (current && (current->type >= PIPE))
@@ -122,7 +122,7 @@ int has_invalid_redirection_out(t_elem **list)
     {
         if (current && current->type == REDIR_OUT)
         {
-            if (current->next && current->next->type == SPACE)
+            if (current->next && current->next->type == S_PACE)
             {
                 pah = current->next->next;
                 if (pah && pah->type >= PIPE)
@@ -147,7 +147,7 @@ int pipe_error(t_elem **head)
     {
         if (list && list->type == PIPE)
         {
-            if (list->next && list->next->type == SPACE)
+            if (list->next && list->next->type == S_PACE)
             {
                 pah = list->next->next;
                 if (pah && pah->type == PIPE)
@@ -171,7 +171,7 @@ int has_invalid_heredoc(t_elem **list)
     {
         if (current && current->type == HEREDOC)
         {
-            if (current->next && current->next->type == SPACE)
+            if (current->next && current->next->type == S_PACE)
             {
                 pah = current->next->next;
                 if (pah && pah->type >= PIPE)
@@ -195,7 +195,7 @@ int has_invalid_append(t_elem **list)
     {
         if (current && current->type == APPEND)
         {
-            if (current->next && current->next->type == SPACE)
+            if (current->next && current->next->type == S_PACE)
             {
                 pah = current->next->next;
                 if (pah && pah->type >= PIPE)

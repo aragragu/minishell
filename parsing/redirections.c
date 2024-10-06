@@ -6,11 +6,13 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:29:24 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/06 18:15:41 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/06 20:09:18 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int g_exit_status;
 
 void handle_redirection(t_elem **list, t_env **env,t_garbage **garbage)
 {
@@ -42,17 +44,17 @@ void starting_red(t_elem **list, t_env **env,t_garbage **garbage)
     t_elem *holder;
     if (current && current->type == REDIR_IN)
     {
-        if (current->next && current->next->type == SPACE)
+        if (current->next && current->next->type == S_PACE)
         {
             holder = current->next;
-            if (holder->next && holder->next->type < SPACE)
+            if (holder->next && holder->next->type < S_PACE)
             {
                 *list = holder->next;
                 holder->next->type = REDIR_IN;
                 return;
             }
         }
-        else if (current->next && current->next->type < SPACE)
+        else if (current->next && current->next->type < S_PACE)
         {
             *list = current->next;
             current->next->type = REDIR_IN;
@@ -61,17 +63,17 @@ void starting_red(t_elem **list, t_env **env,t_garbage **garbage)
     }
     else if (current && current->type == REDIR_OUT)
     {
-        if (current->next && current->next->type == SPACE)
+        if (current->next && current->next->type == S_PACE)
         {
             holder = current->next;
-            if (holder->next && holder->next->type < SPACE)
+            if (holder->next && holder->next->type < S_PACE)
             {
                 *list = holder->next;
                 holder->next->type = REDIR_OUT;
                 return;
             }
         }
-        else if (current->next && current->next->type < SPACE)
+        else if (current->next && current->next->type < S_PACE)
         {
             *list = current->next;
             current->next->type = REDIR_OUT;
@@ -80,17 +82,17 @@ void starting_red(t_elem **list, t_env **env,t_garbage **garbage)
     }
     else if (current && current->type == APPEND)
     {
-        if (current->next && current->next->type == SPACE)
+        if (current->next && current->next->type == S_PACE)
         {
             holder = current->next;
-            if (holder->next && holder->next->type < SPACE)
+            if (holder->next && holder->next->type < S_PACE)
             {
                 *list = holder->next;
                 holder->next->type = APPEND;
                 return;
             }
         }
-        else if (current->next && current->next->type < SPACE)
+        else if (current->next && current->next->type < S_PACE)
         {
             *list = current->next;
             current->next->type = APPEND;
@@ -99,10 +101,10 @@ void starting_red(t_elem **list, t_env **env,t_garbage **garbage)
     }
     else if (current && current->type == HEREDOC)
     {
-        if (current->next && current->next->type == SPACE)
+        if (current->next && current->next->type == S_PACE)
         {
             holder = current->next;
-            if (holder->next && holder->next->type < SPACE)
+            if (holder->next && holder->next->type < S_PACE)
             {
                 if (holder->next->type == VAR)
                     open_herdoc(&holder->next, env, garbage, 1);
@@ -112,7 +114,7 @@ void starting_red(t_elem **list, t_env **env,t_garbage **garbage)
                 return;
             }
         }
-        else if (current->next && current->next->type < SPACE)
+        else if (current->next && current->next->type < S_PACE)
         {
             if (current->next->type == VAR)
                 open_herdoc(&current->next, env, garbage, 1);
@@ -138,16 +140,16 @@ void redirection_out_list(t_elem **list)
             red_out = current->next;
             if (red_out && red_out->next)
             {
-                if (red_out->next && red_out->next->type < SPACE)
+                if (red_out->next && red_out->next->type < S_PACE)
                 {
                     red_out->next->type = REDIR_OUT;
                     current->next = red_out->next;
                     return;
                 }
-                else if (red_out->next->next && red_out->next->type == SPACE)
+                else if (red_out->next->next && red_out->next->type == S_PACE)
                 {
                     red_out2 = red_out->next->next;
-                    if (red_out2->type < SPACE)
+                    if (red_out2->type < S_PACE)
                     {
                         red_out2->type = REDIR_OUT;
                         current->next = red_out2;
@@ -172,16 +174,16 @@ void redirection_in_list(t_elem **list)
             red_out = current->next;
             if (red_out && red_out->next)
             {
-                if (red_out->next && red_out->next->type < SPACE)
+                if (red_out->next && red_out->next->type < S_PACE)
                 {
                     red_out->next->type = REDIR_IN;
                     current->next = red_out->next;
                     return;
                 }
-                else if (red_out->next->next && red_out->next->type == SPACE)
+                else if (red_out->next->next && red_out->next->type == S_PACE)
                 {
                     red_out2 = red_out->next->next;
-                    if (red_out2->type < SPACE)
+                    if (red_out2->type < S_PACE)
                     {
                         red_out2->type = REDIR_IN;
                         current->next = red_out2;
@@ -201,7 +203,7 @@ void herdoc_list(t_elem **list, t_env **env,t_garbage **garbage)
     if (current->next && current->next->type == HEREDOC && !ft_strcmp(current->next->content, "<<"))
     {
         herdoc = current->next;
-        if (herdoc->next && herdoc->next->type < SPACE)
+        if (herdoc->next && herdoc->next->type < S_PACE)
         {
             if (herdoc->next->type == VAR)
                 open_herdoc(&herdoc->next, env, garbage, 1);
@@ -210,9 +212,9 @@ void herdoc_list(t_elem **list, t_env **env,t_garbage **garbage)
             current->next = herdoc->next;
             return;
         }
-        else if (herdoc->next && herdoc->next->type == SPACE)
+        else if (herdoc->next && herdoc->next->type == S_PACE)
         {
-            if (herdoc->next->next && herdoc->next->next->type < SPACE)
+            if (herdoc->next->next && herdoc->next->next->type < S_PACE)
             {
                 if (herdoc->next->next->type == VAR)
                     open_herdoc(&herdoc->next->next, env, garbage, 1);
@@ -229,7 +231,6 @@ void    s_handler(int sig)
 {
     (void)sig;
     close(0);
-    // printf("\n");
 }
 
 void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
@@ -303,16 +304,16 @@ void append_list(t_elem **list)
             red_out = current->next;
             if (red_out && red_out->next)
             {
-                if (red_out->next && red_out->next->type < SPACE)
+                if (red_out->next && red_out->next->type < S_PACE)
                 {
                     red_out->next->type = APPEND;
                     current->next = red_out->next;
                     return;
                 }
-                else if (red_out->next->next && red_out->next->type == SPACE)
+                else if (red_out->next->next && red_out->next->type == S_PACE)
                 {
                     red_out2 = red_out->next->next;
-                    if (red_out2->type < SPACE)
+                    if (red_out2->type < S_PACE)
                     {
                         red_out2->type = APPEND;
                         current->next = red_out2;
