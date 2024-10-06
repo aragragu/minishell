@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/01 17:45:02 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/06 17:57:05 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void expand_var_list(t_elem **list, t_var container, t_garbage **garbage)
             {
                 if (token->next->next && (token->next->next->type == VAR || token->next->next->type == S_QOUTS || token->next->next->type == D_QOUTS))
                 {
+                    if (token->next->next->type == S_QOUTS || token->next->next->type == D_QOUTS)
+                        edit_list(token->next->next, garbage);
                     if (token->next->next->next)
                         token = token->next->next->next;
                     else
@@ -37,6 +39,8 @@ void expand_var_list(t_elem **list, t_var container, t_garbage **garbage)
             {
                 if (token->next && (token->next->type == VAR || token->next->type == S_QOUTS || token->next->type == D_QOUTS))
                 {
+                    if (token->next->type == S_QOUTS || token->next->type == D_QOUTS)
+                        edit_list(token->next, garbage);
                     if (token->next->next)
                         token = token->next->next;
                     else
@@ -108,7 +112,7 @@ void expand_var(t_elem **elem ,t_elem *node, t_env **env, t_garbage **garbage)
 {
     int i = 0;
     char *gtr = node->content;
-    t_elem *chekcer = *elem;
+    t_elem *checker = *elem;
     int flag = 0;
 
     if (gtr[i] == '$')
@@ -140,8 +144,21 @@ void expand_var(t_elem **elem ,t_elem *node, t_env **env, t_garbage **garbage)
                 node->content = NULL;
         }
     }
-    if (node->content && has_a_char(node->content) && ft_strchr(node->content, ' ') && ft_strcmp((*chekcer).content, "export"))
-        ft_split_var(elem, node, garbage);
+    // if (node->content && has_a_char(node->content) && ft_strchr(node->content, ' ') && ft_strcmp((*checker).content, "export"))
+    //     ft_split_var(elem, node, garbage);
+    if (node->content)
+    {
+        if (has_a_char(node->content) && ft_strchr(node->content, ' ') && ft_strcmp((*checker).content, "export"))
+        {
+            if (checker->next && checker->next->type == SPACE)
+            {
+                if (checker->next->next && checker->next->next->type == WORD && ft_strchr(checker->next->next->content, '='))
+                    return ;
+            }
+            else
+                ft_split_var(elem, node, garbage);
+        }
+    }
 }
 
 
