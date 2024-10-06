@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:30:40 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/01 17:45:17 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/06 19:12:13 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,7 @@ void rename_token(t_elem **list)
     t_elem *current = *list;
     while (current)
     {
-        if (current->type < SPACE)
+        if (current->type < S_PACE)
             current->type = WORD;
         current = current->next;
     }
@@ -227,7 +227,7 @@ void concatination(t_elem **list, t_garbage **garbage)
     char *str;
     while (current)
     {
-        if (current && current->type < SPACE)
+        if (current && current->type < S_PACE)
         {
             if (!current->content)
             {
@@ -236,7 +236,7 @@ void concatination(t_elem **list, t_garbage **garbage)
                 continue;
             }
             str = ft_strdup("", garbage);
-            while (current && current->type < SPACE)
+            while (current && current->type < S_PACE)
             {
                 if (current->content)
                     str = ft_strjoin(str, current->content, garbage);
