@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/10/06 18:04:21 by aragragu         ###   ########.fr       */
+=======
+/*   Updated: 2024/10/05 19:12:54 by ykasmi           ###   ########.fr       */
+>>>>>>> 9702c849079b2288453d3d9e878a2718380f9f79
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +58,8 @@ void expand_var_list(t_elem **list, t_var container, t_garbage **garbage)
             token->content = ft_itoa(container.exit_num);
         else if (token && token->type == D_QOUTS)
             expand_d_qouts(&container.env, &token->content, garbage);
+        else if (token && token->type == TILDE)
+            token->content = ft_getenv(container.env, "HOME");
         token = token->next;
     }
 }
@@ -69,8 +75,9 @@ void    fill_env(t_env **env, char **str, t_garbage **garbage)
     j = 0;
 	if (!str || !str[0])
 	{
-        *env = ft_lstnewww(ft_strduppp("PWD"), ft_strduppp("/Users/aragragu/Desktop/parss/parsing"));//protection
-		ft_lstadd_backkk(env, ft_lstnewww(ft_strduppp("SHLVL"), ft_strduppp("1")));
+        *env = ft_lstnewww(ft_strduppp("PWD"), getcwd(NULL, 0));//protection
+		// (*env)->flag2 = 1;
+        ft_lstadd_backkk(env, ft_lstnewww(ft_strduppp("SHLVL"), ft_strduppp("1")));
 		ft_lstadd_backkk(env, ft_lstnewww(ft_strduppp("_"), ft_strduppp("/usr/bin/env")));
 		ft_lstadd_backkk(env, ft_lstnewww(ft_strduppp("OLDPWD"), NULL));
 		return;

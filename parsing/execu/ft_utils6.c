@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:21:52 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/01 16:08:27 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/05 18:09:40 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,20 @@ void	norm_excu_pipe(t_var *var, char **envp)
 
 	if (var->list->argc)
 	{
-		cmd_path = excu_in_path(var->list->argc[0], var);
+		cmd_path = check_valid_path(var->list->cmd, var);
 		if (check_builtins(var->list->cmd))
 		{
 			ft_builtins(var, var->list->cmd, &var->list);
-			exit(0);
-		}
-		else if (cmd_path)
-		{
-			execve(cmd_path, var->list->argc, envp);
-			free(cmd_path);
-		}
-		else if (access(var->list->cmd, X_OK) == 0)
-		{
-			ft_exc2(var);
+			var->exit_num = 0;
 			exit(0);
 		}
 		else
+		{
+			execve(cmd_path, var->list->argc, envp);
 			error_function(var);
+			free(cmd_path);
+			exit (127);
+		}
 	}
 }
 
@@ -45,7 +41,6 @@ void	norm_excu_pipe2(int prev_fd, int i, int num_cmds, int pipefd[2])
 	if (i < num_cmds - 1)
 		dup2(pipefd[1], STDOUT_FILENO);
 	close(pipefd[0]);
-	// close(pipefd[1]);
 }
 
 void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd)

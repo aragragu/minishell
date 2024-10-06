@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:32:21 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/01 13:58:33 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/04 14:28:27 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,9 @@ void	sort_env(t_env **env)
 			tmp = tmp->next;
 		}
 		if (first->value)
-			ft_fprintf(2, "declare -x %s=\"%s\"\n", first->key, first->value);
+			ft_fprintf(1, "declare -x %s=\"%s\"\n", first->key, first->value);
 		else
-			ft_fprintf(2, "declare -x %s\n", first->key);
+			ft_fprintf(1, "declare -x %s\n", first->key);
 		first->flag = 1;
 		j++;
 	}
@@ -158,7 +158,7 @@ void	ft_export(t_var *var, int i, int error)
 								index->value = ft_strjoinnn(index->value, new_val);
 								free(new_val);
 							}
-							free(key);
+							// free(key);
 						}
 						else
 						{
@@ -178,7 +178,7 @@ void	ft_export(t_var *var, int i, int error)
 						}
 						else
 							ft_lstadd_backkk(&var->env, ft_lstnewww(key, new_val));
-						free(key);
+						// free(key);
 					}
 				}
 				else
@@ -189,8 +189,8 @@ void	ft_export(t_var *var, int i, int error)
 					{
 						ft_lstadd_backkk(&var->env, ft_lstnewww(key, NULL));
 					}
-					else
-						free(key);
+					// else
+						// free(key);
 				}
 			}
 			else

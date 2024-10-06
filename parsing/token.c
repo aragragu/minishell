@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/05 21:04:58 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/06 18:15:33 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,12 @@ void read_input(char **env)
 	var.exit_num = 0;
 	char *input;
 	int p[2];
+	var.path = ft_strduppp(_PATH_STDPATH);
 	fill_env(&var.env, env, &garb);
-	p[0] = dup(STDIN_FILENO);
-	p[1] = dup(STDOUT_FILENO);
 	while (1)
 	{
+		p[0] = dup(STDIN_FILENO);
+		p[1] = dup(STDOUT_FILENO);
 		input = readline("➜ minishell💀$ ");
 		if (!input)
 			break;
@@ -50,6 +51,9 @@ void read_input(char **env)
 		concatination(&list, &garbage);
 		handle_redirection(&list, &var.env, &garbage);
 		import_data(&var.list, &list, &garbage);
+		// print_list(&list);
+		// print_cmd(var.list);
+		
 		execution(&var);
 		free_garbage(&garbage);
 		list = NULL;
@@ -57,6 +61,9 @@ void read_input(char **env)
 		var.list = NULL;
 		dup2(p[0], STDIN_FILENO);
 		dup2(p[1], STDOUT_FILENO);
+		close(p[0]);
+		close(p[1]);
+		// var.exit_num = 0;
 	}
 	free_garbage(&garb);
 }
