@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/02 16:13:11 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/05 19:12:54 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void expand_var_list(t_elem **list, t_var container, t_garbage **garbage)
             {
                 if (token->next->next && (token->next->next->type == VAR || token->next->next->type == S_QOUTS || token->next->next->type == D_QOUTS))
                 {
+                    if (token->next->next->type == S_QOUTS || token->next->next->type == D_QOUTS)
+                        edit_list(token->next->next, garbage);
                     if (token->next->next->next)
                         token = token->next->next->next;
                     else
@@ -37,6 +39,8 @@ void expand_var_list(t_elem **list, t_var container, t_garbage **garbage)
             {
                 if (token->next && (token->next->type == VAR || token->next->type == S_QOUTS || token->next->type == D_QOUTS))
                 {
+                    if (token->next->type == S_QOUTS || token->next->type == D_QOUTS)
+                        edit_list(token->next, garbage);
                     if (token->next->next)
                         token = token->next->next;
                     else
@@ -67,8 +71,9 @@ void    fill_env(t_env **env, char **str, t_garbage **garbage)
     j = 0;
 	if (!str || !str[0])
 	{
-        *env = ft_lstnewww(ft_strduppp("PWD"), ft_strduppp("/Users/aragragu/Desktop/parss/parsing"));//protection
-		ft_lstadd_backkk(env, ft_lstnewww(ft_strduppp("SHLVL"), ft_strduppp("1")));
+        *env = ft_lstnewww(ft_strduppp("PWD"), getcwd(NULL, 0));//protection
+		// (*env)->flag2 = 1;
+        ft_lstadd_backkk(env, ft_lstnewww(ft_strduppp("SHLVL"), ft_strduppp("1")));
 		ft_lstadd_backkk(env, ft_lstnewww(ft_strduppp("_"), ft_strduppp("/usr/bin/env")));
 		ft_lstadd_backkk(env, ft_lstnewww(ft_strduppp("OLDPWD"), NULL));
 		return;

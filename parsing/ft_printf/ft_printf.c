@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:50:34 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/28 15:15:52 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/05 19:20:28 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	ft_fprintf(int fd, const char *format, ...)
 
 	i = 0;
 	va_start(ap, format);
-	if (write(fd, "", 0) < 0)  // Writing to the specified file descriptor
+	if (write(fd, "", 0) < 0)
 		return (-1);
 	while (*format)
 	{
@@ -53,11 +53,11 @@ int	ft_fprintf(int fd, const char *format, ...)
 			format++;
 			if (*format == '\0')
 				return (i);
-			print_fd(*format, ap, &i, fd);  // Ensure `print_fd` handles the file descriptor
+			print_fd(*format, ap, &i, fd);
 		}
 		else
 		{
-			ft_putchar_fd(*format, fd);  // Writing characters to the specified file descriptor
+			ft_putchar_fd(*format, fd);
 			i++;
 		}
 		format++;

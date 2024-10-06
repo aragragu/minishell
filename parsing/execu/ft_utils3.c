@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:38:50 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/02 13:22:55 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/05 16:16:36 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	store_env(t_env *envv, char ***env, int i, int len)
 	if (!*env)
 	{
 		perror("Failed to allocate memory for env");
-		exit(EXIT_FAILURE);
+		exit(1);
 	}
 	while (envv)
 	{
@@ -50,7 +50,7 @@ void	store_env(t_env *envv, char ***env, int i, int len)
 		if (!(*env)[i])
 		{
 			perror("Failed to allocate memory for env variable");
-			exit(EXIT_FAILURE);
+			exit(1);
 		}
 		ft_strcpy((*env)[i], envv->key);
 		ft_strcat((*env)[i], "=");
@@ -59,22 +59,6 @@ void	store_env(t_env *envv, char ***env, int i, int len)
 		i++;
 	}
 	(*env)[i] = NULL;
-}
-
-void	ft_exc2(t_var *var)
-{
-	char	**envp;
-	pid_t	pid;
-
-	store_env(var->env, &envp, 0, 0);
-	pid = fork();
-	if (pid == 0)
-	{
-		if (execve(var->list->cmd, var->list->argc, envp) == -1)
-			perror(var->list->argc[0]);
-	}
-	ft_free(envp);
-	waitpid(pid, NULL, 0);
 }
 
 void	ft_exc(t_var *var)
@@ -89,18 +73,16 @@ void	ft_exc(t_var *var)
 	{
 		if (!var->list->argc[0][0])
 		{
-			ft_fprintf(2, "%s: command not found\n", var->list->argc[0]);
-			exit(0);
+			error_function(var);
+			exit(127);
 		}
-		exec_path = excu_in_path(var->list->argc[0], var);
-		if (exec_path)
+		exec_path = check_valid_path(var->list->cmd, var);
 		{
-			if (execve(exec_path, var->list->argc, envp) == -1)
-				perror(var->list->argc[0]);
+			execve(exec_path, var->list->argc, envp);
 			free(exec_path);
+			error_function(var);
+			exit(127);
 		}
-		else
-			ft_fprintf(2, "%s: command not found\n", var->list->argc[0]);
 	}
 	ft_free(envp);
 	waitpid(pid, NULL, 0);
