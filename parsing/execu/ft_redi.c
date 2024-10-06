@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_redi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 11:51:38 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/01 17:28:31 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/06 18:16:02 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	red_out_in(t_redir *redir, int fd)
 		if (fd < 0)
 		{
 			perror("open failed");
-			exit(EXIT_FAILURE);
+			exit(1);
 		}
 		dup2(fd, STDOUT_FILENO);
 		close(fd);
@@ -57,7 +57,7 @@ void	red_out_in(t_redir *redir, int fd)
 		if (fd < 0)
 		{
 			perror("open failed");
-			exit(EXIT_FAILURE);
+			exit(1);
 		}
 		dup2(fd, STDIN_FILENO);
 		close(fd);
@@ -72,19 +72,21 @@ void	red_herd_appen(t_redir *redir, int fd)
 		if (fd < 0)
 		{
 			perror("open failed");
-			exit(EXIT_FAILURE);
+			exit(1);
 		}
 		dup2(fd, STDOUT_FILENO);
 		close(fd);
 	}
 	else if (redir->type == HEREDOC)
 	{
+		redir->fd = open(redir->value, O_RDONLY);
 		if (redir->fd < 0)
 		{
 			perror("open failed");
-			exit(EXIT_FAILURE);
+			exit(1);
 		}
 		dup2(redir->fd, STDIN_FILENO);
+		unlink(redir->value);
 		close(redir->fd);
 	}
 }
@@ -98,9 +100,15 @@ void	handle_redirection2(t_var *var)
 	redir = var->list->redirection;
 	while (redir)
 	{
+		if (redir->value == NULL)
+		{
+			ft_fprintf(2, "minishell: ambiguous redirect\n");
+			var->exit_num = 1;
+			exit(1);
+		}
 		red_out_in(redir, fd);
 		red_herd_appen(redir, fd);
 		redir = redir->next;
 	}
-	close(fd);
+	var->exit_num = 0;
 }

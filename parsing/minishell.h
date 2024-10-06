@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/01 17:44:37 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/05 19:19:35 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@
 #include <limits.h>
 #include <sys/wait.h>
 #include <string.h>
+#include <paths.h>
+#include <libc.h>
+#include <dirent.h>
 
 #define RED     "\x1b[31m"
 #define GREEN   "\e[1;32m"
@@ -47,6 +50,7 @@ typedef enum    s_token
 	S_QOUTS,        		// ' '
 	VAR,            		// $ASJASD
 	DOUBLE_DLR,				// $$
+	TILDE,					// ~
 	EXIT_STATUS,			// $?
 	SPACE,					// "_"
 	PIPE,           		// |
@@ -56,6 +60,7 @@ typedef enum    s_token
 	APPEND,         		// >>
 	OPENING_PARENTHESIS,	// '('
 	CLOSING_PARENTHESIS,	// ')'
+	AND,					// &
 	HASH					// #
 	
 }                t_token;
@@ -65,6 +70,7 @@ typedef struct   s_env
 	char            *key;
 	char			*value;
 	int				flag;
+	int				flag2;
 	struct s_env	*next;
 }                   t_env;
 
@@ -106,13 +112,14 @@ typedef struct s_var
 	t_env			*env;
 	int				flag;
 	void			*ptr;
+	char			*path;
 	int				exit_num;
 }					t_var;
 ///////////////////////////////////////
 
 
 
-
+struct stat f_stat;
 
 
 
@@ -192,8 +199,10 @@ t_elem		*fill_argc(t_cmd  **cmd, t_elem **list, t_garbage **garbage);
 void		expand_herdoc(char **str, t_env **env, t_garbage **garbage);
 void		concatination(t_elem **list, t_garbage **garbage);
 int			is_special_character(char c);
-int ft_strlen2(char **str);
-void    ft_split_var(t_elem **elem, t_elem *node, t_garbage **garbage);
+int 		ft_strlen2(char **str);
+void    	ft_split_var(t_elem **elem, t_elem *node, t_garbage **garbage);
+int 	has_invalid_logical_operator1(t_elem **list);	
+int has_invalid_logical_operator2(t_elem **list);
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -210,7 +219,6 @@ int			ft_digits(char c);
 char		*ft_cat(char *str, int len, int flag);
 void		pwd_upd_old(t_env **env, char *key, char *val);
 int			check_builtins(char *str);
-void		init_env(t_env **envr, char **env);
 char		*ft_strduppp(char *s1);
 void		ft_builtins(t_var *var, char *str, t_cmd **cmd);
 void		ft_lstadd_backkk(t_env **lst, t_env *new);
@@ -227,12 +235,12 @@ char		*build_path(char *dir, char *filename);
 char		*excu_in_path(char *filename, t_var *var);
 void		ft_exc(t_var *var);
 char		*ft_strchrr(char *str, int c);
-int			check_valid_path(char *filename, t_var *var);
+char		*check_valid_path(char *filename, t_var *var);
 char		*ft_getenv(t_env *env, char *key);
 char		*ft_strcat(char *dest, char *src);
 char		*ft_strcpy(char *dest, char *src);
-void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd);
-void	store_env(t_env *envv, char ***env, int i, int len);
+void		execute_pipe(int num_cmds, t_var *var, int i, int prev_fd);
+void		store_env(t_env *envv, char ***env, int i, int len);
 void		ft_exc2(t_var *var);
 int			contains_red(t_var *var);
 void		handle_redirection2(t_var *var);
@@ -244,16 +252,17 @@ int			ft_putnbr_hexa_fd(unsigned long n, int a, int fd);
 void		execution(t_var *var);
 int			ft_putstr_fd(char *s, int fd);
 int			ft_putchar_fd(char c, int fd);
-void	error_function(t_var *var);
-void	error_fork(pid_t pid);
-void	waitpid_func(void);
-void	red_herd_appen(t_redir *redir, int fd);
-void	red_out_in(t_redir *redir, int fd);
-int	contains_red(t_var *var);
-void	norm_excu_pipe3(t_var **var);
-int	check_builtins(char *str);
-void	ft_builtins(t_var *var, char *str, t_cmd **cmd);
-int	count_env(t_env *envv);
-char	**ft_split2(char const *s, char c);
+void		error_function(t_var *var);
+void		error_fork(pid_t pid);
+void		waitpid_func(void);
+void		red_herd_appen(t_redir *redir, int fd);
+void		red_out_in(t_redir *redir, int fd);
+int			contains_red(t_var *var);
+void		norm_excu_pipe3(t_var **var);
+int			check_builtins(char *str);
+void		ft_builtins(t_var *var, char *str, t_cmd **cmd);
+int			count_env(t_env *envv);
+char		*norm_excu_in_path(char *filename, t_var *var);
+int	is_num(const char *str);
 
 #endif

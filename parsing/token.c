@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/01 17:44:17 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/06 18:15:33 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,12 @@ void read_input(char **env)
 	var.exit_num = 0;
 	char *input;
 	int p[2];
+	var.path = ft_strduppp(_PATH_STDPATH);
 	fill_env(&var.env, env, &garb);
-	p[0] = dup(STDIN_FILENO);
-	p[1] = dup(STDOUT_FILENO);
 	while (1)
 	{
+		p[0] = dup(STDIN_FILENO);
+		p[1] = dup(STDOUT_FILENO);
 		input = readline("➜ minishell💀$ ");
 		if (!input)
 			break;
@@ -50,6 +51,9 @@ void read_input(char **env)
 		concatination(&list, &garbage);
 		handle_redirection(&list, &var.env, &garbage);
 		import_data(&var.list, &list, &garbage);
+		// print_list(&list);
+		// print_cmd(var.list);
+		
 		execution(&var);
 		free_garbage(&garbage);
 		list = NULL;
@@ -57,6 +61,9 @@ void read_input(char **env)
 		var.list = NULL;
 		dup2(p[0], STDIN_FILENO);
 		dup2(p[1], STDOUT_FILENO);
+		close(p[0]);
+		close(p[1]);
+		// var.exit_num = 0;
 	}
 	free_garbage(&garb);
 }
@@ -184,17 +191,10 @@ void is_a_string(t_elem **list, char *input, int index, t_garbage **garbage)
 
 void edit_list(t_elem *list, t_garbage **garbage)
 {
-	char *str;
 	if (list && list->type == D_QOUTS)
-	{
-		str = ft_strtrim(list->content, "\"", garbage);
-		list->content = str;
-	}
-	if (list && list->type == S_QOUTS)
-	{
-		str = ft_strtrim(list->content, "\'", garbage);
-		list->content = str;
-	}
+		list->content = ft_strtrim(list->content, "\"", garbage);
+	else if (list && list->type == S_QOUTS)
+		list->content = ft_strtrim(list->content, "\'", garbage);
 }
 
 int is_special_character(char c)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:29:24 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/01 13:13:00 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/06 18:15:41 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ void handle_redirection(t_elem **list, t_env **env,t_garbage **garbage)
         starting_red(list, env, garbage);
     while (current)
     {
-        if (current->next && current->next->type == REDIR_OUT)
+        // if (current->next)
+        //     edit_list(current, garbage);
+         if (current->next && current->next->type == REDIR_OUT)
             redirection_out_list(&current);
         else if (current->next && current->next->type == REDIR_IN)
             redirection_in_list(&current);
@@ -223,6 +225,13 @@ void herdoc_list(t_elem **list, t_env **env,t_garbage **garbage)
     }
 }
 
+void    s_handler(int sig)
+{
+    (void)sig;
+    close(0);
+    // printf("\n");
+}
+
 void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
 {
     static int i;
@@ -234,7 +243,8 @@ void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
     char *temp;
     char *file_name = (ft_strjoin(ft_strdup("tmp_", garbage), ft_itoa(++i), garbage));
     int fd = 0;
-    
+    signal(SIGINT, s_handler);
+
     while (1)
     {
         line = readline(">");
@@ -251,8 +261,8 @@ void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
             write(fd, buffer, ft_strlen(buffer));
             close (fd);
             fd = open(file_name, O_RDONLY);
-            unlink(file_name);
-            // close(fd);
+            // unlink(file_name);
+            close(fd);
             break;
         }
         if (!*line)
@@ -273,11 +283,9 @@ void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
             break;
         buffer = temp;
     }
-    // printf("===[%d]====\n", fd);
     current->content = file_name;
     current->type = HEREDOC;
     current->fd = fd;
-    // printf("===[%d]====\n", current->fd);
 }
 
 void append_list(t_elem **list)
