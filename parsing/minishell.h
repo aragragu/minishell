@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/07 20:43:58 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/07 21:06:58 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 #include <paths.h>
 #include <libc.h>
 #include <dirent.h>
+#include <termios.h>
 
 #define RED     "\x1b[31m"
 #define GREEN   "\e[1;32m"
@@ -42,6 +43,8 @@
 // #undef REDIR_OUT //remove if u are using macos
 // #undef HEREDOC //remove if u are using macos
 // #undef APPEND //remove if u are using macos
+
+extern int g_exit_status;
 
 typedef enum    s_token
 {
@@ -102,7 +105,6 @@ typedef	struct c_cmd
 	char			*cmd;
 	char			**argc;
 	t_redir			*redirection;
-	int				fd[2];
 	struct c_cmd	*next;
 }					t_cmd;
 
@@ -115,21 +117,28 @@ typedef struct s_var
 	void			*ptr;
 	char			*path;
 	int				exit_num;
+	t_garbage		*garbage;
+	t_garbage		*garb;
+	t_elem			*linked_list;
 }					t_var;
 ///////////////////////////////////////
 
 
 
 
+struct stat f_stat;
 
 
-char		*ft_itoa(int nb);
+
+
+
+char		*ft_itoa(int nb, t_garbage **garbage);
 char		**ft_split(char const *s, char c, t_garbage **garbage);
 void		ft_sign(char c, int *sign);
 t_garbage	*ft_lstnew_garbage(void *content);
 t_elem		*ft_lstnew(void *content, t_token type, t_garbage **garbage);
 t_elem		*ft_lstlast(t_elem *lst);
-t_elem 	*token_input(t_elem **list, char **in,t_var *var, t_garbage **garbage);
+t_elem		*token_input(t_elem **list, char **input, t_garbage **garbage);
 t_elem		*token_quots(t_elem **list, char *in, t_garbage **garbage);
 t_env		*ft_lstlast2(t_env *lst);
 void    	fill_env(t_env **env, char **str, t_garbage **garbage);
@@ -138,7 +147,7 @@ void 		ft_lstadd_back_garbage(t_garbage **lst, t_garbage *new);
 void		ft_lstadd_back(t_elem **lst, t_elem *new);
 int			ft_lstsize(t_elem *lst);
 void		read_input(char **env);
-int			sysntax_error_checker(t_garbage **garbage, char *str, t_elem **list);
+int			sysntax_error_checker(t_garbage **garbage, char **str, t_elem **list);
 int			is_witheS_PACE(char c);
 int			has_unclosed_quots(char *str);
 void		is_a_word(t_elem **list, char *input, int index, t_garbage **garbage);
@@ -199,15 +208,19 @@ void		concatination(t_elem **list, t_garbage **garbage);
 int			is_special_character(char c);
 int 		ft_strlen2(char **str);
 void    	ft_split_var(t_elem **elem, t_elem *node, t_garbage **garbage);
-int 	has_invalid_logical_operator1(t_elem **list);	
-int has_invalid_logical_operator2(t_elem **list);
-void	signal_handler(int sig);
+int 		has_invalid_logical_operator1(t_elem **list);	
+int 		has_invalid_logical_operator2(t_elem **list);
+void		signal_handler(int sig);
+void		token_input_1(t_elem **list, char *input, int i, t_garbage **garbage);
+void		token_input_2(t_elem **list, char *input, int i, t_garbage **garbage);
+void		initialize_variables(t_var *var, char **env);
+int			fill_linked_list(char *input, int *p, t_var *var);
 
 //////////////////////////////////////////////////////////////////////////////
 
 void		ft_echo(t_var *var);
 void		ft_export(t_var *var, int i, int error);
-void	ft_pwd(t_var *var);
+void		ft_pwd(void);
 void		ft_exit(t_var *var);
 void		ft_cd(t_var *var);
 void		ft_unset(t_var *var, int i);
@@ -244,7 +257,7 @@ void		ft_exc2(t_var *var);
 int			contains_red(t_var *var);
 void		handle_redirection2(t_var *var);
 int			calculate_cmd(t_var *var);
-void	ft_fprintf(int fd, const char *format, ...);
+int			ft_fprintf(int fd, const char *format, ...);
 int			ft_putnbr_fd(int n, int fd);
 int			ft_putnbr_unsd_fd(unsigned int n, int fd);
 int			ft_putnbr_hexa_fd(unsigned long n, int a, int fd);
@@ -253,7 +266,7 @@ int			ft_putstr_fd(char *s, int fd);
 int			ft_putchar_fd(char c, int fd);
 void		error_function(t_var *var);
 void		error_fork(pid_t pid);
-void		waitpid_func(t_var *var);
+void		waitpid_func(void);
 void		red_herd_appen(t_redir *redir, int fd);
 void		red_out_in(t_redir *redir, int fd);
 int			contains_red(t_var *var);
@@ -262,8 +275,6 @@ int			check_builtins(char *str);
 void		ft_builtins(t_var *var, char *str, t_cmd **cmd);
 int			count_env(t_env *envv);
 char		*norm_excu_in_path(char *filename, t_var *var);
-int			is_num(const char *str);
-char		*search_in_path(char *start, char *filename, t_var *var);
-void		update_exit_status(t_var *var, int status);
+int	is_num(const char *str);
 
 #endif

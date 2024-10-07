@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 13:19:54 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/07 20:40:33 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/07 21:05:44 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int sysntax_error_checker(t_garbage **garbage, char *str, t_elem **list)
+int sysntax_error_checker(t_garbage **garbage, char **str, t_elem **list)
 {
-    if (str && *list)
+    if (*str && *list)
     {
-        if (!has_unclosed_quots(str))
+        if (!has_unclosed_quots(*str))
         {
             my_perror(garbage, list, "Error: Unclosed quotes\n");
             return (0);
@@ -60,6 +60,25 @@ int sysntax_error_checker(t_garbage **garbage, char *str, t_elem **list)
     return (1);
 }
 
+int has_unclosed_quots(char *str)
+{
+    int i = 0;
+    int sign = 0;
+    while (str && str[i])
+    {
+        while (str[i] && is_witheS_PACE(str[i]))
+            i++;
+        if (str[i])
+        {
+            ft_sign(str[i], &sign);
+            i++;
+        }
+    }
+    if (sign == 1 || sign == 2)
+        return (0);
+    return (1);
+}
+
 int is_witheS_PACE(char c)
 {
     if ((c >= 9 && c <= 13) || c == 32)
@@ -74,21 +93,6 @@ int is_alphanumeric(char c)
     return 0;
 }
 
-int has_unclosed_quots(char *str)
-{
-    int i = 0;
-    int sign = 0;
-    while (str[i])
-    {
-        while (str[i] && is_witheS_PACE(str[i]))
-            i++;
-        ft_sign(str[i], &sign);
-        i++;
-    }
-    if (sign == 1 || sign == 2)
-        return (0);
-    return (1);
-}
 
 int has_invalid_redirection_in(t_elem **list)
 {

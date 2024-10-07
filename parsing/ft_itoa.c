@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 14:51:26 by aragragu          #+#    #+#             */
-/*   Updated: 2024/08/12 11:19:08 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/07 20:51:28 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static	int	len_nem(long nb)
 	return (i);
 }
 
-char	*ft_itoa(int nb)
+char	*ft_itoa(int nb, t_garbage **garbage)
 {
 	long		xd;
 	char		*num;
@@ -41,6 +41,7 @@ char	*ft_itoa(int nb)
 	num = (char *)malloc(sizeof(char) * (i + 1));
 	if (!num)
 		return (NULL);
+	ft_lstadd_back_garbage(garbage, ft_lstnew_garbage(num));
 	num[i] = '\0';
 	if (xd == 0)
 		num[0] = '0';
