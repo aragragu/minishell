@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:21:52 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/05 18:09:40 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/07 20:18:11 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,13 @@ void	norm_excu_pipe(t_var *var, char **envp)
 		if (check_builtins(var->list->cmd))
 		{
 			ft_builtins(var, var->list->cmd, &var->list);
-			var->exit_num = 0;
-			exit(0);
+			exit(var->exit_num);
 		}
 		else
 		{
 			execve(cmd_path, var->list->argc, envp);
 			error_function(var);
 			free(cmd_path);
-			exit (127);
 		}
 	}
 }
@@ -42,11 +40,12 @@ void	norm_excu_pipe2(int prev_fd, int i, int num_cmds, int pipefd[2])
 		dup2(pipefd[1], STDOUT_FILENO);
 	close(pipefd[0]);
 }
-
+ 
 void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd)
 {
 	int		pipefd[2];
 	char	**envp;
+	t_cmd	*list = var->list;
 	pid_t	pid;
 
 	store_env(var->env, &envp, 0, 0);
@@ -55,7 +54,8 @@ void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd)
 		if (i < num_cmds - 1)
 			pipe(pipefd);
 		pid = fork();
-		error_fork(pid);
+		if (pid == -1)
+			return (error_fork(pid));
 		if (pid == 0)
 		{
 			norm_excu_pipe2(prev_fd, i, num_cmds, pipefd);
@@ -63,11 +63,9 @@ void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd)
 			norm_excu_pipe(var, envp);
 		}
 		close(pipefd[1]);
-		if (i != 0)
-			close(prev_fd);
-		prev_fd = pipefd[0];
-		var->list = var->list->next;
+		(i != 0) && (close(prev_fd), 0);
+		(prev_fd = pipefd[0]) && (list = list->next, 0);
 	}
 	ft_free(envp);
-	waitpid_func();
+	waitpid_func(var);
 }

@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:33:35 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/03 13:58:47 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/07 17:49:15 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	ft_env(t_var *var)
 	if (var->list->argc[1])
 	{
 		printf("env: %s: No such file or directory\n", var->list->argc[1]);
+		var->exit_num = 127;
 		return ;
 	}
 	while (tmp)
@@ -57,4 +58,5 @@ void	ft_env(t_var *var)
 			printf("%s=%s\n", tmp->key, tmp->value);
 		tmp = tmp->next;
 	}
+	var->exit_num = 0;
 }

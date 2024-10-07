@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:33:11 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/01 17:31:36 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/07 17:46:09 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,5 @@ void	ft_echo(t_var *var)
 	}
 	if (newline)
 		ft_putstr("\n");
+	var->exit_num = 0;
 }
