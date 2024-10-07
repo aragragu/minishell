@@ -6,7 +6,11 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:38:50 by ykasmi            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/10/07 19:38:44 by aragragu         ###   ########.fr       */
+=======
+/*   Updated: 2024/10/07 19:32:11 by ykasmi           ###   ########.fr       */
+>>>>>>> b61320de99822ae6ba0a7134ad3676fcf442c0f1
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +65,14 @@ void	store_env(t_env *envv, char ***env, int i, int len)
 	(*env)[i] = NULL;
 }
 
+void	update_exit_status(t_var *var, int status)
+{
+	if (WIFEXITED(status))
+		var->exit_num = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		var->exit_num = 128 + WTERMSIG(status);
+}
+
 void	ft_exc(t_var *var)
 {
 	char	*exec_path;
@@ -81,9 +93,9 @@ void	ft_exc(t_var *var)
 			execve(exec_path, var->list->argc, envp);
 			free(exec_path);
 			error_function(var);
-			exit(127);
 		}
 	}
-	ft_free(envp);
-	waitpid(pid, NULL, 0);
+	// ft_free(envp);
+	waitpid(pid, &var->exit_num, 0);
+	update_exit_status(var, var->exit_num);
 }

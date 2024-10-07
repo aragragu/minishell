@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:33:33 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/05 18:15:57 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/07 14:27:27 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,11 @@ void	ft_unset(t_var *var, int i)
 		if (var->list->argc[i][0] && (var->list->argc[i][0] == '_' \
 			|| ft_isalpha(var->list->argc[i][0])))
 		{
-			if (ft_strcmp(var->list->argc[i], "PATH"))
+			if (!ft_strcmp(var->list->argc[i], "PATH"))
+			{
+				free(var->path);
 				var->path = NULL;
+			}
 			norm_unset_3(curr, var, prev, i);
 			norm_unset_2(&prev, &curr, &var);
 		}

@@ -6,7 +6,11 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:53:26 by ykasmi            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/10/07 19:39:21 by aragragu         ###   ########.fr       */
+=======
+/*   Updated: 2024/10/07 15:56:29 by ykasmi           ###   ########.fr       */
+>>>>>>> b61320de99822ae6ba0a7134ad3676fcf442c0f1
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,29 +61,18 @@ char	*build_path(char *dir, char *filename)
 	return (full_path);
 }
 
-char	*excu_in_path(char *filename, t_var *var)
+char	*search_in_path(char *start, char *filename, t_var *var)
 {
-	char	*path;
-	char	*start;
 	char	*end;
 	char	*full_path;
 
-	path = ft_getenv(var->env, "PATH");
-	if (!path)
-	{
-		if (var->path == NULL)
-			return (NULL);
-		path = var->path;
-	}
-	var->flag = 0;
-	start = ft_strduppp(path);
 	end = ft_strchrr(start, ':');
 	while (end || (*start != '\0'))
 	{
 		if (!end)
 			end = ft_strchrr(start, '\0');
 		if (!end || !end[0])
-			return (free(var->ptr), NULL);
+			return (NULL);
 		*end = '\0';
 		full_path = build_path(start, filename);
 		if (var->flag == 0)
@@ -88,12 +81,12 @@ char	*excu_in_path(char *filename, t_var *var)
 			var->ptr = start;
 		}
 		if (access(full_path, X_OK) == 0)
-			return (free(var->ptr), full_path);
+			return (full_path);
 		free(full_path);
 		start = end + 1;
 		end = ft_strchrr(start, ':');
 	}
-	return (free(var->ptr), free(start), NULL);
+	return (NULL);
 }
 
 int	calculate_cmd(t_var *var)

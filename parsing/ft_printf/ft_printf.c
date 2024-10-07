@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:50:34 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/05 19:20:28 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/07 18:18:30 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	print_fd(char c, va_list ap, int *s, int fd)
 		*s += ft_putchar_fd(c, fd);
 }
 
-int	ft_fprintf(int fd, const char *format, ...)
+void	ft_fprintf(int fd, const char *format, ...)
 {
 	int		i;
 	va_list	ap;
@@ -45,14 +45,14 @@ int	ft_fprintf(int fd, const char *format, ...)
 	i = 0;
 	va_start(ap, format);
 	if (write(fd, "", 0) < 0)
-		return (-1);
+		return ;
 	while (*format)
 	{
 		if (*format == '%')
 		{
 			format++;
 			if (*format == '\0')
-				return (i);
+				return ;
 			print_fd(*format, ap, &i, fd);
 		}
 		else
@@ -63,5 +63,4 @@ int	ft_fprintf(int fd, const char *format, ...)
 		format++;
 	}
 	va_end(ap);
-	return (i);
 }

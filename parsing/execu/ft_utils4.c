@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 11:58:26 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/09/30 12:14:06 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/07 18:24:22 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	ft_builtins(t_var *var, char *str, t_cmd **cmd)
 	else if (!ft_strcmp(str, "exit"))
 		ft_exit(var);
 	else if (!ft_strcmp(str, "pwd"))
-		ft_pwd();
+		ft_pwd(var);
 	else if (!ft_strcmp(str, "cd"))
 		ft_cd(var);
 	else if (!ft_strcmp(str, "unset"))
