@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/07 18:04:19 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/07 20:38:47 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void expand_var_list(t_elem **list, t_var container, t_garbage **garbage)
         edit_list(token, garbage);
         if (token && token->type == HEREDOC)
         {
-            if (token->next && token->next->type == SPACE)
+            if (token->next && token->next->type == S_PACE)
             {
                 if (token->next->next && (token->next->next->type == VAR || token->next->next->type == S_QOUTS || token->next->next->type == D_QOUTS))
                 {
@@ -115,7 +115,7 @@ void expand_var(t_elem **elem ,t_elem *node, t_env **env, t_garbage **garbage)
 {
     int i = 0;
     char *gtr = node->content;
-    t_elem *chekcer = *elem;
+    t_elem *checker = *elem;
     int flag = 0;
 
     if (gtr[i] == '$')
@@ -147,8 +147,21 @@ void expand_var(t_elem **elem ,t_elem *node, t_env **env, t_garbage **garbage)
                 node->content = NULL;
         }
     }
-    if (node->content && has_a_char(node->content) && ft_strchr(node->content, ' ') && ft_strcmp((*chekcer).content, "export"))
-        ft_split_var(elem, node, garbage);
+    if (node->content)
+    {
+        if (has_a_char(node->content) && ft_strchr(node->content, ' ') && !ft_strcmp((*checker).content, "export"))
+        {
+            if (checker->next && checker->next->type == S_PACE)
+            {
+                if (checker->next->next && checker->next->next->type == VAR && !ft_strchr(checker->next->next->content, '='))
+                    ft_split_var(elem, node, garbage);
+                else
+                    return;
+            }
+        }
+        else
+            ft_split_var(elem, node, garbage);
+    }
 }
 
 
@@ -201,13 +214,13 @@ t_elem *token_quots(t_elem **list, char *in, t_garbage **garbage)
 
     while (in && in[i])
     {
-        if (in[i] && is_withespace(in[i]))
-            ft_lstadd_back(list, ft_lstnew(ft_strdup(" ", garbage), SPACE, garbage));
+        if (in[i] && is_witheS_PACE(in[i]))
+            ft_lstadd_back(list, ft_lstnew(ft_strdup(" ", garbage), S_PACE, garbage));
         else if (in[i] == '$' && in[i + 1] == '$')
             ft_lstadd_back(list, ft_lstnew(ft_strdup("$$", garbage), DOUBLE_DLR, garbage));
         else if (in[i] == '$')
             is_a_var(list, in, i, garbage);
-        else if (in[i] && !is_withespace(in[i]) && in[i] != '$')
+        else if (in[i] && !is_witheS_PACE(in[i]) && in[i] != '$')
             is_a_string(list, in, i, garbage);
         i += ft_strlen(ft_lstlast(*list)->content);
     }
@@ -227,7 +240,7 @@ void    ft_split_var(t_elem **elem, t_elem *node, t_garbage **garbage)
     {
         ft_lstadd_back(&new_list, ft_lstnew(str[j], WORD, garbage));
         if (j != (i - 1))
-            ft_lstadd_back(&new_list, ft_lstnew(ft_strdup(" ", garbage), SPACE, garbage));
+            ft_lstadd_back(&new_list, ft_lstnew(ft_strdup(" ", garbage), S_PACE, garbage));
         j++;
     }
     while (current)

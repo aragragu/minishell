@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:02:07 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/07 12:10:15 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/07 20:38:56 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ const char* get_token_type_string(t_token type) {
         case S_QOUTS: return "S_QOUTS";
         case VAR: return "VAR";
         case DOUBLE_DLR: return "DOUBLE_DLR";
-        case SPACE: return "SPACE";
+        case S_PACE: return "S_PACE";
         case PIPE: return "PIPE";
         case REDIR_IN: return "REDIR_IN";
         case REDIR_OUT: return "REDIR_OUT";

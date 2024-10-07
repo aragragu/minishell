@@ -6,12 +6,24 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/07 19:58:10 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/07 20:40:47 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	signal_handler(int sig)
+{
+	if (sig == SIGINT)
+	{
+		write(1, "\n", 1);
+		rl_replace_line("", 0);
+        rl_on_new_line();
+        rl_redisplay();
+	}
+	if (sig == SIGQUIT)
+		return ;
+}
 void read_input(char **env)
 {
 	t_elem *list = NULL;
@@ -25,6 +37,7 @@ void read_input(char **env)
 	// int p[2];
 	var.path = ft_strduppp(_PATH_STDPATH);
 	fill_env(&var.env, env, &garb);
+	rl_catch_signals = 0;
 	while (1)
 	{
 		// p[0] = dup(STDIN_?_FILENO);
@@ -67,6 +80,7 @@ void read_input(char **env)
 	free_garbage(&garb);
 }
 
+
 int not_special(char c)
 {
 	if (c == '|' || c == '>' || c == '<' || c == '$' || c == '\"' || c == '\'' || c == ' ')
@@ -81,12 +95,12 @@ t_elem *token_input(t_elem **list, char **in,t_var *var, t_garbage **garbage)
     input = ft_strtrim(*in, " \t\n\v\f\r", garbage);
     while (input && input[i])
     {
-        if (input[i] && is_withespace(input[i]))
+        if (input[i] && is_witheS_PACE(input[i]))
         {
-            while (input[i] && is_withespace(input[i]))
+            while (input[i] && is_witheS_PACE(input[i]))
                 i++;
             i--;
-            ft_lstadd_back(list, ft_lstnew(ft_strdup(" ", garbage), SPACE, garbage));
+            ft_lstadd_back(list, ft_lstnew(ft_strdup(" ", garbage), S_PACE, garbage));
         }
         else if (input[i] == '>' && input[i + 1] == '>')
             ft_lstadd_back(list, ft_lstnew(ft_strdup(">>", garbage), APPEND, garbage));
@@ -130,7 +144,7 @@ void is_a_word(t_elem **list, char *input, int index, t_garbage **garbage)
 {
 	char *word;
 	int len = 0;
-	while (input[index + len] && not_special(input[index + len]) && !is_withespace(input[index + len]))
+	while (input[index + len] && not_special(input[index + len]) && !is_witheS_PACE(input[index + len]))
 		len++;
 	word = ft_substr(input, index, len, garbage);
 	ft_lstadd_back(list, ft_lstnew(word, WORD, garbage));
@@ -182,7 +196,7 @@ void is_a_string(t_elem **list, char *input, int index, t_garbage **garbage)
 {
 	char *word;
 	int len = 0;
-	while (input[index + len] && input[index + len] != '$' && !is_withespace(input[index + len]))
+	while (input[index + len] && input[index + len] != '$' && !is_witheS_PACE(input[index + len]))
 		len++;
 	word = ft_substr(input, index, len, garbage);
 	ft_lstadd_back(list, ft_lstnew(word, WORD, garbage));
@@ -192,7 +206,7 @@ void edit_list(t_elem *list, t_garbage **garbage)
 {
 	if (list && list->type == D_QOUTS)
 		list->content = ft_strtrim(list->content, "\"", garbage);
-	if (list && list->type == S_QOUTS)
+	else if (list && list->type == S_QOUTS)
 		list->content = ft_strtrim(list->content, "\'", garbage);
 }
 

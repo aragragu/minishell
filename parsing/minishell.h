@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/07 19:13:47 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/07 20:40:19 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 
 // #define malloc(X) NULL
 
-// #undef SPACE //remove if u are using macos
+// #undef S_PACE //remove if u are using macos
 // #undef PIPE //remove if u are using macos
 // #undef REDIR_IN //remove if u are using macos
 // #undef REDIR_OUT //remove if u are using macos
@@ -52,7 +52,7 @@ typedef enum    s_token
 	DOUBLE_DLR,				// $$
 	TILDE,					// ~
 	EXIT_STATUS,			// $?
-	SPACE,					// "_"
+	S_PACE,					// "_"
 	PIPE,           		// |
 	REDIR_IN,       		// <
 	REDIR_OUT,      		// >
@@ -139,7 +139,7 @@ void		ft_lstadd_back(t_elem **lst, t_elem *new);
 int			ft_lstsize(t_elem *lst);
 void		read_input(char **env);
 int			sysntax_error_checker(t_garbage **garbage, char *str, t_elem **list);
-int			is_withespace(char c);
+int			is_witheS_PACE(char c);
 int			has_unclosed_quots(char *str);
 void		is_a_word(t_elem **list, char *input, int index, t_garbage **garbage);
 void		is_a_quot(t_elem **list, char *input, int index, t_garbage **garbage);
@@ -201,6 +201,7 @@ int 		ft_strlen2(char **str);
 void    	ft_split_var(t_elem **elem, t_elem *node, t_garbage **garbage);
 int 	has_invalid_logical_operator1(t_elem **list);	
 int has_invalid_logical_operator2(t_elem **list);
+void	signal_handler(int sig);
 
 //////////////////////////////////////////////////////////////////////////////
 
