@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/05 19:11:50 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/07 19:58:10 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,12 @@ void read_input(char **env)
 	var.list = NULL;
 	var.exit_num = 0;
 	char *input;
-	int p[2];
+	// int p[2];
 	var.path = ft_strduppp(_PATH_STDPATH);
 	fill_env(&var.env, env, &garb);
 	while (1)
 	{
-		p[0] = dup(STDIN_FILENO);
-		p[1] = dup(STDOUT_FILENO);
+		// p[0] = dup(STDIN_?_FILENO);
 		input = readline("➜ minishell💀$ ");
 		if (!input)
 			break;
@@ -39,7 +38,7 @@ void read_input(char **env)
 		}
 		ft_lstadd_back_garbage(&garbage, ft_lstnew_garbage(input));
 		add_history(input);
-		list = token_input(&list, &input, &garbage);
+		list = token_input(&list, &input, &var, &garbage);
 		if (!list)
 			continue;
 		if (!sysntax_error_checker(&garbage, input, &list))
@@ -53,16 +52,16 @@ void read_input(char **env)
 		import_data(&var.list, &list, &garbage);
 		// print_list(&list);
 		// print_cmd(var.list);
-		
-		execution(&var);
+		if (list)
+			execution(&var);
 		free_garbage(&garbage);
 		list = NULL;
 		garbage = NULL;
 		var.list = NULL;
-		dup2(p[0], STDIN_FILENO);
-		dup2(p[1], STDOUT_FILENO);
-		close(p[0]);
-		close(p[1]);
+		// dup2(p[0], STDIN_FILENO);
+		// dup2(p[1], STDOUT_FILENO);
+		// close(p[0]);
+		// close(p[1]);
 		// var.exit_num = 0;
 	}
 	free_garbage(&garb);
@@ -75,7 +74,7 @@ int not_special(char c)
 	return (1);
 }
 
-t_elem *token_input(t_elem **list, char **in, t_garbage **garbage)
+t_elem *token_input(t_elem **list, char **in,t_var *var, t_garbage **garbage)
 {
     int i = 0;
     char *input;
@@ -108,7 +107,7 @@ t_elem *token_input(t_elem **list, char **in, t_garbage **garbage)
         }
         else if (input[i] == '$')
             is_a_var(list, input, i, garbage);
-        else if (input[i] == '|')
+        else if (input[i] == '|' && (var->exit_num = 0, 1))
             ft_lstadd_back(list, ft_lstnew(ft_strdup("|", garbage), PIPE, garbage));
         else if (input[i] == '\"')
             is_a_quot(list, input, i, garbage);

@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:34:55 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/05 18:50:42 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/07 19:03:08 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	norm_ft_atoi(t_var *var)
 {
-	printf("exit\n%s: numeric arg required\n", var->list->argc[1]);
+	ft_fprintf(2, "exit\n%s: numeric arg required\n", var->list->argc[1]);
 	var->exit_num = 255;
 	exit(255);
 }
@@ -67,7 +67,7 @@ void	norm_ft_exit(t_var *var, long num, int flag)
 	else if (flag == 1)
 	{
 		ft_fprintf(0, "exit\n");
-		printf("exit: %s: numeric arg required\n", var->list->argc[1]);
+		ft_fprintf(2, "exit: %s: numeric arg required\n", var->list->argc[1]);
 		var->exit_num = 255;
 		exit(255);
 	}
@@ -84,7 +84,7 @@ void	ft_exit(t_var *var)
 	if (ac == 1)
 	{
 		ft_fprintf(1, "exit\n");
-		exit(0);
+		exit(var->exit_num);
 	}
 	else if (ac < 3)
 	{
@@ -97,6 +97,7 @@ void	ft_exit(t_var *var)
 	else if (ac > 2)
 	{
 		ft_fprintf(0, "exit\n");
-		printf("minishell: exit: too many arguments\n");
+		ft_fprintf(2, "minishell: exit: too many arguments\n");
+		var->exit_num = 1;
 	}
 }

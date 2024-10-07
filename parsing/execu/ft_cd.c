@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:31:11 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/05 18:03:53 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/07 19:32:30 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,62 +39,61 @@ void	pwd_upd_old(t_env **env, char *key, char *val)
 	}
 }
 
+void	ft_cd_handle_special_cases(t_var *var, char *old_pwd)
+{
+	char	*home;
+
+	if (var->list->argc[1] == NULL || !ft_strcmp(var->list->argc[1], "~"))
+	{
+		if (var->list->argc[1] == NULL)
+			home = ft_getenv(var->env, "HOME");
+		else
+			home = getenv("HOME");
+		if (home == NULL)
+		{
+			ft_fprintf(2, "minishell: cd: HOME not set\n");
+			var->exit_num = 1;
+			return ;
+		}
+		if (chdir(home) != 0)
+		{
+			ft_fprintf(2, "minishell: cd:%s:No such file or directory\n", home);
+			var->exit_num = 1;
+			return ;
+		}
+	}
+	else if (chdir(var->list->argc[1]) != 0)
+	{
+		perror(var->list->argc[1]);
+		var->exit_num = 1;
+		return ;
+	}
+	pwd_upd_old(&var->env, "OLDPWD", old_pwd);
+}
+
 void	ft_cd(t_var *var)
 {
 	char	cwd[PATH_MAX];
 	char	old_pwd[PATH_MAX];
-	char	*home;
 
-	if (var->list->argc[1] != NULL && !ft_strcmp(var->list->argc[1], ".") \
-		&& getcwd(old_pwd, sizeof(old_pwd)) == NULL)
-	{
-		ft_fprintf(2, "minishell: cd: No such file or directory\n");
-		return ;
-	}
-	else if (getcwd(old_pwd, sizeof(old_pwd)) == NULL)
-	{
-		if (chdir("..") != 0)
-		{
-			ft_fprintf(2, "minishell: cd: No such file or directory\n");
-			return ;
-		}
-	}
-	if (!ft_strcmp(var->list->argc[1], "~"))
-	{
-		home = getenv("HOME");
-		if (chdir(home) != 0)
-		{
-			ft_fprintf(2, "minishell: cd: %s: No such file or directory\n", home);
-			return ;
-		}
-	}
-	else if (var->list->argc[1] == NULL)
-	{
-		home = ft_getenv(var->env, "HOME");
-		if (home == NULL)
-		{
-			ft_fprintf(2, "minishell: cd: HOME not set\n");
-			return ;	
-		}
-		if (chdir(home) != 0)
-		{
-			ft_fprintf(2, "minishell: cd: %s: No such file or directory\n", home);
-			return ;
-		}
-	}
-	else
+	if (getcwd(old_pwd, sizeof(old_pwd)) == NULL)
 	{
 		if (chdir(var->list->argc[1]) != 0)
 		{
-			perror(var->list->argc[1]);
+			ft_fprintf(2, "minishell: cd: No such file or directory\n");
+			var->exit_num = 1;
 			return ;
 		}
 	}
-	if (getcwd(cwd, sizeof(cwd)) != NULL)
-	{
-		pwd_upd_old(&var->env, "OLDPWD", old_pwd);
-		pwd_upd_old(&var->env, "PWD", cwd);
-	}
 	else
+		ft_cd_handle_special_cases(var, old_pwd);
+	if (getcwd(cwd, sizeof(cwd)) != NULL)
+		pwd_upd_old(&var->env, "PWD", cwd);
+	else
+	{
 		perror("getcwd");
+		var->exit_num = 1;
+		return ;
+	}
+	var->exit_num = 0;
 }

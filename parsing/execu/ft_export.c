@@ -6,11 +6,12 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:32:21 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/04 14:28:27 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/07 17:45:46 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include <stdbool.h>
 
 int	ft_strcmplist(char *s1, char *s2)
 {
@@ -97,12 +98,14 @@ void	ft_export(t_var *var, int i, int error)
 {
 	int		j;
 	int		k;
+	bool	if_valid;
 	int		flag_plus;
 	char	*new_val;
 	char	*key = NULL;
 	t_env	*index;
 
 	flag_plus = 0;
+	if_valid = true;
 	if (!var->list->argc[1])
 		sort_env(&var->env);
 	else
@@ -150,7 +153,7 @@ void	ft_export(t_var *var, int i, int error)
 						index = index_key(var->env, key);
 
 						if (index && var->list->argc[i][j] == '+' && var->list->argc[i][j + 1] == '=')
-						{
+						{	
 							if (!index->value)
 								index->value = new_val;
 							else
@@ -194,7 +197,11 @@ void	ft_export(t_var *var, int i, int error)
 				}
 			}
 			else
-				env_key_error(var->list->argc, &var->env, i, "export");
+			{
+				ft_fprintf(2, "minishell: export: `%s': not a valid identifier\n", var->list->argc[i]);
+						if_valid = false;
+				var->exit_num = 1;
+			}
 
 			// Reset for next iteration
 			flag_plus = 0;
@@ -202,5 +209,7 @@ void	ft_export(t_var *var, int i, int error)
 		}
 	}
 	// free(key);
+	if(if_valid == true)
+		var->exit_num = 0;
 }
 
