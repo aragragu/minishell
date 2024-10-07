@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/06 19:12:13 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/07 20:51:48 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 #include <paths.h>
 #include <libc.h>
 #include <dirent.h>
+#include <termios.h>
 
 #define RED     "\x1b[31m"
 #define GREEN   "\e[1;32m"
@@ -42,6 +43,8 @@
 // #undef REDIR_OUT //remove if u are using macos
 // #undef HEREDOC //remove if u are using macos
 // #undef APPEND //remove if u are using macos
+
+extern int g_exit_status;
 
 typedef enum    s_token
 {
@@ -114,8 +117,12 @@ typedef struct s_var
 	void			*ptr;
 	char			*path;
 	int				exit_num;
+	t_garbage		*garbage;
+	t_garbage		*garb;
+	t_elem			*linked_list;
 }					t_var;
 ///////////////////////////////////////
+
 
 
 
@@ -125,7 +132,7 @@ struct stat f_stat;
 
 
 
-char		*ft_itoa(int nb);
+char		*ft_itoa(int nb, t_garbage **garbage);
 char		**ft_split(char const *s, char c, t_garbage **garbage);
 void		ft_sign(char c, int *sign);
 t_garbage	*ft_lstnew_garbage(void *content);
@@ -140,7 +147,7 @@ void 		ft_lstadd_back_garbage(t_garbage **lst, t_garbage *new);
 void		ft_lstadd_back(t_elem **lst, t_elem *new);
 int			ft_lstsize(t_elem *lst);
 void		read_input(char **env);
-int			sysntax_error_checker(t_garbage **garbage, char *str, t_elem **list);
+int			sysntax_error_checker(t_garbage **garbage, char **str, t_elem **list);
 int			is_witheS_PACE(char c);
 int			has_unclosed_quots(char *str);
 void		is_a_word(t_elem **list, char *input, int index, t_garbage **garbage);
@@ -201,9 +208,13 @@ void		concatination(t_elem **list, t_garbage **garbage);
 int			is_special_character(char c);
 int 		ft_strlen2(char **str);
 void    	ft_split_var(t_elem **elem, t_elem *node, t_garbage **garbage);
-int 	has_invalid_logical_operator1(t_elem **list);	
-int has_invalid_logical_operator2(t_elem **list);
-void	signal_handler(int sig);
+int 		has_invalid_logical_operator1(t_elem **list);	
+int 		has_invalid_logical_operator2(t_elem **list);
+void		signal_handler(int sig);
+void		token_input_1(t_elem **list, char *input, int i, t_garbage **garbage);
+void		token_input_2(t_elem **list, char *input, int i, t_garbage **garbage);
+void		initialize_variables(t_var *var, char **env);
+int			fill_linked_list(char *input, int *p, t_var *var);
 
 //////////////////////////////////////////////////////////////////////////////
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_excu.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:53:26 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/05 18:19:09 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/07 19:39:21 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*check_valid_path(char *filename, t_var *var)
 		return (exec_path);
 	exec_path = excu_in_path(filename, var);
 	if (exec_path != NULL)
-		return (free(exec_path), exec_path);
+		return (exec_path);
 	return (NULL);
 }
 

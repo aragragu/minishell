@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/06 19:12:13 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/07 20:52:53 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ void expand_var_list(t_elem **list, t_var container, t_garbage **garbage)
                 }
             }
         }
-        else if (token && token->type == VAR)
+        if (token && token->type == VAR)
             expand_var(list, token, &container.env, garbage);
         else if (token && token->type == EXIT_STATUS)
-            token->content = ft_itoa(container.exit_num);
+            token->content = ft_itoa(container.exit_num, garbage);
         else if (token && token->type == D_QOUTS)
             expand_d_qouts(&container.env, &token->content, garbage);
         else if (token && token->type == TILDE)
@@ -95,7 +95,6 @@ void    fill_env(t_env **env, char **str, t_garbage **garbage)
         }
         j++;
     }
-    // return (list);
 }
 
 static int     has_a_char(char *str)
