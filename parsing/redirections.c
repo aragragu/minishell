@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:29:24 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/07 21:05:58 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/08 17:42:47 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,9 +230,18 @@ void    s_handler(int sig)
     (void)sig;
     if (sig == SIGINT)
     {
-        g_exit_status = 1;
+        g_exit_status = 2;
         close(0);
     }
+}
+
+void    sigint_herdoc(void)
+{
+    int std_in;
+
+    std_in = open(ttyname(STDERR_FILENO), O_RDONLY, 0644);
+    if(std_in < 0)
+        perror("open");
 }
 
 void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
@@ -282,7 +291,11 @@ void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
             break;
         buffer = temp;
     }
-    signal(SIGINT, signal_handler);
+    if(!isatty(STDIN_FILENO))
+    {
+        sigint_herdoc();
+        return;
+    }
     current->content = file_name;
     current->type = HEREDOC;
     current->fd = fd;

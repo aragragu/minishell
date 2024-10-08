@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:38:50 by ykasmi            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/10/07 19:38:44 by aragragu         ###   ########.fr       */
-=======
-/*   Updated: 2024/10/07 19:32:11 by ykasmi           ###   ########.fr       */
->>>>>>> b61320de99822ae6ba0a7134ad3676fcf442c0f1
+/*   Updated: 2024/10/08 21:23:18 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +91,7 @@ void	ft_exc(t_var *var)
 			error_function(var);
 		}
 	}
-	// ft_free(envp);
+	ft_free(envp);
 	waitpid(pid, &var->exit_num, 0);
 	update_exit_status(var, var->exit_num);
 }

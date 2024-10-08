@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:48:48 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/07 14:28:43 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/08 18:53:14 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*norm_excu_in_path(char *filename, t_var *var)
 			}
 		}
 		if (access(filename, X_OK) == 0)
-			return (strdup(filename));
+			return (ft_strduppp(filename));
 		perror(filename);
 		var->exit_num = 127;
 		exit(127);

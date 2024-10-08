@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:32:21 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/07 20:46:01 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/08 22:53:52 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ t_env	*index_key(t_env *env, char *key)
 	return (NULL);
 }
 
-void	ft_export(t_var *var, int i, int error)
+void ft_export(t_var *var, int i, int error)
 {
 	int		j;
 	int		k;
@@ -141,7 +141,6 @@ void	ft_export(t_var *var, int i, int error)
 			}
 			else
 				error = 1;
-
 			if (!error)
 			{
 				if (ft_strchr(var->list->argc[i], '='))
@@ -151,37 +150,35 @@ void	ft_export(t_var *var, int i, int error)
 						new_val = ft_cat(var->list->argc[i], j + 2, 1);
 						key = ft_cat(var->list->argc[i], j, 0);
 						index = index_key(var->env, key);
-
 						if (index && var->list->argc[i][j] == '+' && var->list->argc[i][j + 1] == '=')
-						{	
+						{   
 							if (!index->value)
 								index->value = new_val;
 							else
 							{
-								index->value = ft_strjoinnn(index->value, new_val);
+								char *temp = ft_strjoinnn(index->value, new_val);
+								free(index->value);
+								index->value = temp;
 								free(new_val);
 							}
-							// free(key);
+							free(key);
 						}
 						else
-						{
 							ft_lstadd_backkk(&var->env, ft_lstnewww(key, new_val));
-						}
 					}
 					else
 					{
 						new_val = ft_cat(var->list->argc[i], j + 1, 1);
 						key = ft_cat(var->list->argc[i], j, 0);
 						index = index_key(var->env, key);
-
 						if (index)
 						{
 							free(index->value);
 							index->value = new_val;
+							free(key);
 						}
 						else
 							ft_lstadd_backkk(&var->env, ft_lstnewww(key, new_val));
-						// free(key);
 					}
 				}
 				else
@@ -189,27 +186,22 @@ void	ft_export(t_var *var, int i, int error)
 					key = ft_cat(var->list->argc[i], j, 0);
 					index = index_key(var->env, key);
 					if (!index)
-					{
 						ft_lstadd_backkk(&var->env, ft_lstnewww(key, NULL));
-					}
-					// else
-						// free(key);
+					else
+						free(key);
 				}
 			}
 			else
 			{
 				ft_fprintf(2, "minishell: export: `%s': not a valid identifier\n", var->list->argc[i]);
-						if_valid = false;
+				if_valid = false;
 				var->exit_num = 1;
 			}
-
-			// Reset for next iteration
 			flag_plus = 0;
 			error = 0;
 		}
 	}
-	// free(key);
-	if(if_valid == true)
+	if (if_valid == true)
 		var->exit_num = 0;
 }
 

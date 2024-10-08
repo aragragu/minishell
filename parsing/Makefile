@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+         #
+#    By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/13 11:48:28 by aragragu          #+#    #+#              #
-#    Updated: 2024/10/07 21:07:08 by aragragu         ###   ########.fr        #
+#    Updated: 2024/10/08 18:32:40 by ykasmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I/Users/aragragu/.brew/opt/readline/include #-g -fsanitize=address
-LDFLAGS = -L/Users/aragragu/.brew/opt/readline/lib
+CFLAGS = -Wall -Wextra -Werror -I/Users/${USER}/.brew/opt/readline/include #-g -fsanitize=address
+LDFLAGS = -L/Users/${USER}/.brew/opt/readline/lib
 RM = rm -rf
 SRC = main.c split.c libft.c token.c syntax_error.c expanding.c redirections.c ft_itoa.c cmd.c \
 	  execu/ft_cd.c execu/ft_exit.c execu/ft_echo.c execu/ft_pwd.c execu/ft_export.c execu/ft_env.c\

@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:21:52 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/07 20:18:11 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/08 18:38:09 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,32 @@ void	norm_excu_pipe2(int prev_fd, int i, int num_cmds, int pipefd[2])
 		dup2(pipefd[1], STDOUT_FILENO);
 	close(pipefd[0]);
 }
- 
+
+void	save_std_in_out(t_cmd *list, int flag)
+{
+	if (flag == 0)
+	{
+		list->fd[0] = dup(0);
+		list->fd[1] = dup(1);
+	}
+	else
+	{
+		dup2(list->fd[0], STDIN_FILENO);
+		dup2(list->fd[1], STDOUT_FILENO);
+		close(list->fd[0]);
+		close(list->fd[1]);
+	}
+}
+
 void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd)
 {
 	int		pipefd[2];
 	char	**envp;
-	t_cmd	*list = var->list;
+	t_cmd	*list;
 	pid_t	pid;
 
+	list = var->list;
+	save_std_in_out(list, 0);
 	store_env(var->env, &envp, 0, 0);
 	while (++i < num_cmds)
 	{
@@ -63,9 +81,12 @@ void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd)
 			norm_excu_pipe(var, envp);
 		}
 		close(pipefd[1]);
-		(i != 0) && (close(prev_fd), 0);
-		(prev_fd = pipefd[0]) && (list = list->next, 0);
+		if (i != 0)
+			close(prev_fd);
+		prev_fd = pipefd[0];
+		var->list = var->list->next;
 	}
+	save_std_in_out(list, 1);
 	ft_free(envp);
 	waitpid_func(var);
 }
