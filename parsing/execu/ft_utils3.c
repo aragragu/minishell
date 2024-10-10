@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:38:50 by ykasmi            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/10/07 19:38:44 by aragragu         ###   ########.fr       */
-=======
-/*   Updated: 2024/10/07 19:32:11 by ykasmi           ###   ########.fr       */
->>>>>>> b61320de99822ae6ba0a7134ad3676fcf442c0f1
+/*   Updated: 2024/10/09 15:36:05 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +20,6 @@ void	ft_free(char **tab)
 	while (tab[i])
 		free(tab[i++]);
 	free(tab);
-}
-
-void	env_key_error(char **cmd, t_env **env, int i, char *msg)
-{
-	(void)env;
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(msg, 2);
-	ft_putstr_fd(": `", 2);
-	ft_putstr_fd(cmd[i], 2);
-	ft_putstr_fd("': not a valid identifier\n", 2);
 }
 
 void	store_env(t_env *envv, char ***env, int i, int len)
@@ -81,13 +67,15 @@ void	ft_exc(t_var *var)
 
 	store_env(var->env, &envp, 0, 0);
 	pid = fork();
+	if (pid == -1)
+	{
+		ft_free(envp);
+		return (error_fork(pid));
+	}
 	if (pid == 0)
 	{
 		if (!var->list->argc[0][0])
-		{
 			error_function(var);
-			exit(127);
-		}
 		exec_path = check_valid_path(var->list->cmd, var);
 		{
 			execve(exec_path, var->list->argc, envp);
@@ -95,7 +83,7 @@ void	ft_exc(t_var *var)
 			error_function(var);
 		}
 	}
-	// ft_free(envp);
+	ft_free(envp);
 	waitpid(pid, &var->exit_num, 0);
 	update_exit_status(var, var->exit_num);
 }

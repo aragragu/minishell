@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/07 21:06:58 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/10 21:32:24 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 #include <libc.h>
 #include <dirent.h>
 #include <termios.h>
+#include <stdbool.h>
 
 #define RED     "\x1b[31m"
 #define GREEN   "\e[1;32m"
@@ -83,6 +84,7 @@ typedef struct   s_elem
 	char            *content;
 	t_token         type;
 	int				fd;
+	int 			fd_here;
 	struct s_elem   *next;
 }                   t_elem;
 
@@ -105,31 +107,35 @@ typedef	struct c_cmd
 	char			*cmd;
 	char			**argc;
 	t_redir			*redirection;
+	int				fd[2];
 	struct c_cmd	*next;
 }					t_cmd;
 
 ////////////////////////////////
+
 typedef struct s_var
 {
 	t_cmd			*list;
 	t_env			*env;
+	t_garbage		*garbage;
+	t_garbage		*garb;
+	t_elem			*linked_list;
+	t_env			*index;
+	t_cmd			*list2;
+	pid_t			pid;
 	int				flag;
 	void			*ptr;
 	char			*path;
 	int				exit_num;
-	t_garbage		*garbage;
-	t_garbage		*garb;
-	t_elem			*linked_list;
+	int 			j;
+	int				k;
+	int				error;
+	int				flag_plus;
+	char			*key;
+	char			*new_val;
+	char 			**envp;
+	bool			if_valid;
 }					t_var;
-///////////////////////////////////////
-
-
-
-
-struct stat f_stat;
-
-
-
 
 
 char		*ft_itoa(int nb, t_garbage **garbage);
@@ -138,7 +144,7 @@ void		ft_sign(char c, int *sign);
 t_garbage	*ft_lstnew_garbage(void *content);
 t_elem		*ft_lstnew(void *content, t_token type, t_garbage **garbage);
 t_elem		*ft_lstlast(t_elem *lst);
-t_elem		*token_input(t_elem **list, char **input, t_garbage **garbage);
+t_elem	*token_input(t_elem **list, char **in, t_var *var, t_garbage **garbage);
 t_elem		*token_quots(t_elem **list, char *in, t_garbage **garbage);
 t_env		*ft_lstlast2(t_env *lst);
 void    	fill_env(t_env **env, char **str, t_garbage **garbage);
@@ -211,16 +217,17 @@ void    	ft_split_var(t_elem **elem, t_elem *node, t_garbage **garbage);
 int 		has_invalid_logical_operator1(t_elem **list);	
 int 		has_invalid_logical_operator2(t_elem **list);
 void		signal_handler(int sig);
-void		token_input_1(t_elem **list, char *input, int i, t_garbage **garbage);
+void	token_input_1(t_elem **list, char *input, int i, t_var *var);
 void		token_input_2(t_elem **list, char *input, int i, t_garbage **garbage);
 void		initialize_variables(t_var *var, char **env);
 int			fill_linked_list(char *input, int *p, t_var *var);
+int     check_fd_her(t_elem **elem);
 
 //////////////////////////////////////////////////////////////////////////////
 
 void		ft_echo(t_var *var);
 void		ft_export(t_var *var, int i, int error);
-void		ft_pwd(void);
+void		ft_pwd(t_var *var);
 void		ft_exit(t_var *var);
 void		ft_cd(t_var *var);
 void		ft_unset(t_var *var, int i);
@@ -257,7 +264,7 @@ void		ft_exc2(t_var *var);
 int			contains_red(t_var *var);
 void		handle_redirection2(t_var *var);
 int			calculate_cmd(t_var *var);
-int			ft_fprintf(int fd, const char *format, ...);
+void	ft_fprintf(int fd, const char *format, ...);
 int			ft_putnbr_fd(int n, int fd);
 int			ft_putnbr_unsd_fd(unsigned int n, int fd);
 int			ft_putnbr_hexa_fd(unsigned long n, int a, int fd);
@@ -266,8 +273,8 @@ int			ft_putstr_fd(char *s, int fd);
 int			ft_putchar_fd(char c, int fd);
 void		error_function(t_var *var);
 void		error_fork(pid_t pid);
-void		waitpid_func(void);
-void		red_herd_appen(t_redir *redir, int fd);
+void	waitpid_func(t_var *var);
+void	red_herd_appen(t_redir *redir, int fd, t_var *var);
 void		red_out_in(t_redir *redir, int fd);
 int			contains_red(t_var *var);
 void		norm_excu_pipe3(t_var **var);
@@ -276,5 +283,20 @@ void		ft_builtins(t_var *var, char *str, t_cmd **cmd);
 int			count_env(t_env *envv);
 char		*norm_excu_in_path(char *filename, t_var *var);
 int	is_num(const char *str);
+void	update_exit_status(t_var *var, int status);
+char	*search_in_path(char *start, char *filename, t_var *var);
+void	error_function_expo(t_var *var, int i);
+void	ex2_norm(t_var *var, int i, int *error);
+void	ex3_norm(t_var *var, int i);
+void	ex4_norm(t_var *var, int i);
+void	ex5_norm(t_var *var, int i);
+t_env	*index_key(t_env *env, char *key);
+void	ex1_norm(t_var *var, int i, int *error);
+long	ft_atoi(char *str, t_var *var);
+char	*ft_itoa1(int n);
+void	swap_nodes(t_env **first, t_env **tmp);
+void	print_export(t_env *first);
+int	ft_strcmplist(char *s1, char *s2);
+int g_es(int flag, int stat);
 
 #endif

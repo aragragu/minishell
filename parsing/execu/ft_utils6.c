@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:21:52 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/07 20:18:11 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/10 22:29:53 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,32 +40,63 @@ void	norm_excu_pipe2(int prev_fd, int i, int num_cmds, int pipefd[2])
 		dup2(pipefd[1], STDOUT_FILENO);
 	close(pipefd[0]);
 }
- 
+
+void	save_std_in_out(t_cmd *list, int flag)
+{
+	if (flag == 0)
+	{
+		list->fd[0] = dup(0);
+		list->fd[1] = dup(1);
+	}
+	else
+	{
+		dup2(list->fd[0], STDIN_FILENO);
+		dup2(list->fd[1], STDOUT_FILENO);
+		close(list->fd[0]);
+		close(list->fd[1]);
+	}
+}
+
+void	norm_pipe(t_var *var, t_cmd *list, int flag)
+{
+	if (flag == 0)
+	{
+		save_std_in_out(list, 0);
+		store_env(var->env, &var->envp, 0, 0);
+	}
+	else
+	{
+		ft_free(var->envp);
+		save_std_in_out(list, 1);
+		waitpid_func(var);
+	}
+}
+
 void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd)
 {
 	int		pipefd[2];
-	char	**envp;
-	t_cmd	*list = var->list;
-	pid_t	pid;
 
-	store_env(var->env, &envp, 0, 0);
+	var->list2 = var->list;
+	norm_pipe(var, var->list2, 0);
 	while (++i < num_cmds)
 	{
-		if (i < num_cmds - 1)
-			pipe(pipefd);
-		pid = fork();
-		if (pid == -1)
-			return (error_fork(pid));
-		if (pid == 0)
+		(i < num_cmds - 1) && (pipe(pipefd), 0);
+		var->pid = fork();
+		if (var->pid == -1)
+		{
+			(1) && (ft_free(var->envp), error_fork(var->pid), 0);
+			return ;
+		}
+		if (var->pid == 0)
 		{
 			norm_excu_pipe2(prev_fd, i, num_cmds, pipefd);
 			norm_excu_pipe3(&var);
-			norm_excu_pipe(var, envp);
+			norm_excu_pipe(var, var->envp);
 		}
 		close(pipefd[1]);
 		(i != 0) && (close(prev_fd), 0);
-		(prev_fd = pipefd[0]) && (list = list->next, 0);
+		(prev_fd = pipefd[0]) && (var->list = var->list->next, 0);
+		close(var->linked_list->fd);
 	}
-	ft_free(envp);
-	waitpid_func(var);
+	norm_pipe(var, var->list2, 1);
 }

@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_excu.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:53:26 by ykasmi            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/10/07 19:39:21 by aragragu         ###   ########.fr       */
-=======
-/*   Updated: 2024/10/07 15:56:29 by ykasmi           ###   ########.fr       */
->>>>>>> b61320de99822ae6ba0a7134ad3676fcf442c0f1
+/*   Updated: 2024/10/10 17:49:22 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +25,7 @@ char	*check_valid_path(char *filename, t_var *var)
 	exec_path = excu_in_path(filename, var);
 	if (exec_path != NULL)
 		return (exec_path);
-	return (NULL);
+	return (free(exec_path), NULL);
 }
 
 char	*ft_getenv(t_env *env, char *key)
