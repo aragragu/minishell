@@ -6,11 +6,22 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/09 20:36:32 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/10 22:43:44 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// int g_es(int flag, int stat)
+// {
+// 	static int exit_status;
+
+// 	if (flag == 0)
+// 	{
+// 		exit_status = stat;
+// 	}
+// 	return (exit_status);
+// }
 
 void	signal_handler(int sig)
 {
@@ -72,6 +83,15 @@ int	fill_linked_list(char *input, int *p, t_var *var)
 	expand_var_list(&var->linked_list, *var, &var->garbage);
 	concatination(&var->linked_list, &var->garbage);
 	handle_redirection(&var->linked_list, &var->env, &var->garbage);
+	if (check_fd_her(&var->linked_list))
+	{
+		free_garbage(&var->garbage);
+		var->exit_num = 1;
+		var->linked_list = NULL;
+		var->garbage = NULL;
+		var->list = NULL;
+		return (2);
+	}
 	if (g_exit_status == 2)
 	{
 		free_garbage(&var->garbage);
@@ -82,6 +102,8 @@ int	fill_linked_list(char *input, int *p, t_var *var)
 		return (2);
 	}
 	import_data(&var->list, &var->linked_list, &var->garbage);
+	// print_list(&var->linked_list);
+	// print_cmd(var->list);
 	// puts("paaaaaaaah");
 	// print_list(&var->linked_list);
 	// print_cmd(var->list);
@@ -101,10 +123,12 @@ void	read_input(char **env)
 	tcgetattr(STDIN_FILENO, &original_termios);
 	while (1)
 	{
+		g_exit_status = 0;
 		signal(SIGINT, signal_handler);
 		signal(SIGQUIT, signal_handler);
 		input = readline("➜ minishell💀$ ");
 		i = fill_linked_list(input, p, &var);
+		// puts("allllllo");
 		if (i == 1)
 			break ;
 		else if (i == 2)
@@ -114,7 +138,6 @@ void	read_input(char **env)
 			execution(&var);
 			tcsetattr(STDIN_FILENO, TCSANOW, &original_termios);
 		}
-		g_exit_status = 0;
 		free_garbage(&var.garbage);
 		var.linked_list = NULL;
 		var.garbage = NULL;
@@ -167,11 +190,12 @@ t_elem	*token_input(t_elem **list, char **in, t_var *var, t_garbage **garbage)
 			i++;
 			continue ;
 		}
-		if (input[i] == '$' && input[i + 1] == '$')
+		else if (input[i] == '$' && input[i + 1] == '$')
 			ft_lstadd_back(list, ft_lstnew(ft_strdup("$$", garbage) \
 			, DOUBLE_DLR, garbage));
 		token_input_1(list, input, i, var);
 		i += ft_strlen(ft_lstlast(*list)->content);
+		// printf("[%s]", ft_lstlast(*list)->content);
 	}
 	return (*list);
 }

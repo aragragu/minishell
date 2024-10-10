@@ -6,13 +6,13 @@
 #    By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/13 11:48:28 by aragragu          #+#    #+#              #
-#    Updated: 2024/10/10 01:11:01 by ykasmi           ###   ########.fr        #
+#    Updated: 2024/10/10 21:02:50 by ykasmi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I/Users/${USER}/.brew/opt/readline/include -g #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -I/Users/${USER}/.brew/opt/readline/include -g3 #-fsanitize=address
 LDFLAGS = -L/Users/${USER}/.brew/opt/readline/lib
 RM = rm -rf
 SRC = main.c split.c libft.c token.c syntax_error.c expanding.c redirections.c ft_itoa.c cmd.c \

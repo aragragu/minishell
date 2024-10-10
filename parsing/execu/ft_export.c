@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:32:21 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/09 20:21:17 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/10 22:28:48 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,37 +46,26 @@ void	sort_env(t_env **env)
 	int		i;
 	int		j;
 
-	i = ft_lstsizeee(*env);
-	j = 0;
+	(1) && (i = ft_lstsizeee(*env), j = 0, 0);
 	while (i && i >= j)
 	{
-		first = *env;
-		tmp = *env;
+		(1) && (first = *env, tmp = *env, 0);
 		while (tmp)
 		{
-			if (tmp->flag == 0)
-				first = tmp;
+			(tmp->flag == 0) && (first = tmp, 0);
 			tmp = tmp->next;
 		}
 		tmp = *env;
 		while (tmp)
 		{
-			if (ft_strcmplist(first->key, tmp->key) == 2 && !tmp->flag)
-				first = tmp;
-			else if (!ft_strcmplist(first->key, tmp->key) && \
-					ft_strlen(tmp->key) < ft_strlen(first->key) && !tmp->flag)
-				first = tmp;
+			swap_nodes(&first, &tmp);
 			tmp = tmp->next;
 		}
-		if (first->value)
-			ft_fprintf(1, "declare -x %s=\"%s\"\n", first->key, first->value);
-		else
-			ft_fprintf(1, "declare -x %s\n", first->key);
+		print_export(first);
 		first->flag = 1;
 		j++;
 	}
-	init_flag(*env);
-	return ;
+	return (init_flag(*env));
 }
 
 void	ft_export(t_var *var, int i, int error)

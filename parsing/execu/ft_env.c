@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:33:35 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/07 17:49:15 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/10 22:27:49 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	ft_env(t_var *var)
 	tmp = var->env;
 	if (var->list->argc[1])
 	{
-		printf("env: %s: No such file or directory\n", var->list->argc[1]);
+		printf("env: too many arguments\n");
 		var->exit_num = 127;
 		return ;
 	}

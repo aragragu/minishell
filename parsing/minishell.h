@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/10 02:53:35 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/10 21:32:24 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ typedef struct   s_elem
 	char            *content;
 	t_token         type;
 	int				fd;
+	int 			fd_here;
 	struct s_elem   *next;
 }                   t_elem;
 
@@ -111,12 +112,6 @@ typedef	struct c_cmd
 }					t_cmd;
 
 ////////////////////////////////
-typedef struct s_tmp
-{
-	int j;
-	int i;
-	
-}					t_tmp;
 
 typedef struct s_var
 {
@@ -126,6 +121,8 @@ typedef struct s_var
 	t_garbage		*garb;
 	t_elem			*linked_list;
 	t_env			*index;
+	t_cmd			*list2;
+	pid_t			pid;
 	int				flag;
 	void			*ptr;
 	char			*path;
@@ -136,6 +133,7 @@ typedef struct s_var
 	int				flag_plus;
 	char			*key;
 	char			*new_val;
+	char 			**envp;
 	bool			if_valid;
 }					t_var;
 
@@ -223,6 +221,7 @@ void	token_input_1(t_elem **list, char *input, int i, t_var *var);
 void		token_input_2(t_elem **list, char *input, int i, t_garbage **garbage);
 void		initialize_variables(t_var *var, char **env);
 int			fill_linked_list(char *input, int *p, t_var *var);
+int     check_fd_her(t_elem **elem);
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -295,5 +294,9 @@ t_env	*index_key(t_env *env, char *key);
 void	ex1_norm(t_var *var, int i, int *error);
 long	ft_atoi(char *str, t_var *var);
 char	*ft_itoa1(int n);
+void	swap_nodes(t_env **first, t_env **tmp);
+void	print_export(t_env *first);
+int	ft_strcmplist(char *s1, char *s2);
+int g_es(int flag, int stat);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/10 03:19:51 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/10 18:36:14 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,11 +143,7 @@ void    fill_env(t_env **env, char **str, t_garbage **garbage)
                 key = ft_substr(str[j], 0, i, garbage);
                 value = ft_substr(str[j] + i + 1, 0, (end - i - 1), garbage);
                 if(!ft_strcmp(key, "SHLVL"))
-                {
-                    value = ft_strdup(ft_itoa1(ft_atoi2(value) + 1), garbage);
-                    
-                }
-                    
+                    value = ft_strduppp(ft_itoa1(ft_atoi2(value) + 1));
                 ft_lstadd_back2(env, ft_lstnew2(key, value, garbage));
                 break;
             }

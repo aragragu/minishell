@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:21:52 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/10 04:09:15 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/10 22:29:53 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,40 +57,46 @@ void	save_std_in_out(t_cmd *list, int flag)
 	}
 }
 
+void	norm_pipe(t_var *var, t_cmd *list, int flag)
+{
+	if (flag == 0)
+	{
+		save_std_in_out(list, 0);
+		store_env(var->env, &var->envp, 0, 0);
+	}
+	else
+	{
+		ft_free(var->envp);
+		save_std_in_out(list, 1);
+		waitpid_func(var);
+	}
+}
+
 void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd)
 {
 	int		pipefd[2];
-	char	**envp;
-	t_cmd	*list;
-	pid_t	pid;
 
-	list = var->list;
-	save_std_in_out(list, 0);
-	store_env(var->env, &envp, 0, 0);
+	var->list2 = var->list;
+	norm_pipe(var, var->list2, 0);
 	while (++i < num_cmds)
 	{
-		if (i < num_cmds - 1)
-			pipe(pipefd);
-		pid = fork();
-		if (pid == -1)
+		(i < num_cmds - 1) && (pipe(pipefd), 0);
+		var->pid = fork();
+		if (var->pid == -1)
 		{
-			(1) && (ft_free(envp), error_fork(pid), 0);
+			(1) && (ft_free(var->envp), error_fork(var->pid), 0);
 			return ;
 		}
-		if (pid == 0)
+		if (var->pid == 0)
 		{
 			norm_excu_pipe2(prev_fd, i, num_cmds, pipefd);
 			norm_excu_pipe3(&var);
-			norm_excu_pipe(var, envp);
+			norm_excu_pipe(var, var->envp);
 		}
 		close(pipefd[1]);
-		if (i != 0)
-			close(prev_fd);
-		prev_fd = pipefd[0];
-		var->list = var->list->next;
+		(i != 0) && (close(prev_fd), 0);
+		(prev_fd = pipefd[0]) && (var->list = var->list->next, 0);
 		close(var->linked_list->fd);
 	}
-	ft_free(envp);
-	save_std_in_out(list, 1);
-	waitpid_func(var);
+	norm_pipe(var, var->list2, 1);
 }

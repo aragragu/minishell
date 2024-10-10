@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:48:48 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/10 04:10:02 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/10 22:30:19 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,8 @@ char	*excu_in_path(char *filename, t_var *var)
 		if (var->path == NULL)
 			return (NULL);
 		path = var->path;
+		if (!path)
+			return (NULL);
 	}
 	var->flag = 0;
 	start = ft_strduppp(path);
@@ -117,6 +119,5 @@ char	*excu_in_path(char *filename, t_var *var)
 		free(var->ptr);
 		return (result);
 	}
-	free(var->ptr);
 	return (NULL);
 }
