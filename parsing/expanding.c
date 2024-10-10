@@ -3,14 +3,67 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/07 21:07:16 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/10 03:19:51 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static size_t	len(const char *str)
+{
+	int	i; 
+
+	i = 0;
+	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13) || str[i] == '+')
+		i++;
+	if ((str[i] >= '0' && str[i] <= '9') || (str[i] == '-' && str[i] == '0'))
+		i++;
+	return (i);
+}
+
+static int	over_flow(int sign, const char *str)
+{
+	int	i; 
+
+	i = 0;
+	while (str[i] == '+' || str[i] == '-')
+		i++;
+	if (len(str) > 20 && sign == -1)
+		return (0);
+	if (len(str) > 19 && sign == 1)
+		return (-1);
+	return (1);
+}
+
+int	ft_atoi2(char *str)
+{
+	size_t	i;
+	int		n;
+	size_t	result;
+
+	i = 0;
+	n = 1;
+	result = 0;
+	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '+' || str[i] == '-')
+	{
+		if (str[i] == '-')
+			n = -n;
+		i++;
+	}
+	while ('0' <= str[i] && str[i] <= '9')
+	{
+		result = (result * 10) + (str[i] - 48);
+		if (over_flow(n, str) != 1)
+			return (over_flow(n, str));
+		i++;
+	}
+	return (free(str), result * n);
+}
 
 void expand_var_list(t_elem **list, t_var container, t_garbage **garbage)
 {
@@ -71,8 +124,9 @@ void    fill_env(t_env **env, char **str, t_garbage **garbage)
     j = 0;
 	if (!str || !str[0])
 	{
-        *env = ft_lstnewww(ft_strduppp("PWD"), getcwd(NULL, 0));//protection
-		// (*env)->flag2 = 1;
+        *env = ft_lstnewww(ft_strduppp("PWD"), getcwd(NULL, 0));
+        if (!*env)
+            return ;
         ft_lstadd_backkk(env, ft_lstnewww(ft_strduppp("SHLVL"), ft_strduppp("1")));
 		ft_lstadd_backkk(env, ft_lstnewww(ft_strduppp("_"), ft_strduppp("/usr/bin/env")));
 		ft_lstadd_backkk(env, ft_lstnewww(ft_strduppp("OLDPWD"), NULL));
@@ -88,6 +142,12 @@ void    fill_env(t_env **env, char **str, t_garbage **garbage)
             {
                 key = ft_substr(str[j], 0, i, garbage);
                 value = ft_substr(str[j] + i + 1, 0, (end - i - 1), garbage);
+                if(!ft_strcmp(key, "SHLVL"))
+                {
+                    value = ft_strdup(ft_itoa1(ft_atoi2(value) + 1), garbage);
+                    
+                }
+                    
                 ft_lstadd_back2(env, ft_lstnew2(key, value, garbage));
                 break;
             }

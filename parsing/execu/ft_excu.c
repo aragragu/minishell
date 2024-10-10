@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:53:26 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/08 21:22:03 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/09 15:36:46 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ char	*search_in_path(char *start, char *filename, t_var *var)
 {
 	char	*end;
 	char	*full_path;
+
 	end = ft_strchrr(start, ':');
 	while (end || (*start != '\0'))
 	{

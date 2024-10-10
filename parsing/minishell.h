@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/08 16:53:34 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/10 02:53:35 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 #include <libc.h>
 #include <dirent.h>
 #include <termios.h>
+#include <stdbool.h>
 
 #define RED     "\x1b[31m"
 #define GREEN   "\e[1;32m"
@@ -110,18 +111,34 @@ typedef	struct c_cmd
 }					t_cmd;
 
 ////////////////////////////////
+typedef struct s_tmp
+{
+	int j;
+	int i;
+	
+}					t_tmp;
+
 typedef struct s_var
 {
 	t_cmd			*list;
 	t_env			*env;
+	t_garbage		*garbage;
+	t_garbage		*garb;
+	t_elem			*linked_list;
+	t_env			*index;
 	int				flag;
 	void			*ptr;
 	char			*path;
 	int				exit_num;
-	t_garbage		*garbage;
-	t_garbage		*garb;
-	t_elem			*linked_list;
+	int 			j;
+	int				k;
+	int				error;
+	int				flag_plus;
+	char			*key;
+	char			*new_val;
+	bool			if_valid;
 }					t_var;
+
 
 char		*ft_itoa(int nb, t_garbage **garbage);
 char		**ft_split(char const *s, char c, t_garbage **garbage);
@@ -258,7 +275,7 @@ int			ft_putchar_fd(char c, int fd);
 void		error_function(t_var *var);
 void		error_fork(pid_t pid);
 void	waitpid_func(t_var *var);
-void		red_herd_appen(t_redir *redir, int fd);
+void	red_herd_appen(t_redir *redir, int fd, t_var *var);
 void		red_out_in(t_redir *redir, int fd);
 int			contains_red(t_var *var);
 void		norm_excu_pipe3(t_var **var);
@@ -269,5 +286,14 @@ char		*norm_excu_in_path(char *filename, t_var *var);
 int	is_num(const char *str);
 void	update_exit_status(t_var *var, int status);
 char	*search_in_path(char *start, char *filename, t_var *var);
+void	error_function_expo(t_var *var, int i);
+void	ex2_norm(t_var *var, int i, int *error);
+void	ex3_norm(t_var *var, int i);
+void	ex4_norm(t_var *var, int i);
+void	ex5_norm(t_var *var, int i);
+t_env	*index_key(t_env *env, char *key);
+void	ex1_norm(t_var *var, int i, int *error);
+long	ft_atoi(char *str, t_var *var);
+char	*ft_itoa1(int n);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:38:50 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/08 21:23:18 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/09 15:36:05 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,6 @@ void	ft_free(char **tab)
 	while (tab[i])
 		free(tab[i++]);
 	free(tab);
-}
-
-void	env_key_error(char **cmd, t_env **env, int i, char *msg)
-{
-	(void)env;
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(msg, 2);
-	ft_putstr_fd(": `", 2);
-	ft_putstr_fd(cmd[i], 2);
-	ft_putstr_fd("': not a valid identifier\n", 2);
 }
 
 void	store_env(t_env *envv, char ***env, int i, int len)
@@ -77,13 +67,15 @@ void	ft_exc(t_var *var)
 
 	store_env(var->env, &envp, 0, 0);
 	pid = fork();
+	if (pid == -1)
+	{
+		ft_free(envp);
+		return (error_fork(pid));
+	}
 	if (pid == 0)
 	{
 		if (!var->list->argc[0][0])
-		{
 			error_function(var);
-			exit(127);
-		}
 		exec_path = check_valid_path(var->list->cmd, var);
 		{
 			execve(exec_path, var->list->argc, envp);

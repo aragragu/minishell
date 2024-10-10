@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:29:24 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/08 17:42:47 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/10 03:16:32 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,6 +255,7 @@ void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
     char *temp;
     char *file_name = (ft_strjoin(ft_strdup("tmp_", garbage), ft_itoa(++i, garbage), garbage));
     int fd = 0;
+    int cfd = 0;
     signal(SIGINT, s_handler);
     while (1)
     {
@@ -264,11 +265,13 @@ void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
         if (!ft_strcmp(current->content, line))
         {
             fd = open(file_name, O_CREAT | O_RDWR, 0644);
-            if (fd == -1)
+            cfd = open(file_name, O_RDONLY);
+            if (fd == -1 || cfd == -1)
             {
                 perror("Error opening file");
                 break;
             }
+            unlink(file_name);
             write(fd, buffer, ft_strlen(buffer));
             close (fd);
             break;
@@ -298,7 +301,7 @@ void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
     }
     current->content = file_name;
     current->type = HEREDOC;
-    current->fd = fd;
+    current->fd = cfd;
 }
 
 void append_list(t_elem **list)

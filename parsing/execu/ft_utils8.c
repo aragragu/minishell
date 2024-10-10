@@ -6,11 +6,71 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:48:48 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/08 18:53:14 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/10 04:10:02 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+static int	nb_counter(long nb)
+{
+	int	count;
+
+	count = 0;
+	if (nb < 0)
+	{
+		count++;
+		nb = nb * (-1);
+	}
+	if (nb == 0)
+	{
+		count++;
+	}
+	while (nb != 0)
+	{
+		nb = nb / 10;
+		count++;
+	}
+	return (count);
+}
+
+static char	*a_lloc(int len)
+{
+	char	*temp;
+
+	temp = malloc (len + 1);
+	if (temp == 0)
+		return (NULL);
+	temp[0] = '0';
+	return (temp);
+}
+
+char	*ft_itoa1(int n)
+{
+	long	nb;
+	int		i;
+	int		len;
+	char	*res;
+
+	nb = n;
+	len = nb_counter(nb);
+	res = a_lloc(len);
+	if (res == NULL)
+		return (NULL);
+	if (nb < 0)
+		nb = nb * (-1);
+	i = len - 1;
+	while (nb != 0)
+	{
+		res[i] = (nb % 10) + '0';
+		nb = nb / 10;
+		i--;
+	}
+	if (n < 0)
+		res[0] = '-';
+	res[len] = '\0';
+	return (res);
+}
 
 char	*norm_excu_in_path(char *filename, t_var *var)
 {

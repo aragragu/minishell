@@ -6,12 +6,11 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:32:21 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/08 22:53:52 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/09 20:21:17 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include <stdbool.h>
 
 int	ft_strcmplist(char *s1, char *s2)
 {
@@ -80,128 +79,15 @@ void	sort_env(t_env **env)
 	return ;
 }
 
-t_env	*index_key(t_env *env, char *key)
+void	ft_export(t_var *var, int i, int error)
 {
-	t_env	*tmp;
-
-	tmp = env;
-	while (tmp)
-	{
-		if (!ft_strcmp(key, tmp->key))
-			return (tmp);
-		tmp = tmp->next;
-	}
-	return (NULL);
-}
-
-void ft_export(t_var *var, int i, int error)
-{
-	int		j;
-	int		k;
-	bool	if_valid;
-	int		flag_plus;
-	char	*new_val;
-	char	*key = NULL;
-	t_env	*index;
-
-	flag_plus = 0;
-	if_valid = true;
+	var->key = NULL;
+	var->flag_plus = 0;
+	var->if_valid = true;
 	if (!var->list->argc[1])
 		sort_env(&var->env);
 	else
-	{
-		while (var->list->argc[++i])
-		{
-			if (var->list->argc[i][0] && (var->list->argc[i][0] == '_' || ft_isalpha(var->list->argc[i][0])))
-			{
-				j = ft_strlen(var->list->argc[i]);
-				if (ft_strchr(var->list->argc[i], '='))
-				{
-					j = -1;
-					while (var->list->argc[i][++j])
-					{
-						if (var->list->argc[i][j] == '=')
-							break;
-					}
-					if (var->list->argc[i][j - 1] == '+')
-					{
-						flag_plus = 1;
-						j--;
-					}
-				}
-				k = 0;
-				while (++k < j)
-				{
-					if (!(var->list->argc[i][k] == '_' || ft_isalpha(var->list->argc[i][k]) || ft_digits(var->list->argc[i][k])))
-					{
-						error = 1;
-						break;
-					}
-				}
-			}
-			else
-				error = 1;
-			if (!error)
-			{
-				if (ft_strchr(var->list->argc[i], '='))
-				{
-					if (flag_plus)
-					{
-						new_val = ft_cat(var->list->argc[i], j + 2, 1);
-						key = ft_cat(var->list->argc[i], j, 0);
-						index = index_key(var->env, key);
-						if (index && var->list->argc[i][j] == '+' && var->list->argc[i][j + 1] == '=')
-						{   
-							if (!index->value)
-								index->value = new_val;
-							else
-							{
-								char *temp = ft_strjoinnn(index->value, new_val);
-								free(index->value);
-								index->value = temp;
-								free(new_val);
-							}
-							free(key);
-						}
-						else
-							ft_lstadd_backkk(&var->env, ft_lstnewww(key, new_val));
-					}
-					else
-					{
-						new_val = ft_cat(var->list->argc[i], j + 1, 1);
-						key = ft_cat(var->list->argc[i], j, 0);
-						index = index_key(var->env, key);
-						if (index)
-						{
-							free(index->value);
-							index->value = new_val;
-							free(key);
-						}
-						else
-							ft_lstadd_backkk(&var->env, ft_lstnewww(key, new_val));
-					}
-				}
-				else
-				{
-					key = ft_cat(var->list->argc[i], j, 0);
-					index = index_key(var->env, key);
-					if (!index)
-						ft_lstadd_backkk(&var->env, ft_lstnewww(key, NULL));
-					else
-						free(key);
-				}
-			}
-			else
-			{
-				ft_fprintf(2, "minishell: export: `%s': not a valid identifier\n", var->list->argc[i]);
-				if_valid = false;
-				var->exit_num = 1;
-			}
-			flag_plus = 0;
-			error = 0;
-		}
-	}
-	if (if_valid == true)
+		ex1_norm(var, i, &error);
+	if (var->if_valid == true)
 		var->exit_num = 0;
 }
-

@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:31:11 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/07 20:45:36 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/09 15:51:50 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,27 @@ void	pwd_upd_old(t_env **env, char *key, char *val)
 	}
 }
 
-void	ft_cd_handle_special_cases(t_var *var, char *old_pwd)
+void	error_fun_cd(t_var *var, char *home, int flag)
 {
-	char	*home;
+	if (flag == 0)
+	{
+		perror(var->list->argc[1]);
+		var->exit_num = 1;
+	}
+	else if (flag == 1)
+	{
+		ft_fprintf(2, "minishell: cd: HOME not set\n");
+		var->exit_num = 1;
+	}
+	else if (flag == 2)
+	{
+		ft_fprintf(2, "cd:%s:No such file or directory\n", home);
+		var->exit_num = 1;
+	}
+}
 
+void	ft_cd_handle_special_cases(t_var *var, char *old_pwd, char *home)
+{
 	if (var->list->argc[1] == NULL || !ft_strcmp(var->list->argc[1], "~"))
 	{
 		if (var->list->argc[1] == NULL)
@@ -51,21 +68,18 @@ void	ft_cd_handle_special_cases(t_var *var, char *old_pwd)
 			home = getenv("HOME");
 		if (home == NULL)
 		{
-			ft_fprintf(2, "minishell: cd: HOME not set\n");
-			var->exit_num = 1;
+			error_fun_cd(var, home, 1);
 			return ;
 		}
 		if (chdir(home) != 0)
 		{
-			ft_fprintf(2, "minishell: cd:%s:No such file or directory\n", home);
-			var->exit_num = 1;
+			error_fun_cd(var, home, 2);
 			return ;
 		}
 	}
 	else if (chdir(var->list->argc[1]) != 0)
 	{
-		perror(var->list->argc[1]);
-		var->exit_num = 1;
+		error_fun_cd(var, home, 0);
 		return ;
 	}
 	pwd_upd_old(&var->env, "OLDPWD", old_pwd);
@@ -86,7 +100,7 @@ void	ft_cd(t_var *var)
 		}
 	}
 	else
-		ft_cd_handle_special_cases(var, old_pwd);
+		ft_cd_handle_special_cases(var, old_pwd, NULL);
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 		pwd_upd_old(&var->env, "PWD", cwd);
 	else
