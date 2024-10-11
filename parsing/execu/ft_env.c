@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:33:35 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/10 22:27:49 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/11 00:03:13 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	ft_env(t_var *var)
 	if (var->list->argc[1])
 	{
 		printf("env: too many arguments\n");
-		var->exit_num = 127;
+		g_es(127, 0);
 		return ;
 	}
 	while (tmp)
@@ -58,5 +58,5 @@ void	ft_env(t_var *var)
 			printf("%s=%s\n", tmp->key, tmp->value);
 		tmp = tmp->next;
 	}
-	var->exit_num = 0;
+	g_es(0, 0);
 }

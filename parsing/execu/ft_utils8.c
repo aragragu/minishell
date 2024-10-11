@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:48:48 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/10 22:30:19 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/11 00:22:58 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	*ft_itoa1(int n)
 	return (res);
 }
 
-char	*norm_excu_in_path(char *filename, t_var *var)
+char	*norm_excu_in_path(char *filename)
 {
 	struct stat	f_stat;
 
@@ -83,14 +83,14 @@ char	*norm_excu_in_path(char *filename, t_var *var)
 			if (S_ISDIR(f_stat.st_mode))
 			{
 				fprintf(stderr, "%s: is a directory\n", filename);
-				var->exit_num = 126;
+				g_es(126, 0);
 				exit(126);
 			}
 		}
 		if (access(filename, X_OK) == 0)
 			return (ft_strduppp(filename));
 		perror(filename);
-		var->exit_num = 127;
+		g_es(127, 0);
 		exit(127);
 	}
 	return (NULL);

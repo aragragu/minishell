@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 11:48:51 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/10 22:30:10 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/11 01:09:25 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	error_function(t_var *var)
 {
 	fprintf(stderr, "minishell: %s: command not found\n", var->list->argc[0]);
-	var->exit_num = 127;
+	g_es(127, 0);
 	exit(127);
 }
 
@@ -28,9 +28,11 @@ void	error_fork(pid_t pid)
 	}
 }
 
-void	waitpid_func(t_var *var)
+void	waitpid_func(void)
 {
-	while (waitpid(-1, &var->exit_num, 0) > 0)
+	int	exit_stat;
+
+	while (waitpid(-1, &exit_stat, 0) > 0)
 		;
-	update_exit_status(var, var->exit_num);
+	update_exit_status(exit_stat);
 }

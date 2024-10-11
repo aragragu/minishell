@@ -6,13 +6,11 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:29:24 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/10 16:10:40 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/11 00:58:49 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int g_exit_status;
 
 void handle_redirection(t_elem **list, t_env **env,t_garbage **garbage)
 {
@@ -248,7 +246,7 @@ void    s_handler(int sig)
     (void)sig;
     if (sig == SIGINT)
     {
-        g_exit_status = 2;
+        g_sig = 2;
         close(0);
     }
 }
@@ -313,6 +311,7 @@ void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
             break;
         buffer = temp;
     }
+
     if(!isatty(STDIN_FILENO))
     {
         sigint_herdoc();
