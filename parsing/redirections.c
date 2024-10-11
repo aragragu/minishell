@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:29:24 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/11 00:58:49 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/11 16:04:03 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void handle_redirection(t_elem **list, t_env **env,t_garbage **garbage)
     
     while (current)
     {
-        if (check_fd_her(list)== 1)
+        if (check_fd_her(list) == 1)
             break;
         if (current->next && current->next->type == REDIR_OUT)
             redirection_out_list(&current);

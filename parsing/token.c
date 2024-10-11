@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/11 01:03:02 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/11 16:01:08 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int	fill_linked_list(char *input, int *p, t_var *var)
 	ft_lstadd_back_garbage(&var->garbage, ft_lstnew_garbage(input));
 	add_history(input);
 	var->linked_list = token_input(&var->linked_list, &input, var, &var->garbage);
+	print_list(&var->linked_list);
 	if (!var->linked_list)
 	{
 		free_garbage(&var->garbage);
@@ -94,6 +95,7 @@ int	fill_linked_list(char *input, int *p, t_var *var)
 	expand_var_list(&var->linked_list, *var, &var->garbage);
 	concatination(&var->linked_list, &var->garbage);
 	handle_redirection(&var->linked_list, &var->env, &var->garbage);
+	print_list(&var->linked_list);
 	if (check_fd_her(&var->linked_list))
 	{
 		free_garbage(&var->garbage);
@@ -114,7 +116,7 @@ int	fill_linked_list(char *input, int *p, t_var *var)
 	}
 	import_data(&var->list, &var->linked_list, &var->garbage);
 	// print_list(&var->linked_list);
-	// print_cmd(var->list);
+	print_cmd(var->list);
 	// puts("paaaaaaaah");
 	// print_list(&var->linked_list);
 	// print_cmd(var->list);
