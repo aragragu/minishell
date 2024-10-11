@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:31:11 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/10 22:27:25 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/11 00:02:42 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,17 @@ void	error_fun_cd(t_var *var, char *home, int flag)
 	if (flag == 0)
 	{
 		perror(var->list->argc[1]);
-		var->exit_num = 1;
+		g_es(1, 0);
 	}
 	else if (flag == 1)
 	{
 		ft_fprintf(2, "minishell: cd: HOME not set\n");
-		var->exit_num = 1;
+		g_es(1, 0);
 	}
 	else if (flag == 2)
 	{
 		ft_fprintf(2, "cd:%s:No such file or directory\n", home);
-		var->exit_num = 1;
+		g_es(1, 0);
 	}
 }
 
@@ -95,7 +95,7 @@ void	ft_cd(t_var *var)
 		if (chdir(var->list->argc[1]) != 0)
 		{
 			ft_fprintf(2, "minishell: cd: No such file or directory\n");
-			var->exit_num = 1;
+			g_es(1, 0);
 			return ;
 		}
 	}
@@ -106,8 +106,8 @@ void	ft_cd(t_var *var)
 	else
 	{
 		perror("getcwd");
-		var->exit_num = 1;
+		g_es(1, 0);
 		return ;
 	}
-	var->exit_num = 0;
+	g_es(0, 0);
 }

@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 17:31:43 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/10 22:28:12 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/11 00:02:42 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	error_function_expo(t_var *var, int i)
 {
 	ft_fprintf(2, "export: `%s': not a valid identifier\n", var->list->argc[i]);
 	var->if_valid = false;
-	var->exit_num = 1;
+	g_es(1, 0);
 }
 
 void	ex2_norm(t_var *var, int i, int *error)

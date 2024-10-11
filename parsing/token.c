@@ -6,22 +6,33 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/10 22:43:44 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/11 01:03:02 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// int g_es(int flag, int stat)
-// {
-// 	static int exit_status;
+int g_es(int stat, int flag)
+{
+	static int exit_status;
 
-// 	if (flag == 0)
-// 	{
-// 		exit_status = stat;
-// 	}
-// 	return (exit_status);
-// }
+	if (flag == 0)
+	{
+		exit_status = stat;
+	}
+	return (exit_status);
+}
+
+void	signal_hand_sig_qui(int sig)
+{
+	if (sig == SIGQUIT)
+	{
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		printf("Quit: 3\n");
+		g_es(131, 0);
+	}
+}
 
 void	signal_handler(int sig)
 {
@@ -33,6 +44,7 @@ void	signal_handler(int sig)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
+		g_es(1, 0);
 	}
 	if (sig == SIGQUIT)
 		return ;
@@ -40,10 +52,9 @@ void	signal_handler(int sig)
 
 void	initialize_variables(t_var *var, char **env)
 {
-	g_exit_status = 0;
 	var->env = NULL;
 	var->list = NULL;
-	var->exit_num = 0;
+	g_es(0, 0);
 	var->garbage = NULL;
 	var->garb = NULL;
 	var->linked_list = NULL;
@@ -74,7 +85,7 @@ int	fill_linked_list(char *input, int *p, t_var *var)
 	if (!sysntax_error_checker(&var->garbage, &input, &var->linked_list))
 	{
 		free_garbage(&var->garbage);
-		var->exit_num = 258;
+		g_es(258, 0);
 		var->linked_list = NULL;
 		var->garbage = NULL;
 		var->list = NULL;
@@ -86,16 +97,16 @@ int	fill_linked_list(char *input, int *p, t_var *var)
 	if (check_fd_her(&var->linked_list))
 	{
 		free_garbage(&var->garbage);
-		var->exit_num = 1;
+		g_es(1, 0);
 		var->linked_list = NULL;
 		var->garbage = NULL;
 		var->list = NULL;
 		return (2);
 	}
-	if (g_exit_status == 2)
+	if (g_sig == 2)
 	{
 		free_garbage(&var->garbage);
-		var->exit_num = 1;
+		g_es(1, 0);
 		var->linked_list = NULL;
 		var->garbage = NULL;
 		var->list = NULL;
@@ -123,7 +134,7 @@ void	read_input(char **env)
 	tcgetattr(STDIN_FILENO, &original_termios);
 	while (1)
 	{
-		g_exit_status = 0;
+		g_sig = 0;
 		signal(SIGINT, signal_handler);
 		signal(SIGQUIT, signal_handler);
 		input = readline("➜ minishell💀$ ");
@@ -133,11 +144,13 @@ void	read_input(char **env)
 			break ;
 		else if (i == 2)
 			continue ;
-		if(g_exit_status == 0)
+		if(g_sig == 0)
 		{
 			execution(&var);
 			tcsetattr(STDIN_FILENO, TCSANOW, &original_termios);
 		}
+		else 
+			close(var.linked_list->fd);
 		free_garbage(&var.garbage);
 		var.linked_list = NULL;
 		var.garbage = NULL;
@@ -211,7 +224,7 @@ void	token_input_1(t_elem **list, char *input, int i, t_var *var)
 		is_a_quot(list, input, i, &var->garbage);
 	else if (input[i] == '\'')
 		is_a_squot(list, input, i, &var->garbage);
-	else if (input[i] == '|' && (var->exit_num = 0, 1))
+	else if (input[i] == '|' && (g_es(0, 0), 1))
 		ft_lstadd_back(list, ft_lstnew(ft_strdup("|", &var->garbage), PIPE, &var->garbage));
 	else if (input[i] == '(')
 		ft_lstadd_back(list, ft_lstnew(ft_strdup("(", &var->garbage) \

@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:38:50 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/09 15:36:05 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/11 01:06:44 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,31 +51,35 @@ void	store_env(t_env *envv, char ***env, int i, int len)
 	(*env)[i] = NULL;
 }
 
-void	update_exit_status(t_var *var, int status)
+void	update_exit_status(int status)
 {
+	int	stat;
+
+	stat = 0;
 	if (WIFEXITED(status))
-		var->exit_num = WEXITSTATUS(status);
+		stat = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
-		var->exit_num = 128 + WTERMSIG(status);
+		stat = 128 + WTERMSIG(status);
+	g_es(stat, 0);
 }
 
 void	ft_exc(t_var *var)
 {
 	char	*exec_path;
 	char	**envp;
-	pid_t	pid;
+	int		exit_stat;
 
 	store_env(var->env, &envp, 0, 0);
-	pid = fork();
-	if (pid == -1)
+	signal(SIGQUIT, signal_hand_sig_qui);
+	var->pid = fork();
+	if (var->pid == -1)
 	{
 		ft_free(envp);
-		return (error_fork(pid));
+		return (error_fork(var->pid));
 	}
-	if (pid == 0)
+	if (var->pid == 0)
 	{
-		if (!var->list->argc[0][0])
-			error_function(var);
+		(!var->list->argc[0][0]) && (error_function(var), 0);
 		exec_path = check_valid_path(var->list->cmd, var);
 		{
 			execve(exec_path, var->list->argc, envp);
@@ -84,6 +88,6 @@ void	ft_exc(t_var *var)
 		}
 	}
 	ft_free(envp);
-	waitpid(pid, &var->exit_num, 0);
-	update_exit_status(var, var->exit_num);
+	waitpid(var->pid, &exit_stat, 0);
+	update_exit_status(exit_stat);
 }

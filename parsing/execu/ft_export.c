@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:32:21 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/10 22:28:48 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/11 00:02:31 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,5 @@ void	ft_export(t_var *var, int i, int error)
 	else
 		ex1_norm(var, i, &error);
 	if (var->if_valid == true)
-		var->exit_num = 0;
+		g_es(0, 0);
 }

@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/10 18:36:14 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/11 00:36:50 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void expand_var_list(t_elem **list, t_var container, t_garbage **garbage)
         if (token && token->type == VAR)
             expand_var(list, token, &container.env, garbage);
         else if (token && token->type == EXIT_STATUS)
-            token->content = ft_itoa(container.exit_num, garbage);
+            token->content = ft_itoa(g_es(0, 1), garbage);
         else if (token && token->type == D_QOUTS)
             expand_d_qouts(&container.env, &token->content, garbage);
         else if (token && token->type == TILDE)

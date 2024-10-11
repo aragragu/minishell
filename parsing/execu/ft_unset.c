@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:33:33 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/10 22:29:29 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/11 00:02:42 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	ft_unset(t_var *var, int i)
 		else
 		{
 			ft_fprintf(2, "`%s': not a valid identifier\n", var->list->argc[i]);
-			var->exit_num = 1;
+			g_es(1, 0);
 		}
 	}
 }

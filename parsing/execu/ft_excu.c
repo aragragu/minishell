@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:53:26 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/10 17:49:22 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/11 00:23:16 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*check_valid_path(char *filename, t_var *var)
 
 	if (!filename || !*filename)
 		return (NULL);
-	exec_path = norm_excu_in_path(filename, var);
+	exec_path = norm_excu_in_path(filename);
 	if (exec_path)
 		return (exec_path);
 	exec_path = excu_in_path(filename, var);

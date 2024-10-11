@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/10 21:32:24 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/11 01:01:07 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@
 // #undef HEREDOC //remove if u are using macos
 // #undef APPEND //remove if u are using macos
 
-extern int g_exit_status;
+int g_sig;
 
 typedef enum    s_token
 {
@@ -227,7 +227,7 @@ int     check_fd_her(t_elem **elem);
 
 void		ft_echo(t_var *var);
 void		ft_export(t_var *var, int i, int error);
-void		ft_pwd(t_var *var);
+void		ft_pwd(void);
 void		ft_exit(t_var *var);
 void		ft_cd(t_var *var);
 void		ft_unset(t_var *var, int i);
@@ -281,9 +281,9 @@ void		norm_excu_pipe3(t_var **var);
 int			check_builtins(char *str);
 void		ft_builtins(t_var *var, char *str, t_cmd **cmd);
 int			count_env(t_env *envv);
-char		*norm_excu_in_path(char *filename, t_var *var);
+char		*norm_excu_in_path(char *filename);
 int	is_num(const char *str);
-void	update_exit_status(t_var *var, int status);
+void	update_exit_status(int status);
 char	*search_in_path(char *start, char *filename, t_var *var);
 void	error_function_expo(t_var *var, int i);
 void	ex2_norm(t_var *var, int i, int *error);
@@ -297,6 +297,7 @@ char	*ft_itoa1(int n);
 void	swap_nodes(t_env **first, t_env **tmp);
 void	print_export(t_env *first);
 int	ft_strcmplist(char *s1, char *s2);
-int g_es(int flag, int stat);
+int g_es(int stat, int flag);
+void	signal_hand_sig_qui(int sig);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:21:52 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/10 22:29:53 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/11 01:08:43 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	norm_excu_pipe(t_var *var, char **envp)
 		if (check_builtins(var->list->cmd))
 		{
 			ft_builtins(var, var->list->cmd, &var->list);
-			exit(var->exit_num);
+			exit(g_es(0, 1));
 		}
 		else
 		{
@@ -81,6 +81,7 @@ void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd)
 	while (++i < num_cmds)
 	{
 		(i < num_cmds - 1) && (pipe(pipefd), 0);
+		signal(SIGQUIT, signal_hand_sig_qui);
 		var->pid = fork();
 		if (var->pid == -1)
 		{
@@ -90,8 +91,7 @@ void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd)
 		if (var->pid == 0)
 		{
 			norm_excu_pipe2(prev_fd, i, num_cmds, pipefd);
-			norm_excu_pipe3(&var);
-			norm_excu_pipe(var, var->envp);
+			(1) && (norm_excu_pipe3(&var), norm_excu_pipe(var, var->envp), 0);
 		}
 		close(pipefd[1]);
 		(i != 0) && (close(prev_fd), 0);
