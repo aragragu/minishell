@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:53:26 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/08 16:11:51 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/11 16:10:35 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ char	*check_valid_path(char *filename, t_var *var)
 
 	if (!filename || !*filename)
 		return (NULL);
-	exec_path = norm_excu_in_path(filename, var);
+	exec_path = norm_excu_in_path(filename);
 	if (exec_path)
 		return (exec_path);
 	exec_path = excu_in_path(filename, var);
 	if (exec_path != NULL)
 		return (exec_path);
-	return (NULL);
+	return (free(exec_path), NULL);
 }
 
 char	*ft_getenv(t_env *env, char *key)

@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 11:51:38 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/07 20:38:29 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/11 00:02:42 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	red_out_in(t_redir *redir, int fd)
 	}
 }
 
-void	red_herd_appen(t_redir *redir, int fd)
+void	red_herd_appen(t_redir *redir, int fd, t_var *var)
 {
 	if (redir->type == APPEND)
 	{
@@ -79,15 +79,12 @@ void	red_herd_appen(t_redir *redir, int fd)
 	}
 	else if (redir->type == HEREDOC)
 	{
-		redir->fd = open(redir->value, O_RDONLY);
-		if (redir->fd < 0)
+		if (var->linked_list->fd < 0)
 		{
 			perror("open failed");
 			exit(errno);
 		}
-		dup2(redir->fd, STDIN_FILENO);
-		unlink(redir->value);
-		close(redir->fd);
+		dup2(var->linked_list->fd, STDIN_FILENO);
 	}
 }
 
@@ -103,12 +100,12 @@ void	handle_redirection2(t_var *var)
 		if (redir->value == NULL)
 		{
 			ft_fprintf(2, "minishell: ambiguous redirect\n");
-			var->exit_num = 1;
+			g_es(1, 0);
 			exit(1);
 		}
 		red_out_in(redir, fd);
-		red_herd_appen(redir, fd);
+		red_herd_appen(redir, fd, var);
 		redir = redir->next;
 	}
-	var->exit_num = 0;
+	g_es(0, 0);
 }

@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:45:58 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/08 16:12:39 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/11 16:10:33 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ void	execution(t_var *var)
 {
 	int	num_cmd;
 
-	var->list->fd[0] = dup(0);
-	var->list->fd[1] = dup(1);
 	if (var->list->cmd || contains_red(var) == 0)
 	{
 		num_cmd = calculate_cmd(var);
@@ -31,8 +29,4 @@ void	execution(t_var *var)
 				ft_exc(var);
 		}
 	}
-	dup2(var->list->fd[0], STDIN_FILENO);
-	dup2(var->list->fd[1], STDOUT_FILENO);
-	close(var->list->fd[0]);
-	close(var->list->fd[1]);
 }

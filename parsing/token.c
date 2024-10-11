@@ -6,11 +6,33 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/08 16:09:46 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/11 16:09:55 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int g_es(int stat, int flag)
+{
+	static int exit_status;
+
+	if (flag == 0)
+	{
+		exit_status = stat;
+	}
+	return (exit_status);
+}
+
+void	signal_hand_sig_qui(int sig)
+{
+	if (sig == SIGQUIT)
+	{
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		printf("Quit: 3\n");
+		g_es(131, 0);
+	}
+}
 
 void	signal_handler(int sig)
 {
@@ -22,6 +44,7 @@ void	signal_handler(int sig)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
+		g_es(1, 0);
 	}
 	if (sig == SIGQUIT)
 		return ;
@@ -29,25 +52,21 @@ void	signal_handler(int sig)
 
 void	initialize_variables(t_var *var, char **env)
 {
-	g_exit_status = 0;
 	var->env = NULL;
 	var->list = NULL;
-	var->exit_num = 0;
+	g_es(0, 0);
 	var->garbage = NULL;
 	var->garb = NULL;
 	var->linked_list = NULL;
 	var->path = ft_strduppp(_PATH_STDPATH);
 	fill_env(&var->env, env, &var->garb);
 	rl_catch_signals = 0;
-	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, signal_handler);
+	
 }
 
 int	fill_linked_list(char *input, int *p, t_var *var)
 {
-	p[0] = dup(STDIN_FILENO);
-	p[1] = dup(STDOUT_FILENO);
-
+	(void)p;
 	if (!input)
 		return (1);
 	if (!*input)
@@ -57,7 +76,8 @@ int	fill_linked_list(char *input, int *p, t_var *var)
 	}
 	ft_lstadd_back_garbage(&var->garbage, ft_lstnew_garbage(input));
 	add_history(input);
-	var->linked_list = token_input(&var->linked_list, &input, &var->garbage);
+	var->linked_list = token_input(&var->linked_list, &input, var, &var->garbage);
+	print_list(&var->linked_list);
 	if (!var->linked_list)
 	{
 		free_garbage(&var->garbage);
@@ -66,7 +86,7 @@ int	fill_linked_list(char *input, int *p, t_var *var)
 	if (!sysntax_error_checker(&var->garbage, &input, &var->linked_list))
 	{
 		free_garbage(&var->garbage);
-		var->exit_num = 258;
+		g_es(258, 0);
 		var->linked_list = NULL;
 		var->garbage = NULL;
 		var->list = NULL;
@@ -75,19 +95,31 @@ int	fill_linked_list(char *input, int *p, t_var *var)
 	expand_var_list(&var->linked_list, *var, &var->garbage);
 	concatination(&var->linked_list, &var->garbage);
 	handle_redirection(&var->linked_list, &var->env, &var->garbage);
-	if (g_exit_status == 1)
+	print_list(&var->linked_list);
+	if (check_fd_her(&var->linked_list))
 	{
 		free_garbage(&var->garbage);
+		g_es(1, 0);
 		var->linked_list = NULL;
 		var->garbage = NULL;
 		var->list = NULL;
-		dup2(p[0], STDIN_FILENO);
-		dup2(p[1], STDOUT_FILENO);
-		close(p[0]);
-		close(p[1]);
+		return (2);
+	}
+	if (g_sig == 2)
+	{
+		free_garbage(&var->garbage);
+		g_es(1, 0);
+		var->linked_list = NULL;
+		var->garbage = NULL;
+		var->list = NULL;
 		return (2);
 	}
 	import_data(&var->list, &var->linked_list, &var->garbage);
+	// print_list(&var->linked_list);
+	print_cmd(var->list);
+	// puts("paaaaaaaah");
+	// print_list(&var->linked_list);
+	// print_cmd(var->list);
 	return (0);
 }
 
@@ -96,7 +128,7 @@ void	read_input(char **env)
 	t_var	var;
 	char	*input;
 	int		i;
-	int		p[2];
+	int p[2];
 	struct termios original_termios;
 
 	input = NULL;
@@ -104,22 +136,27 @@ void	read_input(char **env)
 	tcgetattr(STDIN_FILENO, &original_termios);
 	while (1)
 	{
+		g_sig = 0;
+		signal(SIGINT, signal_handler);
+		signal(SIGQUIT, signal_handler);
 		input = readline("➜ minishell💀$ ");
 		i = fill_linked_list(input, p, &var);
+		// puts("allllllo");
 		if (i == 1)
 			break ;
 		else if (i == 2)
 			continue ;
-		execution(&var);
+		if(g_sig == 0)
+		{
+			execution(&var);
+			tcsetattr(STDIN_FILENO, TCSANOW, &original_termios);
+		}
+		else 
+			close(var.linked_list->fd);
 		free_garbage(&var.garbage);
 		var.linked_list = NULL;
 		var.garbage = NULL;
 		var.list = NULL;
-		dup2(p[0], STDIN_FILENO);
-		dup2(p[1], STDOUT_FILENO);
-		close(p[0]);
-		close(p[1]);
-		tcsetattr(STDIN_FILENO, TCSANOW, &original_termios);
 	}
 	free_garbage(&var.garb);
 }
@@ -132,7 +169,7 @@ int	not_special(char c)
 	return (1);
 }
 
-t_elem	*token_input(t_elem **list, char **in, t_garbage **garbage)
+t_elem	*token_input(t_elem **list, char **in, t_var *var, t_garbage **garbage)
 {
 	int		i;
 	char	*input;
@@ -168,36 +205,37 @@ t_elem	*token_input(t_elem **list, char **in, t_garbage **garbage)
 			i++;
 			continue ;
 		}
-		if (input[i] == '$' && input[i + 1] == '$')
+		else if (input[i] == '$' && input[i + 1] == '$')
 			ft_lstadd_back(list, ft_lstnew(ft_strdup("$$", garbage) \
 			, DOUBLE_DLR, garbage));
-		token_input_1(list, input, i, garbage);
+		token_input_1(list, input, i, var);
 		i += ft_strlen(ft_lstlast(*list)->content);
+		// printf("[%s]", ft_lstlast(*list)->content);
 	}
 	return (*list);
 }
 
-void	token_input_1(t_elem **list, char *input, int i, t_garbage **garbage)
+void	token_input_1(t_elem **list, char *input, int i, t_var *var)
 {
 	if (input[i] == '$' && input[i + 1] == '?')
-		ft_lstadd_back(list, ft_lstnew(ft_strdup("$?", garbage) \
-		, EXIT_STATUS, garbage));
+		ft_lstadd_back(list, ft_lstnew(ft_strdup("$?", &var->garbage) \
+		, EXIT_STATUS, &var->garbage));
 	else if (input[i] == '$')
-		is_a_var(list, input, i, garbage);
+		is_a_var(list, input, i, &var->garbage);
 	if (input[i] == '\"')
-		is_a_quot(list, input, i, garbage);
+		is_a_quot(list, input, i, &var->garbage);
 	else if (input[i] == '\'')
-		is_a_squot(list, input, i, garbage);
-	else if (input[i] == '|')
-		ft_lstadd_back(list, ft_lstnew(ft_strdup("|", garbage), PIPE, garbage));
+		is_a_squot(list, input, i, &var->garbage);
+	else if (input[i] == '|' && (g_es(0, 0), 1))
+		ft_lstadd_back(list, ft_lstnew(ft_strdup("|", &var->garbage), PIPE, &var->garbage));
 	else if (input[i] == '(')
-		ft_lstadd_back(list, ft_lstnew(ft_strdup("(", garbage) \
-		, OPENING_PARENTHESIS, garbage));
+		ft_lstadd_back(list, ft_lstnew(ft_strdup("(", &var->garbage) \
+		, OPENING_PARENTHESIS, &var->garbage));
 	else if (input[i] == ')')
-		ft_lstadd_back(list, ft_lstnew(ft_strdup(")", garbage) \
-		, CLOSING_PARENTHESIS, garbage));
+		ft_lstadd_back(list, ft_lstnew(ft_strdup(")", &var->garbage) \
+		, CLOSING_PARENTHESIS, &var->garbage));
 	else if (not_special(input[i]))
-		is_a_word(list, input, i, garbage);
+		is_a_word(list, input, i, &var->garbage);
 }
 
 

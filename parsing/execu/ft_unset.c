@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:33:33 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/07 14:27:27 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/11 00:02:42 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,9 @@ void	ft_unset(t_var *var, int i)
 			norm_unset_2(&prev, &curr, &var);
 		}
 		else
-			env_key_error(var->list->argc, &var->env, i, "unset");
+		{
+			ft_fprintf(2, "`%s': not a valid identifier\n", var->list->argc[i]);
+			g_es(1, 0);
+		}
 	}
 }
