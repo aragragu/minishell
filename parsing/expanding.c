@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/11 00:36:50 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/13 18:20:17 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,11 @@ int	ft_atoi2(char *str)
 void expand_var_list(t_elem **list, t_var container, t_garbage **garbage)
 {
     t_elem *token;
+
     if (!*list)
         return;
     token = *list;
-    while (token) // content -> var -> content
+    while (token)
     {
         edit_list(token, garbage);
         if (token && token->type == HEREDOC)
@@ -269,13 +270,13 @@ t_elem *token_quots(t_elem **list, char *in, t_garbage **garbage)
 
     while (in && in[i])
     {
-        if (in[i] && is_witheS_PACE(in[i]))
+        if (in[i] && is_whitespace(in[i]))
             ft_lstadd_back(list, ft_lstnew(ft_strdup(" ", garbage), S_PACE, garbage));
         else if (in[i] == '$' && in[i + 1] == '$')
             ft_lstadd_back(list, ft_lstnew(ft_strdup("$$", garbage), DOUBLE_DLR, garbage));
         else if (in[i] == '$')
             is_a_var(list, in, i, garbage);
-        else if (in[i] && !is_witheS_PACE(in[i]) && in[i] != '$')
+        else if (in[i] && !is_whitespace(in[i]) && in[i] != '$')
             is_a_string(list, in, i, garbage);
         i += ft_strlen(ft_lstlast(*list)->content);
     }
