@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:34:55 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/11 00:17:16 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/15 22:11:27 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,20 @@ void	norm_ft_exit(t_var *var, long num, int flag)
 		g_es(255, 0);
 		exit(255);
 	}
+	else if (flag == 3)
+	{
+		ft_fprintf(0, "exit\n");
+		ft_fprintf(2, "minishell: exit: too many arguments\n");
+		g_es(1, 0);
+	}
 }
 
 void	ft_exit(t_var *var)
 {
-	long	num;
-	int		ac;
+	long		num;
+	static int	ac;
 
-	ac = 0;
+	num = ft_atoi(var->list->argc[1], var);
 	while (var->list->argc[ac])
 		ac++;
 	if (ac == 1)
@@ -88,16 +94,13 @@ void	ft_exit(t_var *var)
 	}
 	else if (ac < 3)
 	{
-		num = ft_atoi(var->list->argc[1], var);
 		if (is_num(var->list->argc[1]))
 			norm_ft_exit(var, num, 0);
 		else
 			norm_ft_exit(var, num, 1);
 	}
-	else if (ac > 2)
-	{
-		ft_fprintf(0, "exit\n");
-		ft_fprintf(2, "minishell: exit: too many arguments\n");
-		g_es(1, 0);
-	}
+	else if (is_num(var->list->argc[1]))
+		norm_ft_exit(var, num, 3);
+	else
+		norm_ft_exit(var, num, 1);
 }

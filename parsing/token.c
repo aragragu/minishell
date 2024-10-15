@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/11 01:03:02 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/15 18:38:38 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	signal_hand_sig_qui(int sig)
 	{
 		rl_replace_line("", 0);
 		rl_on_new_line();
-		printf("Quit: 3\n");
+		ft_fprintf(1, "Quit: 3\n");
 		g_es(131, 0);
 	}
 }
@@ -144,13 +144,11 @@ void	read_input(char **env)
 			break ;
 		else if (i == 2)
 			continue ;
-		if(g_sig == 0)
+		if(g_sig == 0 && var.list != NULL)
 		{
 			execution(&var);
 			tcsetattr(STDIN_FILENO, TCSANOW, &original_termios);
 		}
-		else 
-			close(var.linked_list->fd);
 		free_garbage(&var.garbage);
 		var.linked_list = NULL;
 		var.garbage = NULL;
@@ -206,7 +204,8 @@ t_elem	*token_input(t_elem **list, char **in, t_var *var, t_garbage **garbage)
 		else if (input[i] == '$' && input[i + 1] == '$')
 			ft_lstadd_back(list, ft_lstnew(ft_strdup("$$", garbage) \
 			, DOUBLE_DLR, garbage));
-		token_input_1(list, input, i, var);
+		else
+			token_input_1(list, input, i, var);
 		i += ft_strlen(ft_lstlast(*list)->content);
 		// printf("[%s]", ft_lstlast(*list)->content);
 	}

@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 11:51:38 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/11 00:02:42 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/12 09:55:55 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	red_out_in(t_redir *redir, int fd)
 
 void	red_herd_appen(t_redir *redir, int fd, t_var *var)
 {
+	(void)var;
 	if (redir->type == APPEND)
 	{
 		fd = open(redir->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
@@ -79,12 +80,12 @@ void	red_herd_appen(t_redir *redir, int fd, t_var *var)
 	}
 	else if (redir->type == HEREDOC)
 	{
-		if (var->linked_list->fd < 0)
+		if (redir->fd < 0)
 		{
 			perror("open failed");
 			exit(errno);
 		}
-		dup2(var->linked_list->fd, STDIN_FILENO);
+		dup2(redir->fd, STDIN_FILENO);
 	}
 }
 

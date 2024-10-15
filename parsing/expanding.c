@@ -6,37 +6,11 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/11 00:36:50 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/15 22:07:07 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static size_t	len(const char *str)
-{
-	int	i; 
-
-	i = 0;
-	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13) || str[i] == '+')
-		i++;
-	if ((str[i] >= '0' && str[i] <= '9') || (str[i] == '-' && str[i] == '0'))
-		i++;
-	return (i);
-}
-
-static int	over_flow(int sign, const char *str)
-{
-	int	i; 
-
-	i = 0;
-	while (str[i] == '+' || str[i] == '-')
-		i++;
-	if (len(str) > 20 && sign == -1)
-		return (0);
-	if (len(str) > 19 && sign == 1)
-		return (-1);
-	return (1);
-}
 
 int	ft_atoi2(char *str)
 {
@@ -58,11 +32,9 @@ int	ft_atoi2(char *str)
 	while ('0' <= str[i] && str[i] <= '9')
 	{
 		result = (result * 10) + (str[i] - 48);
-		if (over_flow(n, str) != 1)
-			return (over_flow(n, str));
 		i++;
 	}
-	return (free(str), result * n);
+	return (result * n);
 }
 
 void expand_var_list(t_elem **list, t_var container, t_garbage **garbage)
@@ -143,7 +115,7 @@ void    fill_env(t_env **env, char **str, t_garbage **garbage)
                 key = ft_substr(str[j], 0, i, garbage);
                 value = ft_substr(str[j] + i + 1, 0, (end - i - 1), garbage);
                 if(!ft_strcmp(key, "SHLVL"))
-                    value = ft_strduppp(ft_itoa1(ft_atoi2(value) + 1));
+                    value = ft_strdup(ft_itoa(ft_atoi2(value) + 1, garbage), garbage);
                 ft_lstadd_back2(env, ft_lstnew2(key, value, garbage));
                 break;
             }

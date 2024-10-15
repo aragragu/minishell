@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/11 01:01:07 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/15 22:14:11 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,64 +225,64 @@ int     check_fd_her(t_elem **elem);
 
 //////////////////////////////////////////////////////////////////////////////
 
-void		ft_echo(t_var *var);
-void		ft_export(t_var *var, int i, int error);
-void		ft_pwd(void);
-void		ft_exit(t_var *var);
-void		ft_cd(t_var *var);
-void		ft_unset(t_var *var, int i);
-void		sort_env(t_env **env);
-void		ft_env(t_var *var);
-int			ft_isalpha(char c);
-int			ft_digits(char c);
-char		*ft_cat(char *str, int len, int flag);
-void		pwd_upd_old(t_env **env, char *key, char *val);
-int			check_builtins(char *str);
-char		*ft_strduppp(char *s1);
-void		ft_builtins(t_var *var, char *str, t_cmd **cmd);
-void		ft_lstadd_backkk(t_env **lst, t_env *new);
-t_env		*ft_lstlasttt(t_env *lst);
-int			ft_lstsizeee(t_env *lst);
-t_env		*ft_lstnewww(char *key, char *val);
-int			ft_isalpha(char c);
-int			ft_digits(char c);
-void		ft_putstr(char *str);
-char		*ft_strjoinnn(char *s1, char *s2);
-void		env_key_error(char **cmd, t_env **env, int i, char *msg);
-int			count_env(t_env *envv);
-char		*build_path(char *dir, char *filename);
-char		*excu_in_path(char *filename, t_var *var);
-void		ft_exc(t_var *var);
-char		*ft_strchrr(char *str, int c);
-char		*check_valid_path(char *filename, t_var *var);
-char		*ft_getenv(t_env *env, char *key);
-char		*ft_strcat(char *dest, char *src);
-char		*ft_strcpy(char *dest, char *src);
-void		execute_pipe(int num_cmds, t_var *var, int i, int prev_fd);
-void		store_env(t_env *envv, char ***env, int i, int len);
-void		ft_exc2(t_var *var);
-int			contains_red(t_var *var);
-void		handle_redirection2(t_var *var);
-int			calculate_cmd(t_var *var);
+void	ft_echo(t_var *var);
+void	ft_export(t_var *var, int i, int error);
+void	ft_pwd(void);
+void	ft_exit(t_var *var);
+void	ft_cd(t_var *var);
+void	ft_unset(t_var *var, int i);
+void	sort_env(t_env **env);
+void	ft_env(t_var *var);
+int		ft_isalpha(char c);
+int		ft_digits(char c);
+char	*ft_cat(char *str, int len, int flag);
+void	pwd_upd_old(t_env **env, char *key, char *val);
+int		check_builtins(char *str);
+char	*ft_strduppp(char *s1);
+void	ft_builtins(t_var *var, char *str, t_cmd **cmd);
+void	ft_lstadd_backkk(t_env **lst, t_env *new);
+t_env	*ft_lstlasttt(t_env *lst);
+int		ft_lstsizeee(t_env *lst);
+t_env	*ft_lstnewww(char *key, char *val);
+int		ft_isalpha(char c);
+int		ft_digits(char c);
+void	ft_putstr(char *str);
+char	*ft_strjoinnn(char *s1, char *s2);
+void	env_key_error(char **cmd, t_env **env, int i, char *msg);
+int		count_env(t_env *envv);
+char	*build_path(char *dir, char *filename);
+char	*excu_in_path(char *filename, t_var *var);
+void	ft_exc(t_var *var);
+char	*ft_strchrr(char *str, int c);
+char	*check_valid_path(char *filename, t_var *var);
+char	*ft_getenv(t_env *env, char *key);
+char	*ft_strcat(char *dest, char *src);
+char	*ft_strcpy(char *dest, char *src);
+void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd);
+void	store_env(t_env *envv, char ***env, int i, int len);
+void	ft_exc2(t_var *var);
+int		contains_red(t_var *var);
+void	handle_redirection2(t_var *var);
+int		calculate_cmd(t_var *var);
 void	ft_fprintf(int fd, const char *format, ...);
-int			ft_putnbr_fd(int n, int fd);
-int			ft_putnbr_unsd_fd(unsigned int n, int fd);
-int			ft_putnbr_hexa_fd(unsigned long n, int a, int fd);
-void		execution(t_var *var);
-int			ft_putstr_fd(char *s, int fd);
-int			ft_putchar_fd(char c, int fd);
-void		error_function(t_var *var);
-void		error_fork(pid_t pid);
-void	waitpid_func(t_var *var);
+int		ft_putnbr_fd(int n, int fd);
+int		ft_putnbr_unsd_fd(unsigned int n, int fd);
+int		ft_putnbr_hexa_fd(unsigned long n, int a, int fd);
+void	execution(t_var *var);
+int		ft_putstr_fd(char *s, int fd);
+int		ft_putchar_fd(char c, int fd);
+void	error_function(t_var *var);
+void	error_fork(pid_t pid);
+void	waitpid_func(void);
 void	red_herd_appen(t_redir *redir, int fd, t_var *var);
-void		red_out_in(t_redir *redir, int fd);
-int			contains_red(t_var *var);
-void		norm_excu_pipe3(t_var **var);
-int			check_builtins(char *str);
-void		ft_builtins(t_var *var, char *str, t_cmd **cmd);
-int			count_env(t_env *envv);
-char		*norm_excu_in_path(char *filename);
-int	is_num(const char *str);
+void	red_out_in(t_redir *redir, int fd);
+int		contains_red(t_var *var);
+void	norm_excu_pipe3(t_var **var);
+int		check_builtins(char *str);
+void	ft_builtins(t_var *var, char *str, t_cmd **cmd);
+int		count_env(t_env *envv);
+char	*norm_excu_in_path(char *filename);
+int		is_num(const char *str);
 void	update_exit_status(int status);
 char	*search_in_path(char *start, char *filename, t_var *var);
 void	error_function_expo(t_var *var, int i);
@@ -296,8 +296,8 @@ long	ft_atoi(char *str, t_var *var);
 char	*ft_itoa1(int n);
 void	swap_nodes(t_env **first, t_env **tmp);
 void	print_export(t_env *first);
-int	ft_strcmplist(char *s1, char *s2);
-int g_es(int stat, int flag);
+int		ft_strcmplist(char *s1, char *s2);
+int		g_es(int stat, int flag);
 void	signal_hand_sig_qui(int sig);
 
 #endif
