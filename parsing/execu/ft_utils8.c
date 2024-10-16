@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:48:48 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/11 00:22:58 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/17 00:21:35 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,7 @@ char	*norm_excu_in_path(char *filename)
 			if (S_ISDIR(f_stat.st_mode))
 			{
 				fprintf(stderr, "%s: is a directory\n", filename);
-				g_es(126, 0);
-				exit(126);
+				exit(g_es(126, 0));
 			}
 		}
 		if (access(filename, X_OK) == 0)
@@ -92,6 +91,12 @@ char	*norm_excu_in_path(char *filename)
 		perror(filename);
 		g_es(127, 0);
 		exit(127);
+	}
+	else if (filename[0] == '.' && filename[1] == '\0')
+	{
+		ft_fprintf(2, "minishell: .: filename argument required\n");
+		ft_fprintf(2, ".: usage: . filename [arguments]\n");
+		exit(2);
 	}
 	return (NULL);
 }
