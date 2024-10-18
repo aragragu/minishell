@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/13 18:09:49 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/17 17:45:18 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,8 @@ void	initialize_variables(t_var *var, char **env)
 
 int	fill_linked_list(char *input, t_var *var)
 {
-	int		i;
-	int		j;
+	int	i;
+	int	j;
 
 	i = fill_and_check(input, var);
 	if (i == 1 || i == 2)
@@ -150,12 +150,75 @@ int	fill_and_check(char *input, t_var *var)
 	return (0);
 }
 
+void	ft_heredoc(t_var *data)
+{
+	char	*buff;
+	t_elem	*tmp;
+	t_elem	*list;
+
+	tmp = NULL;
+	list = data->linked_list;
+	buff = NULL;
+	edit_linked_list(data, tmp, list, buff);
+	remove_delemiter(&data->linked_list, &data->garbage);
+}
+
+void	edit_linked_list(t_var *data, t_elem *tmp, t_elem *list, char *buff)
+{
+	t_elem	*ptr;
+
+	ptr = list;
+	while (list)
+	{
+		buff = ft_strdup("", &data->garbage);
+		if (list->type == HEREDOC && !check_fd_her(&ptr))
+		{
+			tmp = list->next;
+			if (tmp && tmp->type == S_PACE)
+			{
+				tmp->ignore = 1;
+				tmp = tmp->next;
+			}
+			while (tmp && tmp->type < S_PACE)
+			{
+				tmp->ignore = 1;
+				buff = ft_strjoin(buff, tmp->content, &data->garbage);
+				tmp = tmp->next;
+			}
+			list->content = buff;
+			open_herdoc(&list, &data->env, &data->garbage);
+		}
+		list = list->next;
+	}
+}
+
+void	remove_delemiter(t_elem **list, t_garbage **garbage)
+{
+	t_elem	*ptr;
+	t_elem	*str;
+
+	ptr = *list;
+	str = NULL;
+	while (ptr)
+	{
+		if (ptr->ignore == 0)
+		{
+			ft_lstadd_back(&str, ft_lstnew(ptr->content, ptr->type, garbage));
+			ft_lstlast(str)->fd = ptr->fd;
+			ft_lstlast(str)->fd_here = ptr->fd_here;
+		}
+		ptr = ptr->next;
+	}
+	*list = str;
+}
+
 int	list_handler(t_var *var)
 {
+	edit_all_list(&var->linked_list, &var->garbage);
+	ft_heredoc(var);
+	handle_redirection(&var->linked_list);
 	expand_var_list(&var->linked_list, *var, &var->garbage);
 	concatination(&var->linked_list, &var->garbage);
-	handle_redirection(&var->linked_list, &var->env, &var->garbage);
-	print_list(&var->linked_list);
 	if (check_fd_her(&var->linked_list))
 	{
 		free_garbage(&var->garbage);
@@ -175,13 +238,14 @@ int	list_handler(t_var *var)
 		return (2);
 	}
 	import_data(&var->list, &var->linked_list, &var->garbage);
+	print_cmd(var->list);
 	return (0);
 }
 
 int	not_special(char c)
 {
-	if (c == '|' || c == '>' || c == '<' || c == '$' || c == '\"' || \
-													c == '\'' || c == ' ')
+	if (c == '|' || c == '>' || c == '<' || c == '$' || c == '\"'
+		|| c == '\'' || c == ' ')
 		return (0);
 	return (1);
 }
@@ -201,16 +265,16 @@ void	token_input(char **in, t_var *var)
 	}
 }
 
-void	handle_whitespace(char *input, int *i, t_elem **list, \
-t_garbage **garbage)
+void	handle_whitespace(char *input, int *i, t_elem **list,
+															t_garbage **garbage)
 {
 	if (input[*i] && is_whitespace(input[*i]))
 	{
 		while (input[*i] && is_whitespace(input[*i]))
 			(*i)++;
 		(*i)--;
-		ft_lstadd_back(list, ft_lstnew(ft_strdup(" ", garbage), \
-			S_PACE, garbage));
+		ft_lstadd_back(list, ft_lstnew(ft_strdup(" ", garbage),
+				S_PACE, garbage));
 	}
 }
 
@@ -271,8 +335,8 @@ void	is_a_word(t_elem **list, char *input, int index, t_garbage **garbage)
 	char	*word;
 
 	len = 0;
-	while (input[index + len] && not_special(input[index + len]) && \
-	!is_whitespace(input[index + len]))
+	while (input[index + len] && not_special(input[index + len])
+		&& !is_whitespace(input[index + len]))
 		len++;
 	word = ft_substr(input, index, len, garbage);
 	ft_lstadd_back(list, ft_lstnew(word, WORD, garbage));
@@ -333,8 +397,8 @@ void	is_a_string(t_elem **list, char *input, int index, t_garbage **garbage)
 	char	*word;
 
 	len = 0;
-	while (input[index + len] && input[index + len] != '$' && \
-	!is_whitespace(input[index + len]))
+	while (input[index + len] && input[index + len] != '$'
+		&& !is_whitespace(input[index + len]))
 		len++;
 	word = ft_substr(input, index, len, garbage);
 	ft_lstadd_back(list, ft_lstnew(word, WORD, garbage));
@@ -348,10 +412,22 @@ void	edit_list(t_elem *list, t_garbage **garbage)
 		list->content = ft_strtrim(list->content, "\'", garbage);
 }
 
+void	edit_all_list(t_elem **list, t_garbage **garbage)
+{
+	t_elem	*ptr;
+
+	ptr = *list;
+	while (ptr)
+	{
+		edit_list(ptr, garbage);
+		ptr = ptr->next;
+	}
+}
+
 int	is_special_character(char c)
 {
-	if ((c >= 33 && c <= 47) || (c >= 58 && c <= 64) || (c >= 91 && c <= 96)
-		|| (c >= 123 && c <= 126))
+	if ((c >= 33 && c <= 47) || (c >= 58 && c <= 64)
+		|| (c >= 91 && c <= 96) || (c >= 123 && c <= 126))
 		return (1);
 	return (0);
 }

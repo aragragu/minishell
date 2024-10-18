@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 16:38:29 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/12 18:32:32 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/17 16:44:25 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,7 @@ t_garbage **garbage)
 			s[y] = (char *)ft_calloc((count_letter(x, i, c) + 1),
 					sizeof(char), garbage);
 			if (!s[y])
-			{
-				ft_free1(s, y);
-				return (NULL);
-			}
+				return (ft_free1(s, y), NULL);
 			while (x[i] && x[i] != c)
 				s[y][z++] = x[i++];
 			y++;

@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/13 18:12:45 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/17 19:59:53 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct   s_elem
 	t_token         type;
 	int				fd;
 	int 			fd_here;
+	int				ignore;
 	struct s_elem   *next;
 }                   t_elem;
 
@@ -110,6 +111,19 @@ typedef	struct c_cmd
 	int				fd[2];
 	struct c_cmd	*next;
 }					t_cmd;
+
+typedef struct		s_herdoc
+{
+	char		*line;
+	char		*buffer;
+	t_elem		*current;
+	char		*tmp;
+	char		*file_name;
+	int			fd;
+	int			cfd;
+	int			flag;
+	
+}				t_herdoc;
 
 ////////////////////////////////
 
@@ -191,13 +205,13 @@ void		expand_d_qouts_2(t_env **env, char **ptr, t_garbage **garbage);
 char		*ft_strjoin(char *s1, char *s2, t_garbage **garbage);
 int			not_special(char c);
 void		is_a_string(t_elem **list, char *input, int index, t_garbage **garbage);
-void		handle_redirection(t_elem **list, t_env **env,t_garbage **garbage);
+void		handle_redirection(t_elem **list);
 void		redirection_out_list(t_elem **list);
 void		redirection_in_list(t_elem **list);
 void		herdoc_list(t_elem **list, t_env **env,t_garbage **garbage);
-void		open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag);
+void		open_herdoc(t_elem **list, t_env **env,t_garbage **garbage);
 void		append_list(t_elem **list);
-void		starting_red(t_elem **list, t_env **env,t_garbage **garbage);
+void		starting_red(t_elem **list);
 t_redir		*ft_lstnew_redi(char *value, t_token type,	int fd,  t_garbage **garbage);
 void 		ft_lstadd_back_redi(t_redir **lst, t_redir *new);
 void        import_data(t_cmd **cmd, t_elem **list, t_garbage **garbage);
@@ -237,6 +251,19 @@ void		s_append(t_elem **list);
 void		s_herdoc(t_elem **list, t_env **env, t_garbage **garbage);
 void		redirection_out_list2(t_elem **list);
 void		redirection_in_list2(t_elem **list);
+void		append_list2(t_elem **list);
+void		initiaize_herdoc(t_herdoc **data, int *i, t_garbage **garbage, t_elem **list);
+int			herdoc_loop(t_elem **list, t_herdoc *data, t_garbage **garbage, t_env **env);
+int			check_herdoc_line(t_elem **list, t_herdoc *data, t_garbage **garbage);
+int			write_herdoc_line(t_herdoc *data, t_garbage **garbage, t_env **env);
+t_herdoc 	*ft_lstnew3(t_elem **list, char *buffer, t_garbage **garbage);
+int			handle_herdoc_list(t_elem **token, t_garbage **garbage);
+int			handle_herdoc_list2(t_elem **token, t_garbage **garbage);
+int			handle_herdoc_list3(t_elem **token);
+void 		edit_all_list(t_elem **list, t_garbage **garbage);
+void		edit_linked_list(t_var *data, t_elem *tmp, t_elem *list, char *buff);
+void		remove_delemiter(t_elem **list, t_garbage **garbage);
+
 
 
 //////////////////////////////////////////////////////////////////////////////

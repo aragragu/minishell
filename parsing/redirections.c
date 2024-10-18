@@ -6,13 +6,13 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:29:24 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/13 18:18:14 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/18 13:52:24 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_redirection(t_elem **list, t_env **env, t_garbage **garbage)
+void	handle_redirection(t_elem **list)
 {
 	t_elem	*current;
 
@@ -20,17 +20,14 @@ void	handle_redirection(t_elem **list, t_env **env, t_garbage **garbage)
 		return ;
 	current = *list;
 	if (list && ((*list)->type == REDIR_OUT || (*list)->type == REDIR_IN
-			|| (*list)->type == HEREDOC || (*list)->type == APPEND))
-		starting_red(list, env, garbage);
+			|| (*list)->type == APPEND))
+		starting_red(list);
 	while (current)
 	{
 		if (current->next && current->next->type == REDIR_OUT)
 			redirection_out_list(&current);
 		else if (current->next && current->next->type == REDIR_IN)
 			redirection_in_list(&current);
-		else if (current->next && current->next->type == HEREDOC
-			&& !check_fd_her(list))
-			herdoc_list(&current, env, garbage);
 		else if (current->next && current->next->type == APPEND)
 			append_list(&current);
 		current = current->next;
@@ -51,7 +48,7 @@ int	check_fd_her(t_elem **elem)
 	return (0);
 }
 
-void	starting_red(t_elem **list, t_env **env, t_garbage **garbage)
+void	starting_red(t_elem **list)
 {
 	t_elem	*current;
 
@@ -62,8 +59,6 @@ void	starting_red(t_elem **list, t_env **env, t_garbage **garbage)
 		s_redir_out(list);
 	else if (current && current->type == APPEND)
 		s_append(list);
-	else if (current && current->type == HEREDOC)
-		s_herdoc(list, env, garbage);
 }
 
 void	s_redir_in(t_elem **list)
@@ -134,30 +129,6 @@ void	s_append(t_elem **list)
 	{
 		*list = current->next;
 		current->next->type = APPEND;
-		return ;
-	}
-}
-
-void	s_herdoc(t_elem **list, t_env **env, t_garbage **garbage)
-{
-	t_elem	*current;
-	t_elem	*holder;
-
-	current = *list;
-	if (current->next && current->next->type == S_PACE)
-	{
-		holder = current->next;
-		if (holder->next && holder->next->type < S_PACE)
-		{
-			open_herdoc(&holder->next, env, garbage, 1);
-			*list = holder->next;
-			return ;
-		}
-	}
-	else if (current->next && current->next->type < S_PACE)
-	{
-		open_herdoc(&current->next, env, garbage, 1);
-		*list = current->next;
 		return ;
 	}
 }
@@ -248,34 +219,6 @@ void	redirection_in_list2(t_elem **list)
 	}
 }
 
-void	herdoc_list(t_elem **list, t_env **env, t_garbage **garbage)
-{
-	t_elem	*current;
-	t_elem	*herdoc;
-
-	current = *list;
-	if (current->next && current->next->type == HEREDOC
-		&& !ft_strcmp(current->next->content, "<<"))
-	{
-		herdoc = current->next;
-		if (herdoc->next && herdoc->next->type < S_PACE)
-		{
-			open_herdoc(&herdoc->next, env, garbage, 1);
-			current->next = herdoc->next;
-			return ;
-		}
-		else if (herdoc->next && herdoc->next->type == S_PACE)
-		{
-			if (herdoc->next->next && herdoc->next->next->type < S_PACE)
-			{
-				open_herdoc(&herdoc->next->next, env, garbage, 1);
-				current->next = herdoc->next->next;
-				return ;
-			}
-		}
-	}
-}
-
 void	s_handler(int sig)
 {
 	(void)sig;
@@ -291,109 +234,168 @@ void	sigint_herdoc(void)
 	int	std_in;
 
 	std_in = open(ttyname(STDERR_FILENO), O_RDONLY, 0644);
-	if(std_in < 0)
+	if (std_in < 0)
 		perror("open");
 }
 
-void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
+void	open_herdoc(t_elem **list, t_env **env, t_garbage **garbage)
 {
-	static int i;
-	char		*line;
-	char		*buffer;
-	t_elem		*current;
-	char		*temp;
-	char		*file_name;
-	int			fd;
-	int			cfd;
+	static int	i;
+	int			flag;
+	t_herdoc	*data;
 
-	buffer = ft_strdup("", garbage);
-	current = *list;
-	file_name = (ft_strjoin(ft_strdup("tmp_", garbage), ft_itoa(++i, garbage), garbage));
-	fd = 0;
-	cfd = 0;
-	if (current->type == D_QOUTS || current->type == S_QOUTS)
-		edit_list(current, garbage);
-	signal(SIGINT, s_handler);
+	data = NULL;
+	initiaize_herdoc(&data, &i, garbage, list);
 	while (1)
 	{
-		line = readline(">");
-		if (!line)
-			break;
-		if (!ft_strcmp(current->content, line))
-		{
-			fd = open(file_name, O_CREAT | O_RDWR, 0644);
-			cfd = open(file_name, O_RDONLY);
-			if (fd == -1 || cfd == -1)
-			{
-				perror("Error opening file");
-				break;
-			}
-			unlink(file_name);
-			write(fd, buffer, ft_strlen(buffer));
-			close (fd);
-			break;
-		}
-		if (!*line)
-		{
-			free(line);
-			continue;
-		}
-		ft_lstadd_back_garbage(garbage, ft_lstnew_garbage(line));
-		if (flag)
-			expand_d_qouts_2(env, &line, garbage);
-		if (!line)
+		flag = herdoc_loop(list, data, garbage, env);
+		if (flag == 1)
+			break ;
+		if (flag == 2)
 			continue ;
-		temp = ft_strjoin(line, "\n", garbage);
-		if (!temp)
-			break;
-		temp = ft_strjoin(buffer, temp, garbage);
-		if (!temp)
-			break;
-		buffer = temp;
 	}
-	if(!isatty(STDIN_FILENO))
+	if (!isatty(STDIN_FILENO))
 	{
 		sigint_herdoc();
-		current->fd_here = -2;
+		(*list)->fd_here = -2;
 		return ;
 	}
-	current->content = file_name;
-	current->type = HEREDOC;
-	current->fd = cfd;
-	current->fd_here = 0;
+	(*list)->content = data->file_name;
+	(*list)->type = HEREDOC;
+	(*list)->fd = data->cfd;
+	(*list)->fd_here = 0;
 }
 
-void append_list(t_elem **list)
+int	fd_here_checker(t_elem *list)
 {
+	while (list)
+	{
+		if (list->fd_here == -2)
+			return (1);
+		list = list->next;
+	}
+	return (0);
+}
+void	initiaize_herdoc(t_herdoc **data, int *i, t_garbage **garbage, t_elem **list)
+{
+	*data = ft_lstnew3(list, ft_strdup("", garbage), garbage);
+	if (!*data)
+		return ;
+	(*data)->file_name = (ft_strjoin(ft_strdup("tmp_", garbage),
+				ft_itoa(++(*i), garbage), garbage));
+	(*data)->fd = 0;
+	(*data)->cfd = 0;
+	signal(SIGINT, s_handler);
+	(*data)->line = NULL;
+}
+
+int		herdoc_loop(t_elem **list, t_herdoc *data, t_garbage **garbage, t_env **env)
+{
+	int		i;
+	int		j;
+
+	i = check_herdoc_line(list, data, garbage);
+	if (i == 1)
+		return (1);
+	if (i == 2)
+		return (2);
+	j = write_herdoc_line(data, garbage, env);
+	if (j == 1)
+		return (1);
+	if (j == 2)
+		return (2);
+	return (0);
+}
+
+void	open_herdoc_file(t_herdoc *data)
+{
+	data->fd = open(data->file_name, O_CREAT | O_RDWR, 0644);
+	data->cfd = open(data->file_name, O_RDONLY);
+	if (data->fd == -1 || data->cfd == -1)
+	{
+		perror("Error opening file");
+		return ;
+	}
+	unlink(data->file_name);
+	write(data->fd, data->buffer, ft_strlen(data->buffer));
+	close (data->fd);
+}
+
+int	check_herdoc_line(t_elem **list, t_herdoc *data, t_garbage **garbage)
+{
+	data->line = readline(">");
+	if (!data->line)
+	{
+		open_herdoc_file(data);
+		return (1);
+	}
+	if (!ft_strcmp((*list)->content, data->line))
+	{
+		open_herdoc_file(data);
+		return (1);
+	}
+	if (!*data->line)
+	{
+		free(data->line);
+		return (2);
+	}
+	ft_lstadd_back_garbage(garbage, ft_lstnew_garbage(data->line));
+	return (0);
+}
+
+int	write_herdoc_line(t_herdoc *data, t_garbage **garbage, t_env **env)
+{
+	expand_d_qouts_2(env, &data->line, garbage);
+	if (!data->line)
+		return (2);
+	data->tmp = ft_strjoin(data->line, "\n", garbage);
+	if (!data->tmp)
+		return (1);
+	data->tmp = ft_strjoin(data->buffer, data->tmp, garbage);
+	if (!data->tmp)
+		return (1);
+	data->buffer = data->tmp;
+	return (0);
+}
+
+void	append_list(t_elem **list)
+{
+	t_elem	*current;
+
 	if (!*list)
-		return;
-	t_elem *current = *list;
-	t_elem *red_out;
-	t_elem *red_out2;
+		return ;
+	current = *list;
 	if (current && current->next)
 	{
-		if (current->next->type == APPEND && !ft_strcmp(current->next->content, ">>"))
-		{
+		if (current->next->type == APPEND
+			&& !ft_strcmp(current->next->content, ">>"))
+			append_list2(list);
+	}
+}
 
-			red_out = current->next;
-			if (red_out && red_out->next)
+void	append_list2(t_elem **list)
+{
+	t_elem	*current;
+	t_elem	*red_out;
+
+	current = *list;
+	red_out = current->next;
+	if (red_out && red_out->next)
+	{
+		if (red_out->next && red_out->next->type < S_PACE)
+		{
+			red_out->next->type = APPEND;
+			current->next = red_out->next;
+			return ;
+		}
+		else if (red_out->next->next && red_out->next->type == S_PACE)
+		{
+			red_out = red_out->next->next;
+			if (red_out->type < S_PACE)
 			{
-				if (red_out->next && red_out->next->type < S_PACE)
-				{
-					red_out->next->type = APPEND;
-					current->next = red_out->next;
-					return;
-				}
-				else if (red_out->next->next && red_out->next->type == S_PACE)
-				{
-					red_out2 = red_out->next->next;
-					if (red_out2->type < S_PACE)
-					{
-						red_out2->type = APPEND;
-						current->next = red_out2;
-						return;
-					}
-				}
+				red_out->type = APPEND;
+				current->next = red_out;
+				return ;
 			}
 		}
 	}
@@ -401,16 +403,15 @@ void append_list(t_elem **list)
 
 void	expand_herdoc(char **str, t_env **env, t_garbage **garbage)
 {
-	int i = 0;
-	char *gtr = *str;
-	if (gtr[i] == '$')
+	char	*gtr;
+	t_env	*list;
+
+	gtr = *str;
+	if (*gtr == '$')
 	{
-		t_env   *list = *env;
-		if (gtr[i + 1] >= '0' && gtr[i + 1] <= '9')
-		{
+		list = *env;
+		if (*(gtr + 1) >= '0' && *(gtr + 1) <= '9')
 			*str = ft_strdup("", garbage);
-			return;
-		}
 		else
 		{
 			while (list)

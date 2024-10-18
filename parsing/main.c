@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:02:07 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/11 22:33:32 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/17 17:19:38 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void    print_list(t_elem **list) {
         return ;
     t_elem *current = *list;
     while (current != NULL) {
-        printf("Content: (%s), Type: %s\n", current->content, get_token_type_string(current->type));
+        printf("Content: (%s), Type: %s, fd : %d\n", current->content, get_token_type_string(current->type), current->fd);
         current = current->next;
     }
 }
