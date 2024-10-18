@@ -6,22 +6,22 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 16:38:29 by aragragu          #+#    #+#             */
-/*   Updated: 2024/08/09 15:34:52 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/17 16:44:25 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void ft_sign(char c, int *sign)
+void	ft_sign(char c, int *sign)
 {
-    if (c == '"' && *sign == 2)
-        *sign = 0;
-    else if (c == '\'' && *sign == 1)
-        *sign = 0;
-    else if (c == '"' && *sign == 0)
-        *sign = 2;
-    else if (c == '\'' && *sign == 0)
-        *sign = 1;
+	if (c == '"' && *sign == 2)
+		*sign = 0;
+	else if (c == '\'' && *sign == 1)
+		*sign = 0;
+	else if (c == '"' && *sign == 0)
+		*sign = 2;
+	else if (c == '\'' && *sign == 0)
+		*sign = 1;
 }
 
 static	int	count_words(const char *s, char c)
@@ -68,13 +68,14 @@ static void	ft_free1(char **reslut, int len)
 	free(reslut);
 }
 
-static	char	**allocation(char **s, const char *x, char c, t_garbage **garbage)
+static	char	**allocation(char **s, const char *x, char c,
+t_garbage **garbage)
 {
-	int			z;
-	int			y;
-    int         i;
+	int		z;
+	int		y;
+	int		i;
 
-    i = 0;
+	i = 0;
 	y = 0;
 	while (x[i])
 	{
@@ -83,12 +84,10 @@ static	char	**allocation(char **s, const char *x, char c, t_garbage **garbage)
 			++i;
 		if (x[i])
 		{
-			s[y] = (char *)ft_calloc((count_letter(x, i, c) + 1), sizeof(char), garbage);
+			s[y] = (char *)ft_calloc((count_letter(x, i, c) + 1),
+					sizeof(char), garbage);
 			if (!s[y])
-			{
-				ft_free1(s, y);
-				return (NULL);
-			}
+				return (ft_free1(s, y), NULL);
 			while (x[i] && x[i] != c)
 				s[y][z++] = x[i++];
 			y++;
@@ -109,6 +108,6 @@ char	**ft_split(char const *s, char c, t_garbage **garbage)
 	if (!result)
 		return (NULL);
 	result[count] = NULL;
-	result = allocation(result, s, c,garbage);
+	result = allocation(result, s, c, garbage);
 	return (result);
 }

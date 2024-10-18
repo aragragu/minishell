@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/11 15:54:53 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/17 19:59:53 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef struct   s_elem
 	t_token         type;
 	int				fd;
 	int 			fd_here;
+	int				ignore;
 	struct s_elem   *next;
 }                   t_elem;
 
@@ -110,6 +111,19 @@ typedef	struct c_cmd
 	int				fd[2];
 	struct c_cmd	*next;
 }					t_cmd;
+
+typedef struct		s_herdoc
+{
+	char		*line;
+	char		*buffer;
+	t_elem		*current;
+	char		*tmp;
+	char		*file_name;
+	int			fd;
+	int			cfd;
+	int			flag;
+	
+}				t_herdoc;
 
 ////////////////////////////////
 
@@ -144,7 +158,7 @@ void		ft_sign(char c, int *sign);
 t_garbage	*ft_lstnew_garbage(void *content);
 t_elem		*ft_lstnew(void *content, t_token type, t_garbage **garbage);
 t_elem		*ft_lstlast(t_elem *lst);
-t_elem	*token_input(t_elem **list, char **in, t_var *var, t_garbage **garbage);
+void		token_input(char **in, t_var *var);
 t_elem		*token_quots(t_elem **list, char *in, t_garbage **garbage);
 t_env		*ft_lstlast2(t_env *lst);
 void    	fill_env(t_env **env, char **str, t_garbage **garbage);
@@ -154,7 +168,7 @@ void		ft_lstadd_back(t_elem **lst, t_elem *new);
 int			ft_lstsize(t_elem *lst);
 void		read_input(char **env);
 int			sysntax_error_checker(t_garbage **garbage, char **str, t_elem **list);
-int			is_witheS_PACE(char c);
+int			is_whitespace(char c);
 int			has_unclosed_quots(char *str);
 void		is_a_word(t_elem **list, char *input, int index, t_garbage **garbage);
 void		is_a_quot(t_elem **list, char *input, int index, t_garbage **garbage);
@@ -191,13 +205,13 @@ void		expand_d_qouts_2(t_env **env, char **ptr, t_garbage **garbage);
 char		*ft_strjoin(char *s1, char *s2, t_garbage **garbage);
 int			not_special(char c);
 void		is_a_string(t_elem **list, char *input, int index, t_garbage **garbage);
-void		handle_redirection(t_elem **list, t_env **env,t_garbage **garbage);
+void		handle_redirection(t_elem **list);
 void		redirection_out_list(t_elem **list);
 void		redirection_in_list(t_elem **list);
 void		herdoc_list(t_elem **list, t_env **env,t_garbage **garbage);
-void		open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag);
+void		open_herdoc(t_elem **list, t_env **env,t_garbage **garbage);
 void		append_list(t_elem **list);
-void		starting_red(t_elem **list, t_env **env,t_garbage **garbage);
+void		starting_red(t_elem **list);
 t_redir		*ft_lstnew_redi(char *value, t_token type,	int fd,  t_garbage **garbage);
 void 		ft_lstadd_back_redi(t_redir **lst, t_redir *new);
 void        import_data(t_cmd **cmd, t_elem **list, t_garbage **garbage);
@@ -217,11 +231,40 @@ void    	ft_split_var(t_elem **elem, t_elem *node, t_garbage **garbage);
 int 		has_invalid_logical_operator1(t_elem **list);	
 int 		has_invalid_logical_operator2(t_elem **list);
 void		signal_handler(int sig);
-void	token_input_1(t_elem **list, char *input, int i, t_var *var);
+void		token_input_1(t_elem **list, char *input, int i, t_var *var);
 void		token_input_2(t_elem **list, char *input, int i, t_garbage **garbage);
 void		initialize_variables(t_var *var, char **env);
-int			fill_linked_list(char *input, int *p, t_var *var);
-int     check_fd_her(t_elem **elem);
+int			fill_linked_list(char *input, t_var *var);
+int     	check_fd_her(t_elem **elem);
+void 		handle_whitespace(char *input, int *i, t_elem **list, t_garbage **garbage);
+void		handle_special_characters(char *input, int *i, t_var *var);
+int 		check_unclosed_quotes(t_garbage **garbage, char **str, t_elem **list);
+int 		check_logical_operators(t_garbage **garbage, t_elem **list);
+int 		check_pipe_errors(t_garbage **garbage, t_elem **list);
+int 		check_redirection_errors(t_garbage **garbage, t_elem **list);
+int 		check_append_and_heredoc(t_garbage **garbage, t_elem **list);
+int			fill_and_check(char *input, t_var *var);
+int			list_handler(t_var *var);
+void		s_redir_in(t_elem **list);
+void		s_redir_out(t_elem **list);
+void		s_append(t_elem **list);
+void		s_herdoc(t_elem **list, t_env **env, t_garbage **garbage);
+void		redirection_out_list2(t_elem **list);
+void		redirection_in_list2(t_elem **list);
+void		append_list2(t_elem **list);
+void		initiaize_herdoc(t_herdoc **data, int *i, t_garbage **garbage, t_elem **list);
+int			herdoc_loop(t_elem **list, t_herdoc *data, t_garbage **garbage, t_env **env);
+int			check_herdoc_line(t_elem **list, t_herdoc *data, t_garbage **garbage);
+int			write_herdoc_line(t_herdoc *data, t_garbage **garbage, t_env **env);
+t_herdoc 	*ft_lstnew3(t_elem **list, char *buffer, t_garbage **garbage);
+int			handle_herdoc_list(t_elem **token, t_garbage **garbage);
+int			handle_herdoc_list2(t_elem **token, t_garbage **garbage);
+int			handle_herdoc_list3(t_elem **token);
+void 		edit_all_list(t_elem **list, t_garbage **garbage);
+void		edit_linked_list(t_var *data, t_elem *tmp, t_elem *list, char *buff);
+void		remove_delemiter(t_elem **list, t_garbage **garbage);
+
+
 
 //////////////////////////////////////////////////////////////////////////////
 
