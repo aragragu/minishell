@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:38:50 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/16 20:40:01 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/17 23:07:56 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,13 @@ void	ft_exc(t_var *var)
 
 	store_env(var->env, &envp, 0, 0);
 	signal(SIGQUIT, signal_hand_sig_qui);
-	var->pid = fork();
-	if (var->pid == -1)
+	var->pid[0] = fork();
+	if (var->pid[0] == -1)
 	{
 		ft_free(envp);
-		return (error_fork(var->pid));
+		return (error_fork(var->pid[0]));
 	}
-	if (var->pid == 0)
+	if (var->pid[0] == 0)
 	{
 		(!var->list->argc[0][0]) && (error_function(var), 0);
 		exec_path = check_valid_path(var->list->cmd, var);
@@ -88,6 +88,6 @@ void	ft_exc(t_var *var)
 		}
 	}
 	ft_free(envp);
-	waitpid(var->pid, &exit_stat, 0);
+	waitpid(var->pid[0], &exit_stat, 0);
 	update_exit_status(exit_stat);
 }

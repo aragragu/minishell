@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/15 22:14:11 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/18 04:06:33 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ typedef struct s_var
 	t_elem			*linked_list;
 	t_env			*index;
 	t_cmd			*list2;
-	pid_t			pid;
+	pid_t			pid[1000];
 	int				flag;
 	void			*ptr;
 	char			*path;
@@ -273,7 +273,7 @@ int		ft_putstr_fd(char *s, int fd);
 int		ft_putchar_fd(char c, int fd);
 void	error_function(t_var *var);
 void	error_fork(pid_t pid);
-void	waitpid_func(void);
+void	waitpid_func(t_var *var);
 void	red_herd_appen(t_redir *redir, int fd, t_var *var);
 void	red_out_in(t_redir *redir, int fd);
 int		contains_red(t_var *var);

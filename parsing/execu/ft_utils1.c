@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:35:50 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/05 18:51:02 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/18 03:59:12 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*ft_strjoinnn(char *s1, char *s2)
 		return (NULL);
 	ss = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (ss == NULL)
-		return (NULL);
+		return (free(s1), NULL);
 	while (s1[i] != '\0')
 	{
 		ss[j] = s1[i];

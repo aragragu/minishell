@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 11:48:51 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/11 01:09:25 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/17 23:17:01 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,13 @@ void	error_fork(pid_t pid)
 	}
 }
 
-void	waitpid_func(void)
+void	waitpid_func(t_var *var)
 {
 	int	exit_stat;
+	int	i;
 
-	while (waitpid(-1, &exit_stat, 0) > 0)
+	i = 0;
+	while (waitpid(var->pid[i++], &exit_stat, 0) > 0)
 		;
 	update_exit_status(exit_stat);
 }
