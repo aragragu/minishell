@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:34:55 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/15 22:11:27 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/18 20:44:29 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ long	ft_atoi(char *str, t_var *var)
 	sign = 1;
 	result = 0;
 	prev_result = 0;
+	if (!str)
+		return (0);
 	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
 		i++;
 	norm_ft_atoi2(str, i, sign);

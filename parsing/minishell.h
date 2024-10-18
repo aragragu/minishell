@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/18 04:06:33 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/18 20:44:02 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 #define BLUE    "\e[1;38;5;87m"
 #define RESET   "\x1b[0m"
 
+// #define execve(path, argv, envp) ((void)(envp), NULL)
 // #define malloc(X) NULL
 
 // #undef S_PACE //remove if u are using macos
