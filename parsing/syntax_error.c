@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 13:19:54 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/12 18:28:45 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/19 18:45:40 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,8 @@ int	has_unclosed_quots(char *str)
 
 int	is_whitespace(char c)
 {
-	if ((c >= 9 && c <= 13) || c == 32)
+	if (c == ' ' || c == '\t' || c == '\n'
+		|| c == '\v' || c == '\f' || c == '\r')
 		return (1);
 	return (0);
 }

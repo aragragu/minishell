@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/17 21:51:12 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/19 19:24:44 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -332,54 +332,20 @@ t_elem	*token_quots(t_elem **list, char *in, t_garbage **garbage)
 	i = 0;
 	while (in && in[i])
 	{
-		if (in[i] && is_whitespace(in[i]))
-			ft_lstadd_back(list, ft_lstnew(ft_strdup(" ", garbage),
-					S_PACE, garbage));
-		else if (in[i] == '$' && in[i + 1] == '$')
+		// if (in[i] && is_whitespace(in[i]))
+		// 	ft_lstadd_back(list, ft_lstnew(ft_strdup(" ", garbage),
+		// 			S_PACE, garbage));
+		if (in[i] == '$' && in[i + 1] == '$')
 			ft_lstadd_back(list, ft_lstnew(ft_strdup("$$", garbage),
 					DOUBLE_DLR, garbage));
 		else if (in[i] == '$')
 			is_a_var(list, in, i, garbage);
-		else if (in[i] && !is_whitespace(in[i]) && in[i] != '$')
+		else if (in[i] &&  in[i] != '$')
 			is_a_string(list, in, i, garbage);
 		i += ft_strlen(ft_lstlast(*list)->content);
 	}
 	return (*list);
 }
-
-// void	ft_split_var(t_elem **elem, t_elem *node, t_garbage **garbage)
-// {
-// 	t_elem	*new_list; = NULL;
-// 	t_elem	*prev; = NULL;
-// 	t_elem	*current; = *elem;
-// 	t_elem	*tmp;
-// 	char **str; = ft_split(node->content, ' ', garbage);
-// 	int i; = ft_strlen2(str);
-// 	int j = 0;
-// 	while (j < i)
-// 	{
-// 		ft_lstadd_back(&new_list, ft_lstnew(str[j], WORD, garbage));
-// 		if (j != (i - 1))
-// 			ft_lstadd_back(&new_list, ft_lstnew(ft_strdup(" ", garbage), S_PACE, garbage));
-// 		j++;
-// 	}
-// 	while (current)
-// 	{
-// 		if (!ft_strcmp(current->content, node->content))
-// 		{
-// 			tmp = ft_lstlast(new_list);
-// 			if (current->next)
-// 				tmp->next = current->next;
-// 			if (prev)
-// 				prev->next = new_list;
-// 			else
-// 				*elem = new_list;
-// 		}
-// 		else
-// 			prev = current;
-// 		current = current->next;
-// 	}
-// }
 
 void	make_list(t_elem **head, char **str, t_garbage **grb)
 {
@@ -432,7 +398,11 @@ void	ft_split_var(t_elem **elem, t_elem *node, t_garbage **garbage)
 	t_elem	*current;
 	char	**str;
 
-	str = ft_split(node->content, ' ', garbage);
+	str = NULL;
+	if (ft_strchr(node->content, '\t'))
+		str = ft_split(node->content, '\t', garbage);
+	else if (ft_strchr(node->content, ' '))
+		str = ft_split(node->content, ' ', garbage);
 	new_list = NULL;
 	prev = NULL;
 	current = *elem;
