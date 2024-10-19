@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/17 19:59:53 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/19 16:04:09 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ typedef struct   s_elem
 	t_token         type;
 	int				fd;
 	int 			fd_here;
-	int				ignore;
+	int				ignore[2];
 	struct s_elem   *next;
 }                   t_elem;
 
@@ -230,7 +230,7 @@ int 		ft_strlen2(char **str);
 void    	ft_split_var(t_elem **elem, t_elem *node, t_garbage **garbage);
 int 		has_invalid_logical_operator1(t_elem **list);	
 int 		has_invalid_logical_operator2(t_elem **list);
-void		signal_handler(int sig);
+void		signal_handler(int sig); //
 void		token_input_1(t_elem **list, char *input, int i, t_var *var);
 void		token_input_2(t_elem **list, char *input, int i, t_garbage **garbage);
 void		initialize_variables(t_var *var, char **env);
@@ -255,7 +255,7 @@ void		append_list2(t_elem **list);
 void		initiaize_herdoc(t_herdoc **data, int *i, t_garbage **garbage, t_elem **list);
 int			herdoc_loop(t_elem **list, t_herdoc *data, t_garbage **garbage, t_env **env);
 int			check_herdoc_line(t_elem **list, t_herdoc *data, t_garbage **garbage);
-int			write_herdoc_line(t_herdoc *data, t_garbage **garbage, t_env **env);
+int			write_herdoc_line(t_elem **list, t_herdoc *data, t_garbage **garbage, t_env **env);
 t_herdoc 	*ft_lstnew3(t_elem **list, char *buffer, t_garbage **garbage);
 int			handle_herdoc_list(t_elem **token, t_garbage **garbage);
 int			handle_herdoc_list2(t_elem **token, t_garbage **garbage);
@@ -340,7 +340,7 @@ char	*ft_itoa1(int n);
 void	swap_nodes(t_env **first, t_env **tmp);
 void	print_export(t_env *first);
 int	ft_strcmplist(char *s1, char *s2);
-int g_es(int stat, int flag);
-void	signal_hand_sig_qui(int sig);
+int g_es(int stat, int flag); //
+void	signal_hand_sig_qui(int sig); //
 
 #endif

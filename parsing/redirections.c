@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:29:24 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/18 22:34:26 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/19 15:59:47 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,7 +299,7 @@ int		herdoc_loop(t_elem **list, t_herdoc *data, t_garbage **garbage, t_env **env
 		return (1);
 	if (i == 2)
 		return (2);
-	j = write_herdoc_line(data, garbage, env);
+	j = write_herdoc_line(list, data, garbage, env);
 	if (j == 1)
 		return (1);
 	if (j == 2)
@@ -343,9 +343,10 @@ int	check_herdoc_line(t_elem **list, t_herdoc *data, t_garbage **garbage)
 	return (0);
 }
 
-int	write_herdoc_line(t_herdoc *data, t_garbage **garbage, t_env **env)
+int	write_herdoc_line(t_elem **list, t_herdoc *data, t_garbage **garbage, t_env **env)
 {
-	expand_d_qouts_2(env, &data->line, garbage);
+	if (!(*list)->ignore[1])
+		expand_d_qouts_2(env, &data->line, garbage);
 	if (!data->line)
 		return (2);
 	data->tmp = ft_strjoin(data->line, "\n", garbage);

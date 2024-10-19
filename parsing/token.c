@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/19 11:08:37 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/19 19:22:20 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,19 @@ void	read_input(char **env)
 		var.list = NULL;
 	}
 	free_garbage(&var.garb);
+}
+
+void	initialize_variables(t_var *var, char **env)
+{
+	var->env = NULL;
+	var->list = NULL;
+	g_es(0, 0);
+	var->garbage = NULL;
+	var->garb = NULL;
+	var->linked_list = NULL;
+	var->path = ft_strduppp(_PATH_STDPATH);
+	fill_env(&var->env, env, &var->garb);
+	rl_catch_signals = 0;
 }
 
 int	g_es(int stat, int flag)
@@ -84,18 +97,6 @@ void	signal_handler(int sig)
 		return ;
 }
 
-void	initialize_variables(t_var *var, char **env)
-{
-	var->env = NULL;
-	var->list = NULL;
-	g_es(0, 0);
-	var->garbage = NULL;
-	var->garb = NULL;
-	var->linked_list = NULL;
-	var->path = ft_strduppp(_PATH_STDPATH);
-	fill_env(&var->env, env, &var->garb);
-	rl_catch_signals = 0;
-}
 
 int	fill_linked_list(char *input, t_var *var)
 {
@@ -166,7 +167,9 @@ void	ft_heredoc(t_var *data)
 void	edit_linked_list(t_var *data, t_elem *tmp, t_elem *list, char *buff)
 {
 	t_elem	*ptr;
+	int		flag;
 
+	flag = 0;
 	ptr = list;
 	while (list)
 	{
@@ -176,16 +179,20 @@ void	edit_linked_list(t_var *data, t_elem *tmp, t_elem *list, char *buff)
 			tmp = list->next;
 			if (tmp && tmp->type == S_PACE)
 			{
-				tmp->ignore = 1;
+				tmp->ignore[0] = 1;
 				tmp = tmp->next;
 			}
 			while (tmp && tmp->type < S_PACE)
 			{
-				tmp->ignore = 1;
+				if (tmp->type == S_QOUTS || tmp->type == D_QOUTS)
+					flag = 1;
+				tmp->ignore[0] = 1;
 				buff = ft_strjoin(buff, tmp->content, &data->garbage);
 				tmp = tmp->next;
 			}
 			list->content = buff;
+			if (flag)
+				list->ignore[1] = 1;
 			open_herdoc(&list, &data->env, &data->garbage);
 		}
 		list = list->next;
@@ -201,7 +208,7 @@ void	remove_delemiter(t_elem **list, t_garbage **garbage)
 	str = NULL;
 	while (ptr)
 	{
-		if (ptr->ignore == 0)
+		if (!ptr->ignore[0])
 		{
 			ft_lstadd_back(&str, ft_lstnew(ptr->content, ptr->type, garbage));
 			ft_lstlast(str)->fd = ptr->fd;
@@ -244,7 +251,7 @@ int	list_handler(t_var *var)
 int	not_special(char c)
 {
 	if (c == '|' || c == '>' || c == '<' || c == '$' || c == '\"'
-		|| c == '\'' || c == ' ')
+		|| c == '\'' || c == ' ' || is_whitespace(c))
 		return (0);
 	return (1);
 }
@@ -258,8 +265,10 @@ void	token_input(char **in, t_var *var)
 	input = ft_strtrim(*in, " \t\n\v\f\r", &var->garbage);
 	while (input && input[i])
 	{
-		handle_whitespace(input, &i, &var->linked_list, &var->garbage);
-		handle_special_characters(input, &i, var);
+		if (is_whitespace(input[i]))
+			handle_whitespace(input, &i, &var->linked_list, &var->garbage);
+		else
+			handle_special_characters(input, &i, var);
 		i += ft_strlen(ft_lstlast((*var).linked_list)->content);
 	}
 }
@@ -396,8 +405,7 @@ void	is_a_string(t_elem **list, char *input, int index, t_garbage **garbage)
 	char	*word;
 
 	len = 0;
-	while (input[index + len] && input[index + len] != '$'
-		&& !is_whitespace(input[index + len]))
+	while (input[index + len] && input[index + len] != '$')
 		len++;
 	word = ft_substr(input, index, len, garbage);
 	ft_lstadd_back(list, ft_lstnew(word, WORD, garbage));

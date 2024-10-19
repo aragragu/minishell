@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 18:45:01 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/17 18:07:49 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/19 15:55:45 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ t_elem	*ft_lstnew(void *content, t_token type, t_garbage **garbage)
 	new_node->type = type;
 	new_node->fd = -1;
 	new_node->fd_here = 0;
-	new_node->ignore = 0;
+	new_node->ignore[0] = 0;
+	new_node->ignore[1] = 0;
 	new_node->next = NULL;
 	return (new_node);
 }
