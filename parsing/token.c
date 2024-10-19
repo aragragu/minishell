@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/18 22:30:13 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/19 11:08:37 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,9 +216,9 @@ int	list_handler(t_var *var)
 {
 	edit_all_list(&var->linked_list, &var->garbage);
 	ft_heredoc(var);
-	handle_redirection(&var->linked_list);
 	expand_var_list(&var->linked_list, *var, &var->garbage);
 	concatination(&var->linked_list, &var->garbage);
+	handle_redirection(&var->linked_list);
 	if (check_fd_her(&var->linked_list))
 	{
 		free_garbage(&var->garbage);
