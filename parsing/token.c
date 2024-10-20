@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/19 19:22:20 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/20 16:34:43 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	signal_hand_sig_qui(int sig)
 	{
 		rl_replace_line("", 0);
 		rl_on_new_line();
-		printf("Quit: 3\n");
+		ft_fprintf(1, "Quit: 3\n");
 		g_es(131, 0);
 	}
 }

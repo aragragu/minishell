@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils6.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:21:52 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/17 09:36:44 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/20 16:32:16 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	norm_excu_pipe2(int prev_fd, int i, int num_cmds, int pipefd[2])
 	if (i < num_cmds - 1)
 		dup2(pipefd[1], STDOUT_FILENO);
 	close(pipefd[0]);
+	close(pipefd[1]);
 }
 
 void	save_std_in_out(t_cmd *list, int flag)
@@ -82,21 +83,21 @@ void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd)
 	{
 		(i < num_cmds - 1) && (pipe(pipefd), 0);
 		signal(SIGQUIT, signal_hand_sig_qui);
-		var->pid = fork();
-		if (var->pid == -1)
+		var->pid[i] = fork();
+		if (var->pid[i] == -1)
 		{
-			(1) && (ft_free(var->envp), error_fork(var->pid), 0);
+			(1) && (ft_free(var->envp), error_fork(var->pid[i]), 0);
 			return ;
 		}
-		if (var->pid == 0)
+		if (var->pid[i] == 0)
 		{
 			norm_excu_pipe2(prev_fd, i, num_cmds, pipefd);
 			(1) && (norm_excu_pipe3(&var), norm_excu_pipe(var, var->envp), 0);
 		}
 		close(pipefd[1]);
 		(i != 0) && (close(prev_fd), 0);
+		(!contains_red(var)) && (close(var->list->redirection->fd), 0);
 		(prev_fd = pipefd[0]) && (var->list = var->list->next, 0);
-		close(var->linked_list->fd);
 	}
 	norm_pipe(var, var->list2, 1);
 }

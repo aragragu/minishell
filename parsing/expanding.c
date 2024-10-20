@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 16:15:38 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/19 19:24:44 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/20 16:33:32 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ int	ft_atoi2(char *str)
 	while ('0' <= str[i] && str[i] <= '9')
 	{
 		result = (result * 10) + (str[i] - 48);
-		if (over_flow(n, str) != 1)
-			return (over_flow(n, str));
 		i++;
 	}
 	return (result * n);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils7.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 11:48:51 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/17 09:36:54 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/20 16:32:41 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,10 @@ void	error_fork(pid_t pid)
 void	waitpid_func(t_var *var)
 {
 	int	exit_stat;
-	(void)var;
+	int	i;
 
-	while (waitpid(-1, &exit_stat, 0) > 0)
+	i = 0;
+	while (waitpid(var->pid[i++], &exit_stat, 0) > 0)
 		;
 	update_exit_status(exit_stat);
 }
