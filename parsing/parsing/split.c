@@ -6,23 +6,11 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 16:38:29 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/17 16:44:25 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/20 19:42:58 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-void	ft_sign(char c, int *sign)
-{
-	if (c == '"' && *sign == 2)
-		*sign = 0;
-	else if (c == '\'' && *sign == 1)
-		*sign = 0;
-	else if (c == '"' && *sign == 0)
-		*sign = 2;
-	else if (c == '\'' && *sign == 0)
-		*sign = 1;
-}
+#include "../minishell.h"
 
 static	int	count_words(const char *s, char c)
 {
