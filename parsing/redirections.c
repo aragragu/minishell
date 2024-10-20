@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/10 11:29:24 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/18 20:43:52 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/19 04:59:49 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,8 +270,6 @@ void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
         edit_list(current, garbage);
     char *temp;
     char *file_name = (ft_strjoin(ft_strdup("tmp_", garbage), ft_itoa(++i, garbage), garbage));
-    printf("[%s]\n", file_name);
-    
     int fd = 0;
     int cfd = 0;
     signal(SIGINT, s_handler);
@@ -282,7 +280,6 @@ void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
             break;
         if (!ft_strcmp(current->content, line))
         {
-            printf("[%s]\n", file_name);
             fd = open(file_name, O_CREAT | O_RDWR, 0644);
             cfd = open(file_name, O_RDONLY);
             if (fd == -1 || cfd == -1)
@@ -290,7 +287,7 @@ void open_herdoc(t_elem **list, t_env **env,t_garbage **garbage, int flag)
                 perror("Error opening file");
                 break;
             }
-            // unlink(file_name);
+            unlink(file_name);
             write(fd, buffer, ft_strlen(buffer));
             close (fd);
             break;

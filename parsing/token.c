@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/18 04:09:37 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/19 15:23:38 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int	fill_linked_list(char *input, int *p, t_var *var)
 		return (2);
 	}
 	import_data(&var->list, &var->linked_list, &var->garbage);
-	// print_list(&var->linked_list);
+	print_list(&var->linked_list);
 	// print_cmd(var->list);
 	// puts("paaaaaaaah");
 	// print_list(&var->linked_list);
