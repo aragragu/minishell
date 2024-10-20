@@ -6,15 +6,15 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 18:45:01 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/14 17:44:09 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/20 16:33:41 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_elem *ft_lstnew(void *content, t_token type, t_garbage **garbage)
+t_elem	*ft_lstnew(void *content, t_token type, t_garbage **garbage)
 {
-	t_elem *new_node;
+	t_elem	*new_node;
 
 	new_node = (t_elem *)malloc(sizeof(t_elem));
 	if (!new_node)
@@ -23,13 +23,16 @@ t_elem *ft_lstnew(void *content, t_token type, t_garbage **garbage)
 	new_node->content = content;
 	new_node->type = type;
 	new_node->fd = -1;
+	new_node->fd_here = 0;
+	new_node->ignore[0] = 0;
+	new_node->ignore[1] = 0;
 	new_node->next = NULL;
 	return (new_node);
 }
 
-t_env *ft_lstnew2(char *key, char *value, t_garbage **garbage)
+t_env	*ft_lstnew2(char *key, char *value, t_garbage **garbage)
 {
-	t_env *new_node;
+	t_env	*new_node;
 
 	new_node = malloc(sizeof(t_env));
 	if (!new_node)
@@ -39,12 +42,25 @@ t_env *ft_lstnew2(char *key, char *value, t_garbage **garbage)
 	new_node->value = value;
 	new_node->flag = 0;
 	new_node->next = NULL;
-
 	return (new_node);
 }
-t_redir *ft_lstnew_redi(char *value, t_token type,	int fd,  t_garbage **garbage)
+
+t_herdoc	*ft_lstnew3(t_elem **list, char *buffer, t_garbage **garbage)
 {
-	t_redir *new_node;
+	t_herdoc	*new_node;
+
+	new_node = malloc(sizeof(t_herdoc));
+	if (!new_node)
+		return (NULL);
+	ft_lstadd_back_garbage(garbage, ft_lstnew_garbage(new_node));
+	new_node->current = *list;
+	new_node->buffer = buffer;
+	return (new_node);
+}
+
+t_redir	*ft_lstnew_redi(char *value, t_token type,	int fd, t_garbage **garbage)
+{
+	t_redir	*new_node;
 
 	new_node = malloc(sizeof(t_redir));
 	if (!new_node)
@@ -56,8 +72,6 @@ t_redir *ft_lstnew_redi(char *value, t_token type,	int fd,  t_garbage **garbage)
 	new_node->next = NULL;
 	return (new_node);
 }
-
-
 
 t_garbage	*ft_lstnew_garbage(void *content)
 {
@@ -85,92 +99,97 @@ t_cmd	*ft_lstnew_cmd(void)
 	return (new_node);
 }
 
-
-void ft_lstadd_back(t_elem **lst, t_elem *new)
+void	ft_lstadd_back(t_elem **lst, t_elem *new)
 {
+	t_elem	*ptr;
+
 	if (!lst || !new)
-        return;
-    
-    if (*lst == NULL)
-    {
-        *lst = new;
-    }
-    else
-    {
-        t_elem *ptr = *lst;
-        while (ptr->next)
-            ptr = ptr->next;
-        ptr->next = new;
-    }
+		return ;
+	if (*lst == NULL)
+	{
+		*lst = new;
+	}
+	else
+	{
+		ptr = *lst;
+		while (ptr->next)
+			ptr = ptr->next;
+		ptr->next = new;
+	}
 }
 
-void ft_lstadd_back2(t_env **lst, t_env *new)
+void	ft_lstadd_back2(t_env **lst, t_env *new)
 {
-    if (!lst || !new)
-        return;
-    
-    if (*lst == NULL)
-        *lst = new;
-    else
-    {
-        t_env *ptr = *lst;
-        while (ptr->next)
-            ptr = ptr->next;
-        ptr->next = new;
-    }
+	t_env	*ptr;
+
+	if (!lst || !new)
+		return ;
+	if (*lst == NULL)
+		*lst = new;
+	else
+	{
+		ptr = *lst;
+		while (ptr->next)
+			ptr = ptr->next;
+		ptr->next = new;
+	}
 }
 
-void ft_lstadd_back_garbage(t_garbage **lst, t_garbage *new)
+void	ft_lstadd_back_garbage(t_garbage **lst, t_garbage *new)
 {
-    if (!lst || !new)
-        return;
-    
-    if (*lst == NULL)
-        *lst = new;
-    else
-    {
-        t_garbage *ptr = *lst;
-        while (ptr->next)
-            ptr = ptr->next;
-        ptr->next = new;
-    }
-}
-void ft_lstadd_back_redi(t_redir **lst, t_redir *new)
-{
-    if (!lst || !new)
-        return;
-    
-    if (*lst == NULL)
-        *lst = new;
-    else
-    {
-        t_redir *ptr = *lst;
-        while (ptr->next)
-            ptr = ptr->next;
-        ptr->next = new;
-    }
+	t_garbage	*ptr;
+
+	if (!lst || !new)
+		return ;
+	if (*lst == NULL)
+		*lst = new;
+	else
+	{
+		ptr = *lst;
+		while (ptr->next)
+			ptr = ptr->next;
+		ptr->next = new;
+	}
 }
 
-void ft_lstadd_back_cmd(t_cmd **lst, t_cmd *new)
+void	ft_lstadd_back_redi(t_redir **lst, t_redir *new)
 {
-    if (!lst || !new)
-        return;
-    
-    if (*lst == NULL)
-        *lst = new;
-    else
-    {
-        t_cmd *ptr = *lst;
-        while (ptr->next)
-            ptr = ptr->next;
-        ptr->next = new;
-    }
+	t_redir	*ptr;
+
+	if (!lst || !new)
+		return ;
+	if (*lst == NULL)
+		*lst = new;
+	else
+	{
+		ptr = *lst;
+		while (ptr->next)
+			ptr = ptr->next;
+		ptr->next = new;
+	}
 }
 
-
-t_elem *ft_lstlast(t_elem *lst)
+void	ft_lstadd_back_cmd(t_cmd **lst, t_cmd *new)
 {
-	t_elem *ptr;
+	t_cmd	*ptr;
+
+	if (!lst || !new)
+		return ;
+	if (*lst == NULL)
+		*lst = new;
+	else
+	{
+		ptr = *lst;
+		while (ptr->next)
+			ptr = ptr->next;
+		ptr->next = new;
+	}
+}
+
+t_elem	*ft_lstlast(t_elem *lst)
+{
+	t_elem	*ptr;
+
 	if (!lst)
 		return (NULL);
 	ptr = lst;
@@ -184,9 +203,10 @@ t_elem *ft_lstlast(t_elem *lst)
 	return (ptr);
 }
 
-t_env *ft_lstlast2(t_env *lst)
+t_env	*ft_lstlast2(t_env *lst)
 {
-	t_env *ptr;
+	t_env	*ptr;
+
 	if (!lst)
 		return (NULL);
 	ptr = lst;
@@ -200,11 +220,9 @@ t_env *ft_lstlast2(t_env *lst)
 	return (ptr);
 }
 
-
-
-int ft_lstsize(t_elem *lst)
+int	ft_lstsize(t_elem *lst)
 {
-	int count;
+	int	count;
 
 	count = 0;
 	if (!lst)
@@ -217,9 +235,10 @@ int ft_lstsize(t_elem *lst)
 	return (count);
 }
 
-int ft_strlen(char *str)
+int	ft_strlen(char *str)
 {
-	int i;
+	int	i;
+
 	if (!str)
 		return (0);
 	i = 0;
@@ -229,9 +248,10 @@ int ft_strlen(char *str)
 	}
 	return (i);
 }
-int ft_strlen2(char **str)
+int	ft_strlen2(char **str)
 {
-	int i;
+	int	i;
+
 	if (!str)
 		return (0);
 	i = 0;
@@ -240,9 +260,9 @@ int ft_strlen2(char **str)
 	return (i);
 }
 
-char *ft_substr(char *s, int start, int len, t_garbage **garbage)
+char	*ft_substr(char *s, int start, int len, t_garbage **garbage)
 {
-	char *ptr;
+	char	*ptr;
 
 	if (!s)
 		return (NULL);
@@ -258,9 +278,9 @@ char *ft_substr(char *s, int start, int len, t_garbage **garbage)
 	return (ptr);
 }
 
-int ft_strlcpy(char *dest, char *src, int size)
+int	ft_strlcpy(char *dest, char *src, int size)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (size != 0)
@@ -275,11 +295,12 @@ int ft_strlcpy(char *dest, char *src, int size)
 	return (ft_strlen(src));
 }
 
-void *ft_calloc(int count, int size, t_garbage **garbage)
+void	*ft_calloc(int count, int size, t_garbage **garbage)
 {
-	void *data;
+	void	*data;
 
-	if (count > 0 && (unsigned long long)size > SIZE_MAX / (unsigned long long)count)
+	if (count > 0 && (unsigned long long)size > SIZE_MAX
+		/ (unsigned long long)count)
 		return (0);
 	data = malloc(count * size);
 	if (!data)
@@ -289,10 +310,10 @@ void *ft_calloc(int count, int size, t_garbage **garbage)
 	return (data);
 }
 
-char *ft_strdup(char *s1, t_garbage **garbage)
+char	*ft_strdup(char *s1, t_garbage **garbage)
 {
-	int z;
-	char *ptr;
+	int		z;
+	char	*ptr;
 
 	z = 0;
 	ptr = (char *)malloc(sizeof(char) * (ft_strlen(s1) + 1));
@@ -308,10 +329,10 @@ char *ft_strdup(char *s1, t_garbage **garbage)
 	return (ptr);
 }
 
-void ft_bzero(void *s, int n)
+void	ft_bzero(void *s, int n)
 {
-	int i;
-	char *ptr;
+	int		i;
+	char	*ptr;
 
 	i = 0;
 	ptr = s;
@@ -322,11 +343,11 @@ void ft_bzero(void *s, int n)
 	}
 }
 
-char *ft_strtrim(char *s1, char *set, t_garbage **garbage)
+char	*ft_strtrim(char *s1, char *set, t_garbage **garbage)
 {
-	size_t start;
-	size_t end;
-	char *ptr;
+	size_t	start;
+	size_t	end;
+	char	*ptr;
 
 	if (s1 == NULL)
 		return (NULL);
@@ -348,7 +369,7 @@ char *ft_strtrim(char *s1, char *set, t_garbage **garbage)
 	return (ptr);
 }
 
-char *ft_strchr(char *s, int c)
+char	*ft_strchr(char *s, int c)
 {
 	while (*s != (unsigned char)c)
 	{
@@ -361,7 +382,7 @@ char *ft_strchr(char *s, int c)
 
 int	ft_strcmp(char *s1, char *s2)
 {
-	int i;
+	int	i;
 
 	if (!s1 || !s2)
 		return (1);
@@ -371,7 +392,7 @@ int	ft_strcmp(char *s1, char *s2)
 	return (s1[i] - s2[i]);
 }
 
-char		*ft_strjoin(char *s1, char *s2, t_garbage **garbage)
+char	*ft_strjoin(char *s1, char *s2, t_garbage **garbage)
 {
 	char			*ptr;
 	size_t			i;
