@@ -6,11 +6,11 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:02:07 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/19 19:01:55 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/20 19:33:48 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void    f(){system("leaks minishell");}
 const char* get_token_type_string(t_token type) {

@@ -6,11 +6,11 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 14:51:26 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/07 20:51:28 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/20 18:35:46 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 static	int	len_nem(long nb)
 {
