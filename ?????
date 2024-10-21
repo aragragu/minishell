@@ -27,7 +27,7 @@ weshLA
 ////////////////////////////////////////////////////////////////////////////
 
 also i found a double free from ft_export_norm.c in line 55
-wslt l commadn 330
+wslt l commadn 496
 
 ////////////////////////////////////////////////////////////////////////////
 Test  41: ❌ cd 123123 
@@ -114,4 +114,146 @@ mini exit code = 0
 bash exit code = 255
 mini error = ()
 bash error = ( numeric argument required)
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+➜ minishell💀$ unset PATH
+➜ minishell💀$ echo $PATH
+
+➜ minishell💀$ unset PATH
+➜ minishell💀$ ls
+minishell: ls: command not found
+➜ minishell💀$ unset ""
+`': not a valid identifier
+➜ minishell💀$ unset INEXISTANT
+➜ minishell💀$ unset PWD
+➜ minishell💀$ env | grep PWD
+minishell: grep: command not found
+➜ minishell💀$ 
+=================================================================
+==38118==ERROR: AddressSanitizer: attempting double-free on 0x602000000350 in thread T0:
+    #0 0x108cb32c6 in wrap_free+0xa6 (libclang_rt.asan_osx_dynamic.dylib:x86_64h+0x492c6)
+    #1 0x108bc1393 in free_garbage token4.c:84
+    #2 0x108bc1849 in read_input main.c:61
+    #3 0x108bc190c in main main.c:68
+    #4 0x7fff6ae3dcc8 in start+0x0 (libdyld.dylib:x86_64+0x1acc8)
+
+0x602000000350 is located 0 bytes inside of 5-byte region [0x602000000350,0x602000000355)
+freed by thread T0 here:
+    #0 0x108cb32c6 in wrap_free+0xa6 (libclang_rt.asan_osx_dynamic.dylib:x86_64h+0x492c6)
+    #1 0x108bda2ef in norm_unset ft_unset.c:21
+    #2 0x108bda58e in norm_unset_3 ft_unset.c:38
+    #3 0x108bdb059 in ft_unset ft_unset.c:63
+    #4 0x108be231f in ft_builtins ft_utils4.c:39
+    #5 0x108be1195 in execution ft_excu2.c:27
+    #6 0x108bc1687 in read_input_loop main.c:46
+    #7 0x108bc1836 in read_input main.c:60
+    #8 0x108bc190c in main main.c:68
+    #9 0x7fff6ae3dcc8 in start+0x0 (libdyld.dylib:x86_64+0x1acc8)
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+➜ minishell💀$ unset PWD 
+➜ minishell💀$ env | grep PWD
+OLDPWD=/Users/aragragu/Desktop/mini
+////////////////////////////////////////////////////////////////////////////
+➜ minishell💀$ unset HOLA9
+➜ minishell💀$ echo $?
+127
+////////////////////////////////////////////////////////////////////////////
+➜ minishell💀$ unset HOL?A
+➜ minishell💀$ echo $?
+0
+➜ minishell💀$ unset HOLA HOL?A
+➜ minishell💀$ echo $?
+0
+➜ minishell💀$ unset HOL?A HOLA
+➜ minishell💀$ unset HOL?A HOL.A
+➜ minishell💀$ unset HOLA=
+➜ minishell💀$ unset HOL\\\\A
+➜ minishell💀$ unset HOL;A
+➜ minishell💀$ unset HOL.A
+➜ minishell💀$ unset HOL+A
+➜ minishell💀$ unset HOL=A
+➜ minishell💀$ unset HOL{A
+➜ minishell💀$ unset HOL}A
+➜ minishell💀$ unset HOL-A
+➜ minishell💀$ unset HOL*A
+➜ minishell💀$ unset HOL#A
+➜ minishell💀$ unset HOL#A
+➜ minishell💀$ unset HOL@
+➜ minishell💀$ unset HOL!A
+➜ minishell💀$ unset HOL^A
+➜ minishell💀$ unset HOL\~A
+
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+➜ minishell💀$ unset PATH
+➜ minishell💀$ echo $PATH
+
+➜ minishell💀$ 
+=================================================================
+==44579==ERROR: AddressSanitizer: attempting double-free on 0x602000000350 in thread T0:
+    #0 0x1001392c6 in wrap_free+0xa6 (libclang_rt.asan_osx_dynamic.dylib:x86_64h+0x492c6)
+    #1 0x100045393 in free_garbage token4.c:84
+    #2 0x100045849 in read_input main.c:61
+    #3 0x10004590c in main main.c:68
+    #4 0x7fff6ae3dcc8 in start+0x0 (libdyld.dylib:x86_64+0x1acc8)
+
+0x602000000350 is located 0 bytes inside of 5-byte region [0x602000000350,0x602000000355)
+freed by thread T0 here:
+    #0 0x1001392c6 in wrap_free+0xa6 (libclang_rt.asan_osx_dynamic.dylib:x86_64h+0x492c6)
+    #1 0x10005e2ef in norm_unset ft_unset.c:21
+    #2 0x10005e58e in norm_unset_3 ft_unset.c:38
+    #3 0x10005f059 in ft_unset ft_unset.c:63
+    #4 0x10006631f in ft_builtins ft_utils4.c:39
+    #5 0x100065195 in execution ft_excu2.c:27
+    #6 0x100045687 in read_input_loop main.c:46
+    #7 0x100045836 in read_input main.c:60
+    #8 0x10004590c in main main.c:68
+    #9 0x7fff6ae3dcc8 in start+0x0 (libdyld.dylib:x86_64+0x1acc8)
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+➜ minishell💀$ history
+minishell: history: command not found
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+➜ minishell💀$ cd -
+-: No such file or directory
+////////////////////////////////////////////////////////////////////////////
+➜ minishell💀$ unset HOME
+➜ minishell💀$ export HOME=
+➜ minishell💀$ cd
+cd::No such file or directory
+////////////////////////////////////////////////////////////////////////////
+➜ minishell💀$ cd minishell Docs crashtest.c
+minishell: Not a directory
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+➜ minishell💀$ pwd
+/Users/aragragu/Desktop/mini
+➜ minishell💀$ cd ~
+minishell: cd: HOME not set
+➜ minishell💀$ 
+➜ minishell💀$ 
+=================================================================
+==55665==ERROR: AddressSanitizer: attempting double-free on 0x603000001e40 in thread T0:
+    #0 0x1020f92c6 in wrap_free+0xa6 (libclang_rt.asan_osx_dynamic.dylib:x86_64h+0x492c6)
+    #1 0x102007393 in free_garbage token4.c:84
+    #2 0x102007849 in read_input main.c:61
+    #3 0x10200790c in main main.c:68
+    #4 0x7fff6ae3dcc8 in start+0x0 (libdyld.dylib:x86_64+0x1acc8)
+
+0x603000001e40 is located 0 bytes inside of 29-byte region [0x603000001e40,0x603000001e5d)
+freed by thread T0 here:
+    #0 0x1020f92c6 in wrap_free+0xa6 (libclang_rt.asan_osx_dynamic.dylib:x86_64h+0x492c6)
+    #1 0x10201cbd7 in pwd_upd_old ft_cd.c:25
+    #2 0x10201d603 in ft_cd ft_cd.c:105
+    #3 0x1020282f6 in ft_builtins ft_utils4.c:37
+    #4 0x102027195 in execution ft_excu2.c:27
+    #5 0x102007687 in read_input_loop main.c:46
+    #6 0x102007836 in read_input main.c:60
+    #7 0x10200790c in main main.c:68
+    #8 0x7fff6ae3dcc8 in start+0x0 (libdyld.dylib:x86_64+0x1acc8)
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
 ////////////////////////////////////////////////////////////////////////////
