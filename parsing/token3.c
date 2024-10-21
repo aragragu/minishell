@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 19:02:40 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/20 19:33:35 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/20 22:09:38 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,9 @@ void	token_input_1(t_elem **list, char *input, int i, t_var *var)
 	else if (input[i] == '(')
 		ft_lstadd_back(list, ft_lstnew(ft_strdup("(",
 					&var->garbage), OPENING_PARENTHESIS, &var->garbage));
+	else if (input[i] == '~' && input[i + 1] != '~')
+		ft_lstadd_back(list, ft_lstnew(ft_strdup("~",
+					&var->garbage), TILDE, &var->garbage));
 	else if (input[i] == ')')
 		ft_lstadd_back(list, ft_lstnew(ft_strdup(")",
 					&var->garbage), CLOSING_PARENTHESIS, &var->garbage));

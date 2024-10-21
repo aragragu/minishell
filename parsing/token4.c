@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 19:03:34 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/20 19:08:05 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/20 21:30:08 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,23 @@ void	edit_all_list(t_elem **list, t_garbage **garbage)
 		edit_list(ptr, garbage);
 		ptr = ptr->next;
 	}
+}
+
+void	free_garbage(t_garbage **garbage)
+{
+	t_garbage	*next;
+	t_garbage	*current;
+
+	if (!garbage)
+		return ;
+	current = *garbage;
+	while (current)
+	{
+		next = current->next;
+		if (current->value != NULL)
+			free(current->value);
+		free(current);
+		current = next;
+	}
+	*garbage = NULL;
 }

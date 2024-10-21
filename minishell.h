@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/20 21:00:01 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/21 01:42:05 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,8 +254,7 @@ int			handle_herdoc_list(t_elem **token, t_garbage **garbage);
 int			handle_herdoc_list2(t_elem **token, t_garbage **garbage);
 int			handle_herdoc_list3(t_elem **token);
 void		edit_all_list(t_elem **list, t_garbage **garbage);
-void		edit_linked_list(t_var *data, t_elem *tmp, t_elem *list,
-				char *buff);
+void		edit_linked_list(t_var *data, t_elem *list);
 void		remove_delemiter(t_elem **list, t_garbage **garbage);
 void		ft_heredoc(t_var *data);
 void		sigint_herdoc(void);
@@ -273,6 +272,8 @@ t_elem		*fill_command_pipe(t_elem *current, char **str, t_cmd *command,
 t_elem		*fill_command_pipe2(t_elem *current, char **str, t_cmd *command,
 				t_garbage **grb);
 void		concatinate(t_elem **current, t_elem **new_list, t_garbage **grb);
+void		process_nodes(t_elem **tmp, int *flag, char **buff, t_var *data);
+void		handle_heredoc(t_elem *list, t_var *data);
 
 void		ft_echo(t_var *var);
 void		ft_export(t_var *var, int i, int error);

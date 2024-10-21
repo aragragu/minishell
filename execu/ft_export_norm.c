@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export_norm.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 17:31:43 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/11 00:02:42 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/21 01:29:15 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	ex3_norm(t_var *var, int i)
 		var->index = index_key(var->env, var->key);
 		if (var->index)
 		{
-			free(var->index->value);
+			free(var->index->value); ////////////// double free,
 			var->index->value = var->new_val;
 			free(var->key);
 		}

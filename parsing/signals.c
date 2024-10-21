@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 19:05:51 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/20 19:37:13 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/21 00:13:57 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,12 @@ void	signal_hand_sig_qui(int sig)
 
 void	signal_handler(int sig)
 {
+	if (sig == SIGINT && !waitpid(-1, NULL, WNOHANG))
+		return ;
 	if (sig == SIGINT)
 	{
-		if (!waitpid(-1, NULL, WNOHANG))
-			return ;
+		// if (!waitpid(-1, NULL, WNOHANG))
+		// 	return ;
 		write(1, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();

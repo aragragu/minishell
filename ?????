@@ -1,0 +1,127 @@
+env env
+env env env env env
+env ls
+env ./Makefile -> exit_status
+
+////////////////////////////////////////////////////////////////////////////
+export -HOLA=hello     -> exit_status = 1 but it should be 2
+////////////////////////////////////////////////////////////////////////////
+➜ minishell💀$ export HO!LA=hello
+export: `HO!LA=hello': not a valid identifier
+➜ minishell💀$ echo $?
+1
+////////////////////////////////////////////////////////////////////////////
+➜ minishell💀$ expoexport HOLA=" bonjour hey "
+➜ minishell💀$ echo wesh"$HOLA" | cat -e
+wesh bonjour hey $
+➜ minishell💀$ export HOLA=" bonjour hey "
+➜ minishell💀$ echo wesh""$HOLA.
+weshbonjour hey.
+➜ minishell💀$ export HOLA=" bonjour hey "
+➜ minishell💀$  echo wesh$""HOLA.
+weshLA.
+➜ minishell💀$ echo wesh$""HOLA
+weshLA
+////////////////////////////////////////////////////////////////////////////
+➜ minishell💀$ expoexport HOLA=" bonjour hey "
+Content: [export], Type: [WORD], fd : -1
+Content: [ ], Type: [S_PACE], fd : -1
+Content: [HOLA=], Type: [WORD], fd : -1
+Content: [ bonjour hey ], Type: [D_QOUTS], fd : -1
+Command: export
+Arguments:
+  Arg[0]: [export]
+  Arg[1]: [HOLA= bonjour hey ]
+Redirections: (null)
+➜ minishell💀$ echo wesh"$HOLA" | cat -e
+Content: [echo], Type: [WORD], fd : -1
+Content: [ ], Type: [S_PACE], fd : -1
+Content: [wesh], Type: [WORD], fd : -1
+Content: [ bonjour hey ], Type: [D_QOUTS], fd : -1
+Content: [ ], Type: [S_PACE], fd : -1
+Content: [|], Type: [PIPE], fd : -1
+Content: [ ], Type: [S_PACE], fd : -1
+Content: [cat], Type: [WORD], fd : -1
+Content: [ ], Type: [S_PACE], fd : -1
+Content: [-e], Type: [WORD], fd : -1
+Command: echo
+Arguments:
+  Arg[0]: [echo]
+  Arg[1]: [wesh bonjour hey ]
+Redirections: (null)
+Command: cat
+Arguments:
+  Arg[0]: [cat]
+  Arg[1]: [-e]
+Redirections: (null)
+wesh bonjour hey $
+➜ minishell💀$ export HOLA=" bonjour hey "
+Content: [export], Type: [WORD], fd : -1
+Content: [ ], Type: [S_PACE], fd : -1
+Content: [HOLA=], Type: [WORD], fd : -1
+Content: [ bonjour hey ], Type: [D_QOUTS], fd : -1
+Command: export
+Arguments:
+  Arg[0]: [export]
+  Arg[1]: [HOLA= bonjour hey ]
+Redirections: (null)
+////////////////////////////////////////////////////////////////////////////
+➜ minishell💀$ echo wesh"$HOLA" | cat -e
+Content: [echo], Type: [WORD], fd : -1
+Content: [ ], Type: [S_PACE], fd : -1
+Content: [wesh], Type: [WORD], fd : -1
+Content: [bonjour hey], Type: [D_QOUTS], fd : -1
+Content: [ ], Type: [S_PACE], fd : -1
+Content: [|], Type: [PIPE], fd : -1
+Content: [ ], Type: [S_PACE], fd : -1
+Content: [cat], Type: [WORD], fd : -1
+Content: [ ], Type: [S_PACE], fd : -1
+Content: [-e], Type: [WORD], fd : -1
+Command: echo
+Arguments:
+  Arg[0]: [echo]
+  Arg[1]: [weshbonjour hey]
+Redirections: (null)
+Command: cat
+Arguments:
+  Arg[0]: [cat]
+  Arg[1]: [-e]
+Redirections: (null)
+weshbonjour hey$
+////////////////////////////////////////////////////////////////////////////
+➜ minishell💀$ expoexport HOLA=" bonjour hey "
+Content: [export], Type: [WORD], fd : -1
+Content: [ ], Type: [S_PACE], fd : -1
+Content: [HOLA=], Type: [WORD], fd : -1
+Content: [ bonjour hey ], Type: [D_QOUTS], fd : -1
+Command: export
+Arguments:
+  Arg[0]: [export]
+  Arg[1]: [HOLA= bonjour hey ]
+Redirections: (null)
+➜ minishell💀$ echo wesh"$HOLA" | cat -e
+Content: [echo], Type: [WORD], fd : -1
+Content: [ ], Type: [S_PACE], fd : -1
+Content: [wesh], Type: [WORD], fd : -1
+Content: [bonjour hey], Type: [D_QOUTS], fd : -1
+Content: [ ], Type: [S_PACE], fd : -1
+Content: [|], Type: [PIPE], fd : -1
+Content: [ ], Type: [S_PACE], fd : -1
+Content: [cat], Type: [WORD], fd : -1
+Content: [ ], Type: [S_PACE], fd : -1
+Content: [-e], Type: [WORD], fd : -1
+Command: echo
+Arguments:
+  Arg[0]: [echo]
+  Arg[1]: [weshbonjour hey]
+Redirections: (null)
+Command: cat
+Arguments:
+  Arg[0]: [cat]
+  Arg[1]: [-e]
+Redirections: (null)
+weshbonjour hey$
+////////////////////////////////////////////////////////////////////////////
+
+also i found a double free from ft_export_norm.c in line 55
+wslt l commadn 330
