@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:34:55 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/18 20:44:29 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/21 18:18:03 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ void	norm_ft_atoi(t_var *var)
 	exit(255);
 }
 
-void	norm_ft_atoi2(char *str, int i, int sign)
+void	norm_ft_atoi2(char *str, int *i, int *sign)
 {
-	if (str[i] == '+' || str[i] == '-')
+	if (str[*i] == '+' || str[*i] == '-')
 	{
-		if (str[i] == '-')
-			sign = -1;
-		i++;
+		if (str[*i] == '-')
+			*sign = -1;
+		(*i)++;
 	}
 }
 
@@ -44,7 +44,7 @@ long	ft_atoi(char *str, t_var *var)
 		return (0);
 	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
 		i++;
-	norm_ft_atoi2(str, i, sign);
+	norm_ft_atoi2(str, &i, &sign);
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		prev_result = result;
@@ -87,6 +87,7 @@ void	ft_exit(t_var *var)
 	static int	ac;
 
 	num = ft_atoi(var->list->argc[1], var);
+	puts(var->list->argc[1]);
 	while (var->list->argc[ac])
 		ac++;
 	if (ac == 1)

@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 11:51:38 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/20 16:31:59 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/21 18:12:16 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	red_herd_appen(t_redir *redir, int fd, t_var *var)
 		if (fd < 0)
 		{
 			perror("open failed");
-			exit(errno);
+			exit(g_es(1, 0));
 		}
 		dup2(fd, STDOUT_FILENO);
 		close(fd);
@@ -83,7 +83,7 @@ void	red_herd_appen(t_redir *redir, int fd, t_var *var)
 		if (redir->fd < 0)
 		{
 			perror("open failed");
-			exit(errno);
+			exit(g_es(1, 0));
 		}
 		dup2(redir->fd, STDIN_FILENO);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 19:05:51 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/21 00:13:57 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/21 14:32:19 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ void	signal_handler(int sig)
 		return ;
 	if (sig == SIGINT)
 	{
-		// if (!waitpid(-1, NULL, WNOHANG))
-		// 	return ;
 		write(1, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();

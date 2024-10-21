@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:30:40 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/20 21:01:42 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/21 20:52:50 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ t_garbage **grb)
 				(current->content, current->type, current->fd, grb));
 		else if (current->type == WORD)
 		{
-			if (current && current->content && j == 0 && str[argc])
+			if (current && current->content && j == 0)
 			{
 				command->cmd = current->content;
 				str[argc++] = current->content;

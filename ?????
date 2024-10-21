@@ -1,7 +1,3 @@
-env env
-env env env env env
-env ls
-env ./Makefile -> exit_status
 
 ////////////////////////////////////////////////////////////////////////////
 export -HOLA=hello     -> exit_status = 1 but it should be 2

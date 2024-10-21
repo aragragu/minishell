@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:33:33 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/11 00:02:42 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/21 19:59:12 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@ void	norm_unset(t_env *prev, t_env *curr, t_var *var)
 		prev->next = curr->next;
 	else
 		var->env = var->env->next;
-	free(curr->key);
-	free(curr->value);
-	free(curr);
 }
 
 void	norm_unset_2(t_env **prev, t_env **curr, t_var **var)

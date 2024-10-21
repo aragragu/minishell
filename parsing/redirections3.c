@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 19:37:42 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/20 19:38:48 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/21 18:49:15 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	open_herdoc(t_elem **list, t_env **env, t_garbage **garbage)
 	{
 		sigint_herdoc();
 		(*list)->fd_here = -2;
+		close(data->cfd);
 		return ;
 	}
 	(*list)->content = data->file_name;
@@ -51,7 +52,8 @@ int	fd_here_checker(t_elem *list)
 	return (0);
 }
 
-void	initiaize_herdoc(t_herdoc **data, int *i, t_garbage **garbage, t_elem **list)
+void	initiaize_herdoc(t_herdoc **data, int *i, t_garbage **garbage,
+t_elem **list)
 {
 	*data = ft_lstnew3(list, ft_strdup("", garbage), garbage);
 	if (!*data)
