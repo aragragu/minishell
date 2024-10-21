@@ -1,6 +1,6 @@
 {
-    "C_Cpp.errorSquiggles": "disabled",
     "files.associations": {
+        "*.c": "c",
         "minishell.h": "c"
     }
 }
