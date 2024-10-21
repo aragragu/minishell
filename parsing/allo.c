@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 21:28:00 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/21 01:22:56 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/21 14:13:28 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,30 @@ void	handle_heredoc(t_elem *list, t_var *data)
 }
 
 void	expand_d_qouts4(t_elem *node, char *gtr, t_garbage **grb, t_env *env)
+{
+	int		flag;
+
+	flag = 0;
+	while (env)
+	{
+		if (!ft_strcmp(env->key, gtr + 1))
+		{
+			if (env->value)
+			{
+				node->content = ft_strdup(env->value, grb);
+				flag = 1;
+				break ;
+			}
+			else
+				break ;
+		}
+		env = env->next;
+	}
+	if (!flag)
+		node->content = NULL;
+}
+
+void	expand_var_quots2(t_elem *node, char *gtr, t_garbage **grb, t_env *env)
 {
 	int		flag;
 

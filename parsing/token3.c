@@ -6,13 +6,13 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 19:02:40 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/20 22:09:38 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/21 14:14:30 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	handle_special_characters(char *input, int *i, t_var *var)
+int	handle_special_characters(char *input, int *i, t_var *var)
 {
 	if (input[*i] == '&')
 		ft_lstadd_back(&var->linked_list, ft_lstnew(ft_strdup("&",
@@ -31,12 +31,13 @@ void	handle_special_characters(char *input, int *i, t_var *var)
 					&var->garbage), REDIR_OUT, &var->garbage));
 	else if (input[*i] == '$' && (input[*i + 1] == '\"'
 			|| input[*i + 1] == '\''))
-		(*i)++;
+		return ((*i)++, 1);
 	else if (input[*i] == '$' && input[*i + 1] == '$')
 		ft_lstadd_back(&var->linked_list, ft_lstnew(ft_strdup("$$",
 					&var->garbage), DOUBLE_DLR, &var->garbage));
 	else
 		token_input_1(&var->linked_list, input, *i, var);
+	return (0);
 }
 
 void	token_input_1(t_elem **list, char *input, int i, t_var *var)

@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/21 01:42:05 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/21 14:13:16 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,7 +225,7 @@ int			fill_linked_list(char *input, t_var *var);
 int			check_fd_her(t_elem **elem);
 void		handle_whitespace(char *input, int *i, t_elem **list,
 				t_garbage **garbage);
-void		handle_special_characters(char *input, int *i, t_var *var);
+int			handle_special_characters(char *input, int *i, t_var *var);
 int			check_unclosed_quotes(t_garbage **garbage, char **str,
 				t_elem **list);
 int			check_logical_operators(t_garbage **garbage, t_elem **list);
@@ -274,6 +274,10 @@ t_elem		*fill_command_pipe2(t_elem *current, char **str, t_cmd *command,
 void		concatinate(t_elem **current, t_elem **new_list, t_garbage **grb);
 void		process_nodes(t_elem **tmp, int *flag, char **buff, t_var *data);
 void		handle_heredoc(t_elem *list, t_var *data);
+void		expand_var_quots(t_elem **elem, t_elem *node, t_env **env,
+				t_garbage **grb);
+void		expand_var_quots2(t_elem *node, char *gtr, t_garbage **grb,
+				t_env *env);
 
 void		ft_echo(t_var *var);
 void		ft_export(t_var *var, int i, int error);

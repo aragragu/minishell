@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 19:49:41 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/21 01:41:37 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/21 14:13:22 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@ t_elem	*token_quots(t_elem **list, char *in, t_garbage **garbage)
 		if (in[i] == '$' && in[i + 1] == '$')
 			ft_lstadd_back(list, ft_lstnew(ft_strdup("$$", garbage),
 					DOUBLE_DLR, garbage));
+		else if (in[i] == '$' && in[i + 1] == '?')
+			ft_lstadd_back(list, ft_lstnew(ft_strdup("$?", garbage),
+					EXIT_STATUS, garbage));
 		else if (in[i] == '$')
 			is_a_var(list, in, i, garbage);
 		else if (in[i] && in[i] != '$')
@@ -92,4 +95,30 @@ void	ft_split_var(t_elem **elem, t_elem *node, t_garbage **garbage)
 	current = *elem;
 	make_list(&new_list, str, garbage);
 	add_to_list(elem, node, new_list);
+}
+
+void	expand_var_quots(t_elem **elem, t_elem *node, t_env **env,
+t_garbage **grb)
+{
+	int		i;
+	char	*gtr;
+	t_elem	*checker;
+	int		flag;
+	t_env	*list;
+
+	checker = *elem;
+	gtr = node->content;
+	i = 0;
+	flag = 0;
+	list = *env;
+	if (gtr[i] == '$')
+	{
+		if (gtr[i + 1] >= '0' && gtr[i + 1] <= '9')
+		{
+			node->content = ft_strdup("", grb);
+			return ;
+		}
+		else
+			expand_var_quots2(node, gtr, grb, list);
+	}
 }

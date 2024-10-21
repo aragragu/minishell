@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 19:48:01 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/21 01:41:50 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/21 14:12:05 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,9 @@ void	expand_d_qouts(t_env **env, char **ptr, t_garbage **garbage)
 	while (current)
 	{
 		if (current->type == VAR)
-			expand_var(&list, current, env, garbage);
+			expand_var_quots(&list, current, env, garbage);
+		if (current->type == EXIT_STATUS)
+			current->content = ft_itoa(g_es(0, 1), garbage);
 		if (!current->content)
 			current->content = ft_strdup("", garbage);
 		str = ft_strjoin(str, current->content, garbage);

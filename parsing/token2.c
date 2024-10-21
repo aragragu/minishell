@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 19:01:25 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/21 01:23:47 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/21 14:03:51 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,16 +88,17 @@ int	list_handler(t_var *var)
 void	token_input(char **in, t_var *var)
 {
 	int		i;
+	int		x;
 	char	*input;
 
 	i = 0;
 	input = ft_strtrim(*in, " \t\n\v\f\r", &var->garbage);
 	while (input && input[i])
 	{
-		if (is_whitespace(input[i]))
-			handle_whitespace(input, &i, &var->linked_list, &var->garbage);
-		else
-			handle_special_characters(input, &i, var);
+		handle_whitespace(input, &i, &var->linked_list, &var->garbage);
+		x = handle_special_characters(input, &i, var);
+		if (x)
+			continue ;
 		i += ft_strlen(ft_lstlast((*var).linked_list)->content);
 	}
 }

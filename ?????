@@ -23,105 +23,95 @@ weshLA.
 ➜ minishell💀$ echo wesh$""HOLA
 weshLA
 ////////////////////////////////////////////////////////////////////////////
-➜ minishell💀$ expoexport HOLA=" bonjour hey "
-Content: [export], Type: [WORD], fd : -1
-Content: [ ], Type: [S_PACE], fd : -1
-Content: [HOLA=], Type: [WORD], fd : -1
-Content: [ bonjour hey ], Type: [D_QOUTS], fd : -1
-Command: export
-Arguments:
-  Arg[0]: [export]
-  Arg[1]: [HOLA= bonjour hey ]
-Redirections: (null)
-➜ minishell💀$ echo wesh"$HOLA" | cat -e
-Content: [echo], Type: [WORD], fd : -1
-Content: [ ], Type: [S_PACE], fd : -1
-Content: [wesh], Type: [WORD], fd : -1
-Content: [ bonjour hey ], Type: [D_QOUTS], fd : -1
-Content: [ ], Type: [S_PACE], fd : -1
-Content: [|], Type: [PIPE], fd : -1
-Content: [ ], Type: [S_PACE], fd : -1
-Content: [cat], Type: [WORD], fd : -1
-Content: [ ], Type: [S_PACE], fd : -1
-Content: [-e], Type: [WORD], fd : -1
-Command: echo
-Arguments:
-  Arg[0]: [echo]
-  Arg[1]: [wesh bonjour hey ]
-Redirections: (null)
-Command: cat
-Arguments:
-  Arg[0]: [cat]
-  Arg[1]: [-e]
-Redirections: (null)
-wesh bonjour hey $
-➜ minishell💀$ export HOLA=" bonjour hey "
-Content: [export], Type: [WORD], fd : -1
-Content: [ ], Type: [S_PACE], fd : -1
-Content: [HOLA=], Type: [WORD], fd : -1
-Content: [ bonjour hey ], Type: [D_QOUTS], fd : -1
-Command: export
-Arguments:
-  Arg[0]: [export]
-  Arg[1]: [HOLA= bonjour hey ]
-Redirections: (null)
-////////////////////////////////////////////////////////////////////////////
-➜ minishell💀$ echo wesh"$HOLA" | cat -e
-Content: [echo], Type: [WORD], fd : -1
-Content: [ ], Type: [S_PACE], fd : -1
-Content: [wesh], Type: [WORD], fd : -1
-Content: [bonjour hey], Type: [D_QOUTS], fd : -1
-Content: [ ], Type: [S_PACE], fd : -1
-Content: [|], Type: [PIPE], fd : -1
-Content: [ ], Type: [S_PACE], fd : -1
-Content: [cat], Type: [WORD], fd : -1
-Content: [ ], Type: [S_PACE], fd : -1
-Content: [-e], Type: [WORD], fd : -1
-Command: echo
-Arguments:
-  Arg[0]: [echo]
-  Arg[1]: [weshbonjour hey]
-Redirections: (null)
-Command: cat
-Arguments:
-  Arg[0]: [cat]
-  Arg[1]: [-e]
-Redirections: (null)
-weshbonjour hey$
-////////////////////////////////////////////////////////////////////////////
-➜ minishell💀$ expoexport HOLA=" bonjour hey "
-Content: [export], Type: [WORD], fd : -1
-Content: [ ], Type: [S_PACE], fd : -1
-Content: [HOLA=], Type: [WORD], fd : -1
-Content: [ bonjour hey ], Type: [D_QOUTS], fd : -1
-Command: export
-Arguments:
-  Arg[0]: [export]
-  Arg[1]: [HOLA= bonjour hey ]
-Redirections: (null)
-➜ minishell💀$ echo wesh"$HOLA" | cat -e
-Content: [echo], Type: [WORD], fd : -1
-Content: [ ], Type: [S_PACE], fd : -1
-Content: [wesh], Type: [WORD], fd : -1
-Content: [bonjour hey], Type: [D_QOUTS], fd : -1
-Content: [ ], Type: [S_PACE], fd : -1
-Content: [|], Type: [PIPE], fd : -1
-Content: [ ], Type: [S_PACE], fd : -1
-Content: [cat], Type: [WORD], fd : -1
-Content: [ ], Type: [S_PACE], fd : -1
-Content: [-e], Type: [WORD], fd : -1
-Command: echo
-Arguments:
-  Arg[0]: [echo]
-  Arg[1]: [weshbonjour hey]
-Redirections: (null)
-Command: cat
-Arguments:
-  Arg[0]: [cat]
-  Arg[1]: [-e]
-Redirections: (null)
-weshbonjour hey$
+
 ////////////////////////////////////////////////////////////////////////////
 
 also i found a double free from ft_export_norm.c in line 55
 wslt l commadn 330
+
+////////////////////////////////////////////////////////////////////////////
+Test  41: ❌ cd 123123 
+mini exit code = 0
+bash exit code = 1
+Test  44: ❌ exit +100 
+mini exit code = 255
+bash exit code = 100
+mini error = ( numeric arg required)
+bash error = ()
+Test  45: ❌ exit "+100" 
+mini exit code = 255
+bash exit code = 100
+mini error = ( numeric arg required)
+bash error = ()
+Test  46: ❌ exit +"100" 
+mini exit code = 255
+bash exit code = 100
+mini error = ( numeric arg required)
+bash error = ()
+Test  47: ❌ exit -100 
+mini exit code = 0
+bash exit code = 156
+Test  48: ❌ exit "-100" 
+mini exit code = 0
+bash exit code = 156
+Test  49: ❌ exit -"100" 
+mini exit code = 0
+bash exit code = 156
+////////////////////////////////////////////////////////////////////////////
+
+Test  59: ❌ ls >>./test_files/invalid_permission 
+mini exit code = 13
+bash exit code = 1
+Test  60: ❌ ls >>./test_files/invalid_permission >>./outfiles/outfile01 
+mini exit code = 13
+bash exit code = 1
+Test  61: ❌ ls >>./outfiles/outfile01 >>./test_files/invalid_permission 
+mini exit code = 13
+bash exit code = 1
+Test  62: ❌ ls >./outfiles/outfile01 >>./test_files/invalid_permission >>./outfiles/outfile02 
+mini exit code = 13
+bash exit code = 1
+Test  63: ✅ ls <missing >>./test_files/invalid_permission >>./outfiles/outfile02 
+Test  64: ❌ ls >>./test_files/invalid_permission >>./outfiles/outfile02 <missing 
+mini exit code = 13
+bash exit code = 1
+Test  72: ❌ echo hi | echo bye >>./test_files/invalid_permission 
+mini exit code = 13
+bash exit code = 1
+////////////////////////////////////////////////////////////////////////////
+
+Test   1: ❌ unset HELLO= 
+mini exit code = 0
+bash exit code = 1
+mini error = ()
+bash error = ( not a valid identifier)
+Test   2: ❌ unset  A- 
+mini exit code = 0
+bash exit code = 1
+mini error = ()
+bash error = ( not a valid identifier)
+Test   4: ❌ unset  HELLO A- WORLD 
+mini exit code = 0
+bash exit code = 1
+mini error = ()
+bash error = ( not a valid identifier)
+Test   5: ❌ export UNO=1 DOS-2 TRES=3 || env | grep TRES 
+mini output = ()
+bash output = (TRES=3)
+mini exit code = 258
+bash exit code = 0
+mini error = ( syntax error near unexpected token `|')
+bash error = ( not a valid identifier)
+Test   6: ❌ export | sort | grep -v SHLVL | grep -v "declare -x _" | grep -v "PS.=" 
+mini output = (declare -x COLORTERM="truecolor" declare -x COMMAND_MODE="unix2003" declare -x GIT_ASKPASS="/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass.sh" declare -x HOME="/Users/aragragu" declare -x HOMEBREW_CACHE="/tmp/aragragu/Homebrew/Caches" declare -x HOMEBREW_TEMP="/tmp/aragragu/Homebrew/Temp" declare -x LANG="en_US.UTF-8" declare -x LESS="-R" declare -x LOGNAME="aragragu" declare -x LSCOLORS="Gxfxcxdxbxegedabagacad" declare -x LS_COLORS="di=1;36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43" declare -x LaunchInstanceID="ABFBF219-05B3-40B0-A9A1-2774DE5DF93E" declare -x MallocNanoZone="0" declare -x ORIGINAL_XDG_CURRENT_DESKTOP="undefined" declare -x PAGER="less" declare -x PATH="/Users/aragragu/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki:/Library/Apple/usr/bin" declare -x PWD="/Users/aragragu/Desktop/mini/minishell_tester" declare -x SECURITYSESSIONID="186a6" declare -x SHELL="/bin/zsh" declare -x SSH_AUTH_SOCK="/private/tmp/com.apple.launchd.oaaEWfMjCf/Listeners" declare -x TERM="xterm-256color" declare -x TERM_PROGRAM="vscode" declare -x TERM_PROGRAM_VERSION="1.89.1" declare -x TMPDIR="/var/folders/zz/zyxvpxvq6csfxvn_n000cls40034y9/T/" declare -x USER="aragragu" declare -x USER_ZDOTDIR="/Users/aragragu" declare -x VSCODE_GIT_ASKPASS_EXTRA_ARGS="" declare -x VSCODE_GIT_ASKPASS_MAIN="/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass-main.js" declare -x VSCODE_GIT_ASKPASS_NODE="/Applications/Visual Studio Code.app/Contents/Frameworks/Code Helper (Plugin).app/Contents/MacOS/Code Helper (Plugin)" declare -x VSCODE_GIT_IPC_HANDLE="/var/folders/zz/zyxvpxvq6csfxvn_n000cls40034y9/T/vscode-git-00bff74304.sock" declare -x VSCODE_INJECTION="1" declare -x XPC_FLAGS="0x0" declare -x XPC_SERVICE_NAME="0" declare -x ZDOTDIR="/Users/aragragu" declare -x ZSH="/Users/aragragu/.oh-my-zsh")
+bash output = (declare -x COLORTERM="truecolor" declare -x COMMAND_MODE="unix2003" declare -x GIT_ASKPASS="/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass.sh" declare -x HOME="/Users/aragragu" declare -x HOMEBREW_CACHE="/tmp/aragragu/Homebrew/Caches" declare -x HOMEBREW_TEMP="/tmp/aragragu/Homebrew/Temp" declare -x LANG="en_US.UTF-8" declare -x LESS="-R" declare -x LOGNAME="aragragu" declare -x LSCOLORS="Gxfxcxdxbxegedabagacad" declare -x LS_COLORS="di=1;36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43" declare -x LaunchInstanceID="ABFBF219-05B3-40B0-A9A1-2774DE5DF93E" declare -x MallocNanoZone="0" declare -x OLDPWD declare -x ORIGINAL_XDG_CURRENT_DESKTOP="undefined" declare -x PAGER="less" declare -x PATH="/Users/aragragu/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki:/Library/Apple/usr/bin" declare -x PWD="/Users/aragragu/Desktop/mini/minishell_tester" declare -x SECURITYSESSIONID="186a6" declare -x SHELL="/bin/zsh" declare -x SSH_AUTH_SOCK="/private/tmp/com.apple.launchd.oaaEWfMjCf/Listeners" declare -x TERM="xterm-256color" declare -x TERM_PROGRAM="vscode" declare -x TERM_PROGRAM_VERSION="1.89.1" declare -x TMPDIR="/var/folders/zz/zyxvpxvq6csfxvn_n000cls40034y9/T/" declare -x USER="aragragu" declare -x USER_ZDOTDIR="/Users/aragragu" declare -x VSCODE_GIT_ASKPASS_EXTRA_ARGS="" declare -x VSCODE_GIT_ASKPASS_MAIN="/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass-main.js" declare -x VSCODE_GIT_ASKPASS_NODE="/Applications/Visual Studio Code.app/Contents/Frameworks/Code Helper (Plugin).app/Contents/MacOS/Code Helper (Plugin)" declare -x VSCODE_GIT_IPC_HANDLE="/var/folders/zz/zyxvpxvq6csfxvn_n000cls40034y9/T/vscode-git-00bff74304.sock" declare -x VSCODE_INJECTION="1" declare -x XPC_FLAGS="0x0" declare -x XPC_SERVICE_NAME="0" declare -x ZDOTDIR="/Users/aragragu" declare -x ZSH="/Users/aragragu/.oh-my-zsh")
+in here our minishell does not have OLDPWD but bash does
+Test   9: ❌ exit -9223372036854775807 
+mini exit code = 0
+bash exit code = 1
+Test  11: ❌ exit -9223372036854775809 
+mini exit code = 0
+bash exit code = 255
+mini error = ()
+bash error = ( numeric argument required)
+////////////////////////////////////////////////////////////////////////////
