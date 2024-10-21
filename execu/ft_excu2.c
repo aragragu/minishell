@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_excu2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:45:58 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/20 16:31:51 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/21 22:10:07 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@ void	execution(t_var *var)
 
 	if (var->list->cmd || contains_red(var) == 0)
 	{
+		//added:
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+		//
 		num_cmd = calculate_cmd(var);
 		if ((num_cmd > 1 || contains_red(var) == 0))
 			execute_pipe(num_cmd, var, -1, STDIN_FILENO);

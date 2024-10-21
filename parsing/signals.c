@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 19:05:51 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/21 00:13:57 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/21 22:11:39 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ void	signal_hand_sig_qui(int sig)
 {
 	if (sig == SIGQUIT)
 	{
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		printf("Quit: 3\n");
+		// rl_replace_line("", 0);
+		// rl_on_new_line();
+		// printf("Quit: 3\n");
 		g_es(131, 0);
 	}
 }

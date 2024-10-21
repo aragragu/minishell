@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/21 14:13:16 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/21 22:28:27 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -327,7 +327,7 @@ int			ft_putstr_fd(char *s, int fd);
 int			ft_putchar_fd(char c, int fd);
 void		error_function(t_var *var);
 void		error_fork(pid_t pid);
-void		waitpid_func(t_var *var);
+void		waitpid_func(t_var *var, struct termios *term);
 void		red_herd_appen(t_redir *redir, int fd, t_var *var);
 void		red_out_in(t_redir *redir, int fd);
 int			contains_red(t_var *var);

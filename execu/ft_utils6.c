@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils6.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:21:52 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/20 16:32:16 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/21 22:29:35 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,10 @@ void	norm_excu_pipe(t_var *var, char **envp)
 		}
 		else
 		{
+			//added:
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
+			//
 			execve(cmd_path, var->list->argc, envp);
 			error_function(var);
 			free(cmd_path);
@@ -58,7 +62,7 @@ void	save_std_in_out(t_cmd *list, int flag)
 	}
 }
 
-void	norm_pipe(t_var *var, t_cmd *list, int flag)
+void	norm_pipe(t_var *var, t_cmd *list, int flag, struct termios *term)
 {
 	if (flag == 0)
 	{
@@ -69,16 +73,20 @@ void	norm_pipe(t_var *var, t_cmd *list, int flag)
 	{
 		ft_free(var->envp);
 		save_std_in_out(list, 1);
-		waitpid_func(var);
+		waitpid_func(var, term);
 	}
 }
 
 void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd)
 {
 	int		pipefd[2];
+	//added:
+	struct termios	term;
+	tcgetattr(STDIN_FILENO, &term);
+	//
 
 	var->list2 = var->list;
-	norm_pipe(var, var->list2, 0);
+	norm_pipe(var, var->list2, 0, &term);
 	while (++i < num_cmds)
 	{
 		(i < num_cmds - 1) && (pipe(pipefd), 0);
@@ -99,5 +107,5 @@ void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd)
 		(!contains_red(var)) && (close(var->list->redirection->fd), 0);
 		(prev_fd = pipefd[0]) && (var->list = var->list->next, 0);
 	}
-	norm_pipe(var, var->list2, 1);
+	norm_pipe(var, var->list2, 1, &term);
 }

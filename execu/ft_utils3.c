@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:38:50 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/20 16:32:07 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/21 22:23:24 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,14 @@ void	ft_exc(t_var *var)
 	char	*exec_path;
 	char	**envp;
 	int		exit_stat;
-
+	struct termios term;
+	//added:
+	tcgetattr(STDIN_FILENO, &term);
+	//
 	store_env(var->env, &envp, 0, 0);
-	signal(SIGQUIT, signal_hand_sig_qui);
+	//added:
+	//signal(SIGQUIT, signal_hand_sig_qui);
+	//
 	var->pid[0] = fork();
 	if (var->pid[0] == -1)
 	{
@@ -79,6 +84,10 @@ void	ft_exc(t_var *var)
 	}
 	if (var->pid[0] == 0)
 	{
+		//added
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+		//
 		(!var->list->argc[0][0]) && (error_function(var), 0);
 		exec_path = check_valid_path(var->list->cmd, var);
 		{
@@ -89,5 +98,12 @@ void	ft_exc(t_var *var)
 	}
 	ft_free(envp);
 	waitpid(var->pid[0], &exit_stat, 0);
+	//added
+	if (WIFSIGNALED(exit_stat) && WTERMSIG(exit_stat) == SIGQUIT)
+	{
+		tcsetattr(STDIN_FILENO, TCSANOW, &term);
+		write(1, "Quit: 3\n", 8);
+	}
+	//
 	update_exit_status(exit_stat);
 }
