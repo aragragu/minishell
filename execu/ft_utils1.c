@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:35:50 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/18 03:59:12 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/21 20:48:23 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*ft_strjoinnn(char *s1, char *s2)
 		return (NULL);
 	ss = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (ss == NULL)
-		return (free(s1), NULL);
+		return (NULL);
 	while (s1[i] != '\0')
 	{
 		ss[j] = s1[i];
@@ -63,13 +63,15 @@ char	*ft_strjoinnn(char *s1, char *s2)
 		ss[j++] = s2[i++];
 	}
 	ss[j] = '\0';
-	return (free(s1), ss);
+	return (ss);
 }
 
 int	is_num(const char *str)
 {
-	if (*str == '-' && *(str + 1) == '\0')
+	if ((*str == '-' || *str == '+') && *(str + 1) == '\0')
 		return (0);
+	if (*str == '-' || *str == '+')
+		str++;
 	while (*str)
 	{
 		if (!ft_digits(*str) && *str != '-')

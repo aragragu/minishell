@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/21 22:28:27 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/21 23:03:03 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,7 +290,7 @@ void		ft_env(t_var *var);
 int			ft_isalpha(char c);
 int			ft_digits(char c);
 char		*ft_cat(char *str, int len, int flag);
-void		pwd_upd_old(t_env **env, char *key, char *val);
+void	pwd_upd_old(t_var *var, char *key, char *val);
 int			check_builtins(char *str);
 char		*ft_strduppp(char *s1);
 void		ft_builtins(t_var *var, char *str, t_cmd **cmd);
@@ -353,5 +353,6 @@ void		print_export(t_env *first);
 int			ft_strcmplist(char *s1, char *s2);
 int			g_es(int stat, int flag);
 void		signal_hand_sig_qui(int sig);
+void		ft_strduppp2(char **s1);
 
 #endif

@@ -6,24 +6,23 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:31:11 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/12 10:11:44 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/21 20:19:18 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	pwd_upd_old(t_env **env, char *key, char *val)
+void	pwd_upd_old(t_var *var, char *key, char *val)
 {
 	t_env	*current;
 	t_env	*new_node;
 
-	current = *env;
+	current = var->env;
 	while (current)
 	{
 		if (ft_strcmp(current->key, key) == 0)
 		{
-			free(current->value);
-			current->value = ft_strduppp(val);
+			current->value = ft_strdup(val, &var->garb);
 			return ;
 		}
 		current = current->next;
@@ -35,7 +34,7 @@ void	pwd_upd_old(t_env **env, char *key, char *val)
 		new_node->value = ft_strduppp(val);
 		new_node->next = NULL;
 		new_node->flag = 1;
-		ft_lstadd_backkk(env, new_node);
+		ft_lstadd_backkk(&var->env, new_node);
 	}
 }
 
@@ -43,6 +42,7 @@ void	error_fun_cd(t_var *var, char *home, int flag)
 {
 	if (flag == 0)
 	{
+		puts("here");
 		perror(var->list->argc[1]);
 		g_es(1, 0);
 	}
@@ -60,12 +60,9 @@ void	error_fun_cd(t_var *var, char *home, int flag)
 
 void	ft_cd_handle_special_cases(t_var *var, char *old_pwd, char *home)
 {
-	if (var->list->argc[1] == NULL || !ft_strcmp(var->list->argc[1], "~"))
+	if (var->list->argc[1] == NULL)
 	{
-		if (var->list->argc[1] == NULL)
-			home = ft_getenv(var->env, "HOME");
-		else
-			home = getenv("HOME");
+		home = ft_getenv(var->env, "HOME");
 		if (home == NULL)
 		{
 			error_fun_cd(var, home, 1);
@@ -82,7 +79,7 @@ void	ft_cd_handle_special_cases(t_var *var, char *old_pwd, char *home)
 		error_fun_cd(var, home, 0);
 		return ;
 	}
-	pwd_upd_old(&var->env, "OLDPWD", old_pwd);
+	pwd_upd_old(var, "OLDPWD", old_pwd);
 }
 
 void	ft_cd(t_var *var)
@@ -102,12 +99,12 @@ void	ft_cd(t_var *var)
 	else
 		ft_cd_handle_special_cases(var, old_pwd, NULL);
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
-		pwd_upd_old(&var->env, "PWD", cwd);
+		pwd_upd_old(var, "PWD", cwd);
 	else
 	{
 		perror("getcwd");
 		g_es(1, 0);
 		return ;
 	}
-	g_es(0, 0);
+	// g_es(0, 0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/21 14:04:27 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/21 19:12:26 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,8 @@ int	fill_and_check(char *input, t_var *var)
 	if (!input)
 		return (1);
 	if (!*input)
-	{
-		free(input);
 		return (2);
-	}
-	ft_lstadd_back_garbage(&var->garbage, ft_lstnew_garbage(input));
+	// ft_lstadd_back_garbage(&var->garbage, ft_lstnew_garbage(input));
 	add_history(input);
 	token_input(&input, var);
 	if (!var->linked_list)

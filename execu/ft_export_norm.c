@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export_norm.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 17:31:43 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/21 01:29:15 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/21 20:42:19 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@ void	ex3_norm(t_var *var, int i)
 	else
 	{
 		var->new_val = ft_cat(var->list->argc[i], var->j + 1, 1);
+		ft_lstadd_back_garbage(&var->garb, ft_lstnew_garbage(var->new_val));
 		var->key = ft_cat(var->list->argc[i], var->j, 0);
 		var->index = index_key(var->env, var->key);
 		if (var->index)
 		{
-			free(var->index->value); ////////////// double free,
 			var->index->value = var->new_val;
 			free(var->key);
 		}
