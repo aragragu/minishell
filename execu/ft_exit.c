@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:34:55 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/21 18:18:03 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/22 12:42:18 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,11 @@ void	norm_ft_exit(t_var *var, long num, int flag)
 
 void	ft_exit(t_var *var)
 {
-	long		num;
-	static int	ac;
+	long	num;
+	int		ac;
 
+	ac = 0;
 	num = ft_atoi(var->list->argc[1], var);
-	puts(var->list->argc[1]);
 	while (var->list->argc[ac])
 		ac++;
 	if (ac == 1)

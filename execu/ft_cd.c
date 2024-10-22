@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:31:11 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/21 20:19:18 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/22 12:40:39 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	pwd_upd_old(t_var *var, char *key, char *val)
 	{
 		if (ft_strcmp(current->key, key) == 0)
 		{
+			free(current->value);
+			current->value =NULL;
 			current->value = ft_strdup(val, &var->garb);
 			return ;
 		}
@@ -42,7 +44,6 @@ void	error_fun_cd(t_var *var, char *home, int flag)
 {
 	if (flag == 0)
 	{
-		puts("here");
 		perror(var->list->argc[1]);
 		g_es(1, 0);
 	}
@@ -106,5 +107,4 @@ void	ft_cd(t_var *var)
 		g_es(1, 0);
 		return ;
 	}
-	// g_es(0, 0);
 }

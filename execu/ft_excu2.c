@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_excu2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:45:58 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/21 23:03:23 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/22 12:41:52 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 void	execution(t_var *var)
 {
 	int	num_cmd;
-	// print_list(&var->linked_list);
-	if (var->list->cmd || contains_red(var) == 0)
+
+	if (!var->list->cmd && !var->list->redirection)
+		return ;
+	if (var->list->cmd[0] || contains_red(var) == 0)
 	{
 		//added:
 		signal(SIGINT, SIG_IGN);

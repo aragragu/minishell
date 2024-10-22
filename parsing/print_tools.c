@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 21:18:50 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/20 21:30:28 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/22 00:48:30 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void    print_cmd(t_cmd *cmd)
 	while (cmd)
 	{
 		if (cmd->cmd)
-			printf("Command: %s\n", cmd->cmd);
+			printf("Command: [%s]\n", cmd->cmd);
 		else
 			printf("Command: (null)\n");
 		if (cmd->argc && cmd->argc[0])

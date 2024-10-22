@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 19:38:59 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/22 00:22:39 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/22 13:01:40 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int	check_herdoc_line(t_elem **list, t_herdoc *data, t_garbage **garbage)
 		open_herdoc_file(data);
 		return (1);
 	}
-	// if (*data->line)
 	if (!ft_strcmp((*list)->content, data->line))
 	{
 		open_herdoc_file(data);	

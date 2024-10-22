@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:35:50 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/21 20:48:23 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/21 22:58:57 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*ft_strjoinnn(char *s1, char *s2)
 
 int	is_num(const char *str)
 {
-	if ((*str == '-' || *str == '+') && *(str + 1) == '\0')
+	if (*str == '\0')
 		return (0);
 	if (*str == '-' || *str == '+')
 		str++;

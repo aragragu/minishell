@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft6.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:48 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/21 00:57:45 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/22 12:30:51 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,21 @@ void	ft_sign(char c, int *sign)
 		*sign = 2;
 	else if (c == '\'' && *sign == 0)
 		*sign = 1;
+}
+
+t_redir	*ft_lstlast_redi(t_redir *lst)
+{
+	t_redir	*ptr;
+
+	if (!lst)
+		return (NULL);
+	ptr = lst;
+	if (ptr && ptr->next)
+	{
+		while (ptr->next != NULL)
+		{
+			ptr = ptr->next;
+		}
+	}
+	return (ptr);
 }
