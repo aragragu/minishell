@@ -3,16 +3,24 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+         #
+#    By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/13 11:48:28 by aragragu          #+#    #+#              #
+<<<<<<< HEAD
 #    Updated: 2024/10/21 22:53:56 by ykasmi           ###   ########.fr        #
+=======
+#    Updated: 2024/10/22 11:43:32 by aragragu         ###   ########.fr        #
+>>>>>>> origin/master
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc
+<<<<<<< HEAD
 CFLAGS = -Wall -Wextra -Werror -I/Users/${USER}/.brew/opt/readline/include -g3 -fsanitize=address
+=======
+CFLAGS = -Wall -Wextra -Werror -I/Users/${USER}/.brew/opt/readline/include #3 -fsanitize=address
+>>>>>>> origin/master
 LDFLAGS = -L/Users/${USER}/.brew/opt/readline/lib
 RM = rm -rf
 SRC =	parsing/token.c parsing/token2.c parsing/token3.c parsing/token4.c parsing/main.c parsing/split.c parsing/libft.c \

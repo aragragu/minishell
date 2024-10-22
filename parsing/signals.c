@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 19:05:51 by aragragu          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/10/21 21:17:31 by ykasmi           ###   ########.fr       */
+=======
+/*   Updated: 2024/10/21 23:03:12 by aragragu         ###   ########.fr       */
+>>>>>>> origin/master
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +20,9 @@ void	signal_hand_sig_qui(int sig)
 {
 	if (sig == SIGQUIT)
 	{
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		printf("Quit: 3\n");
+		// rl_replace_line("", 0);
+		// rl_on_new_line();
+		// printf("Quit: 3\n");
 		g_es(131, 0);
 	}
 }

@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   redirections4.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 19:38:59 by aragragu          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/10/22 00:26:22 by ykasmi           ###   ########.fr       */
+=======
+/*   Updated: 2024/10/22 00:24:41 by aragragu         ###   ########.fr       */
+>>>>>>> origin/master
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +26,11 @@ int	check_herdoc_line(t_elem **list, t_herdoc *data, t_garbage **garbage)
 	}
 	if (!ft_strcmp((*list)->content, data->line))
 	{
+<<<<<<< HEAD
 		open_herdoc_file(data);
+=======
+		open_herdoc_file(data);	
+>>>>>>> origin/master
 		return (1);
 	}
 	if (!*data->line)

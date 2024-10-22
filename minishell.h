@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/10/21 23:28:20 by ykasmi           ###   ########.fr       */
+=======
+/*   Updated: 2024/10/21 23:03:03 by aragragu         ###   ########.fr       */
+>>>>>>> origin/master
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -328,7 +332,7 @@ int			ft_putstr_fd(char *s, int fd);
 int			ft_putchar_fd(char c, int fd);
 void		error_function(t_var *var);
 void		error_fork(pid_t pid);
-void		waitpid_func(t_var *var);
+void		waitpid_func(t_var *var, struct termios *term);
 void		red_herd_appen(t_redir *redir, int fd, t_var *var);
 void		red_out_in(t_redir *redir, int fd);
 int			contains_red(t_var *var);

@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:31:11 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/21 22:12:44 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/22 12:40:39 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	pwd_upd_old(t_var *var, char *key, char *val)
 	{
 		if (ft_strcmp(current->key, key) == 0)
 		{
+			free(current->value);
+			current->value =NULL;
 			current->value = ft_strdup(val, &var->garb);
 			return ;
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:32:21 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/11 00:02:31 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/22 12:08:17 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	sort_env(t_env **env)
 	int		j;
 
 	(1) && (i = ft_lstsizeee(*env), j = 0, 0);
-	while (i && i >= j)
+	while (i >= j)
 	{
 		(1) && (first = *env, tmp = *env, 0);
 		while (tmp)
@@ -61,8 +61,11 @@ void	sort_env(t_env **env)
 			swap_nodes(&first, &tmp);
 			tmp = tmp->next;
 		}
-		print_export(first);
-		first->flag = 1;
+		if (first)
+		{
+			print_export(first);
+			first->flag = 1;
+		}
 		j++;
 	}
 	return (init_flag(*env));
