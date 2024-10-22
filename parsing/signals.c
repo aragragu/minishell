@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 19:05:51 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/22 12:44:17 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/22 16:41:23 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,11 @@
 void	signal_hand_sig_qui(int sig)
 {
 	if (sig == SIGQUIT)
-	{
-		// rl_replace_line("", 0);
-		// rl_on_new_line();
-		// printf("Quit: 3\n");
 		g_es(131, 0);
-	}
 }
 
 void	signal_handler(int sig)
 {
-	if (sig == SIGINT && !waitpid(-1, NULL, WNOHANG))
-		return ;
 	if (sig == SIGINT)
 	{
 		write(1, "\n", 1);

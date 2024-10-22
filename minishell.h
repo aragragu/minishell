@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/22 12:44:42 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/22 16:35:40 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 # include <dirent.h>
 # include <termios.h>
 # include <stdbool.h>
+
+// #define dup2(x, y) NULL
 
 typedef enum s_token
 {
@@ -114,7 +116,8 @@ typedef struct s_var
 	t_elem			*linked_list;
 	t_env			*index;
 	t_cmd			*list2;
-	pid_t			pid[1000];
+	pid_t			pid[1392];
+	struct termios	term;
 	int				flag;
 	void			*ptr;
 	char			*path;
@@ -126,6 +129,7 @@ typedef struct s_var
 	char			*key;
 	char			*new_val;
 	char			**envp;
+	int				c;
 	bool			if_valid;
 }					t_var;
 
@@ -327,7 +331,7 @@ void		execution(t_var *var);
 int			ft_putstr_fd(char *s, int fd);
 int			ft_putchar_fd(char c, int fd);
 void		error_function(t_var *var);
-void		error_fork(pid_t pid);
+void		error_fork(void);
 void		waitpid_func(t_var *var, struct termios *term);
 void		red_herd_appen(t_redir *redir, int fd, t_var *var);
 void		red_out_in(t_redir *redir, int fd);
@@ -354,6 +358,6 @@ void		print_export(t_env *first);
 int			ft_strcmplist(char *s1, char *s2);
 int			g_es(int stat, int flag);
 void		signal_hand_sig_qui(int sig);
-void		ft_strduppp2(char **s1);
+t_redir		*check_redirection(t_redir *list);
 
 #endif

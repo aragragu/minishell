@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:45:58 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/22 12:41:52 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/22 16:40:47 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,8 @@ void	execution(t_var *var)
 		return ;
 	if (var->list->cmd[0] || contains_red(var) == 0)
 	{
-		//added:
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
-		//
 		num_cmd = calculate_cmd(var);
 		if ((num_cmd > 1 || contains_red(var) == 0))
 			execute_pipe(num_cmd, var, -1, STDIN_FILENO);
