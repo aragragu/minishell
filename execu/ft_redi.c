@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 11:51:38 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/21 18:12:16 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/23 00:10:08 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,11 @@ int	contains_red(t_var *var)
 	return (1);
 }
 
-void	red_out_in(t_redir *redir, int fd)
+void	red_out_in(t_redir *redir)
 {
+	int	fd;
+
+	fd = -1;
 	if (redir->type == REDIR_OUT)
 	{
 		fd = open(redir->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -56,7 +59,7 @@ void	red_out_in(t_redir *redir, int fd)
 		fd = open(redir->value, O_RDONLY);
 		if (fd < 0)
 		{
-			perror("open failed");
+			perror(redir->value);
 			exit(1);
 		}
 		dup2(fd, STDIN_FILENO);
@@ -64,9 +67,10 @@ void	red_out_in(t_redir *redir, int fd)
 	}
 }
 
-void	red_herd_appen(t_redir *redir, int fd, t_var *var)
+void	red_herd_appen(t_redir *redir)
 {
-	(void)var;
+	int	fd;
+
 	if (redir->type == APPEND)
 	{
 		fd = open(redir->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
@@ -92,9 +96,7 @@ void	red_herd_appen(t_redir *redir, int fd, t_var *var)
 void	handle_redirection2(t_var *var)
 {
 	t_redir	*redir;
-	int		fd;
 
-	fd = 0;
 	redir = var->list->redirection;
 	while (redir)
 	{
@@ -104,8 +106,8 @@ void	handle_redirection2(t_var *var)
 			g_es(1, 0);
 			exit(1);
 		}
-		red_out_in(redir, fd);
-		red_herd_appen(redir, fd, var);
+		red_out_in(redir);
+		red_herd_appen(redir);
 		redir = redir->next;
 	}
 	g_es(0, 0);

@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 11:48:51 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/22 16:19:11 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/23 00:03:23 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	error_function(t_var *var)
 {
-	fprintf(stderr, "minishell: %s: command not found\n", var->list->argc[0]);
+	ft_fprintf(2, "minishell: %s: command not found\n", var->list->argc[0]);
 	g_es(127, 0);
 	exit(127);
 }

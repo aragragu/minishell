@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 20:52:48 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/22 12:30:51 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/22 22:15:48 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,16 +60,17 @@ void	ft_sign(char c, int *sign)
 t_redir	*ft_lstlast_redi(t_redir *lst)
 {
 	t_redir	*ptr;
+	t_redir	*gtr;
 
+	gtr = NULL;
 	if (!lst)
 		return (NULL);
 	ptr = lst;
-	if (ptr && ptr->next)
+	while (ptr)
 	{
-		while (ptr->next != NULL)
-		{
-			ptr = ptr->next;
-		}
+		if (ptr->type == HEREDOC)
+			gtr = ptr;
+		ptr = ptr->next;
 	}
-	return (ptr);
+	return (gtr);
 }

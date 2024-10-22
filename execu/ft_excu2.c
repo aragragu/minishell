@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:45:58 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/22 16:40:47 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/22 23:33:32 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	execution(t_var *var)
 
 	if (!var->list->cmd && !var->list->redirection)
 		return ;
-	if (var->list->cmd[0] || contains_red(var) == 0)
+	if ((var->list->cmd && var->list->cmd[0]) || contains_red(var) == 0)
 	{
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
