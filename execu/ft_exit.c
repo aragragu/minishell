@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:34:55 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/21 18:18:03 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/22 00:29:35 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ void	ft_exit(t_var *var)
 	static int	ac;
 
 	num = ft_atoi(var->list->argc[1], var);
-	puts(var->list->argc[1]);
 	while (var->list->argc[ac])
 		ac++;
 	if (ac == 1)

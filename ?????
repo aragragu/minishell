@@ -251,5 +251,37 @@ freed by thread T0 here:
     #8 0x7fff6ae3dcc8 in start+0x0 (libdyld.dylib:x86_64+0x1acc8)
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
-
+➜ minishell💀$ env
+PWD=/Users/aragragu/Desktop/mini
+SHLVL=1
+_=/usr/bin/env
+➜ minishell💀$ ls
+?????                   Makefile                allo.tldr               execu                   ft_printf               minishell               minishell.h             minishell_tester        parsing
+➜ minishell💀$ unset PATH
+➜ minishell💀$ ls
+minishell: ls: command not found
+➜ minishell💀$ cd /bin/                                                                                                                                                              
+➜ minishell💀$ ls
+minishell: ls: command not found
+➜ minishell💀$ 
 ////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+minishell💀$ env | grep PWD
+PWD=/Users/aragragu/Desktop/mini
+OLDPWD=/Users/aragragu/Desktop/mini
+➜ minishell💀$ 
+bash-3.2$ env | grep PWD
+PWD=/Users/aragragu/Desktop/mini/a/b
+bash-3.2$ 
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+leaks in heredoc delimiters
+
+while true; do
+    valgrind --leak-check=full --track-origins=yes --log-file=valgrind_output --trace-children=yes --pid=$(pgrep minishell)
+    sleep 2
+    clear
+  done
+  
+

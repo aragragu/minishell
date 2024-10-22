@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:02:07 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/21 19:11:55 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/22 00:53:23 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	read_input_loop(t_var *var, struct termios *original_termios)
 			break ;
 		else if (i == 2)
 			continue ;
-		if (g_sig == 0)
+		if (g_sig == 0 && var->list)
 		{
 			execution(var);
 			tcsetattr(STDIN_FILENO, TCSANOW, original_termios);
