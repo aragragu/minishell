@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:21:52 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/20 16:32:16 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/22 12:29:50 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,27 @@ void	norm_pipe(t_var *var, t_cmd *list, int flag)
 	}
 }
 
+t_redir *check_redirection(t_redir *list)
+{
+	t_redir	*current;
+	t_redir	*last;
+
+	last = ft_lstlast_redi(list);
+	current = list;
+	while (current && ft_strcmp(current->value, last->value))
+	{
+		close(current->fd);
+		current = current->next;
+	}
+	return (last);
+}
+
 void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd)
 {
 	int		pipefd[2];
+	t_redir	*last_herdoc;
 
+	last_herdoc = check_redirection(var->list->redirection);
 	var->list2 = var->list;
 	norm_pipe(var, var->list2, 0);
 	while (++i < num_cmds)
@@ -96,7 +113,7 @@ void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd)
 		}
 		close(pipefd[1]);
 		(i != 0) && (close(prev_fd), 0);
-		(!contains_red(var)) && (close(var->list->redirection->fd), 0);
+		(!contains_red(var)) && (close(last_herdoc->fd), 0);
 		(prev_fd = pipefd[0]) && (var->list = var->list->next, 0);
 	}
 	norm_pipe(var, var->list2, 1);

@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/21 19:36:20 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/21 23:28:20 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,6 +278,7 @@ void		expand_var_quots(t_elem **elem, t_elem *node, t_env **env,
 				t_garbage **grb);
 void		expand_var_quots2(t_elem *node, char *gtr, t_garbage **grb,
 				t_env *env);
+t_redir		*ft_lstlast_redi(t_redir *lst);
 
 void		ft_echo(t_var *var);
 void		ft_export(t_var *var, int i, int error);
@@ -290,7 +291,7 @@ void		ft_env(t_var *var);
 int			ft_isalpha(char c);
 int			ft_digits(char c);
 char		*ft_cat(char *str, int len, int flag);
-void	pwd_upd_old(t_var *var, char *key, char *val);
+void		pwd_upd_old(t_var *var, char *key, char *val);
 int			check_builtins(char *str);
 char		*ft_strduppp(char *s1);
 void		ft_builtins(t_var *var, char *str, t_cmd **cmd);

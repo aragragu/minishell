@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 14:45:58 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/21 17:19:09 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/21 21:20:59 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	execution(t_var *var)
 {
 	int	num_cmd;
-	// print_list(&var->linked_list);
+
 	if (var->list->cmd || contains_red(var) == 0)
 	{
 		num_cmd = calculate_cmd(var);

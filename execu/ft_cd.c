@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:31:11 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/21 20:19:18 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/21 22:12:44 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	error_fun_cd(t_var *var, char *home, int flag)
 {
 	if (flag == 0)
 	{
-		puts("here");
 		perror(var->list->argc[1]);
 		g_es(1, 0);
 	}
@@ -106,5 +105,4 @@ void	ft_cd(t_var *var)
 		g_es(1, 0);
 		return ;
 	}
-	// g_es(0, 0);
 }

@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 10:44:37 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/21 19:12:26 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/22 12:31:35 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	fill_and_check(char *input, t_var *var)
 		return (1);
 	if (!*input)
 		return (2);
-	// ft_lstadd_back_garbage(&var->garbage, ft_lstnew_garbage(input));
 	add_history(input);
 	token_input(&input, var);
 	if (!var->linked_list)

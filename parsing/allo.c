@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 21:28:00 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/21 18:56:44 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/22 12:30:16 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	process_nodes(t_elem **tmp, int *flag, char **buff, t_var *data)
 {
-	while (*tmp && (*tmp)->type < S_PACE)
+	while (*tmp && (*tmp)->content && (*tmp)->type < S_PACE)
 	{
 		if ((*tmp)->type == S_QOUTS || (*tmp)->type == D_QOUTS)
 			*flag = 1;
