@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils6.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:21:52 by ykasmi            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/10/22 12:29:50 by ykasmi           ###   ########.fr       */
-=======
-/*   Updated: 2024/10/21 22:29:35 by aragragu         ###   ########.fr       */
->>>>>>> origin/master
+/*   Updated: 2024/10/22 12:43:22 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,14 +95,11 @@ t_redir *check_redirection(t_redir *list)
 void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd)
 {
 	int		pipefd[2];
-<<<<<<< HEAD
 	t_redir	*last_herdoc;
-=======
 	//added:
 	struct termios	term;
 	tcgetattr(STDIN_FILENO, &term);
 	//
->>>>>>> origin/master
 
 	last_herdoc = check_redirection(var->list->redirection);
 	var->list2 = var->list;
