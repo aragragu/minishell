@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:48:48 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/23 12:30:20 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/23 14:26:57 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,21 @@ t_redir	*check_redirection(t_redir *list)
 		current = current->next;
 	}
 	return (last);
+}
+
+t_redir	*ft_lstlast_redi(t_redir *lst)
+{
+	t_redir	*ptr;
+
+	if (!lst)
+		return (NULL);
+	ptr = lst;
+	if (ptr && ptr->next)
+	{
+		while (ptr->next != NULL)
+		{
+			ptr = ptr->next;
+		}
+	}
+	return (ptr);
 }
