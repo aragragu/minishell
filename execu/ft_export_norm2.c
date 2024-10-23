@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export_norm2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 17:33:55 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/22 11:44:21 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/23 18:16:51 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ void	ex1_norm(t_var *var, int i, int *error)
 				var->key = ft_cat(var->list->argc[i], var->j, 0);
 				var->index = index_key(var->env, var->key);
 				if (!var->index)
-					ft_lstadd_backkk(&var->env, ft_lstnewww(var->key, NULL));
+					ft_lstadd_backkk(&var->env, ft_lstnew2(var->key, NULL,
+							&var->garb));
 				else
 					free(var->key);
 			}
