@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils6.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:21:52 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/22 16:35:19 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/23 09:57:51 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,11 @@ void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd)
 	t_redir			*last_herdoc;
 
 	tcgetattr(STDIN_FILENO, &var->term);
-	last_herdoc = check_redirection(var->list->redirection);
 	var->list2 = var->list;
 	norm_pipe(var, var->list2, 0, &var->term);
 	while (++i < num_cmds)
 	{
+		last_herdoc = check_redirection(var->list->redirection);
 		(i < num_cmds - 1) && (pipe(pipefd), 0);
 		signal(SIGQUIT, signal_hand_sig_qui);
 		var->pid[i] = fork();
@@ -99,6 +99,7 @@ void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd)
 		}
 		close(pipefd[1]);
 		(i != 0) && (close(prev_fd), 0);
+		// printf("last_herdoc_fd = [%d]\n", last_herdoc->fd);
 		(!contains_red(var)) && (close(last_herdoc->fd), 0);
 		(prev_fd = pipefd[0]) && (var->list = var->list->next, 0);
 	}
