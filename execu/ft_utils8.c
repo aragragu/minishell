@@ -6,39 +6,18 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:48:48 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/23 00:11:57 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/23 13:32:23 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/*char	*norm_excu_in_path(char *filename, t_var *var)
+void	norm_error_path(void)
 {
-	struct stat	f_stat;
-
-	if (!ft_strcmp(filename, "."))
-	{
-		ft_fprintf(2, "minishell: .: filename argument required\n");
-		ft_fprintf(2, ".: usage: . filename [arguments]\n");
-		exit(2);
-	}
-	stat(filename, &f_stat);
-	if (filename[0] == '.' && filename[1] == '.' && filename[2] == '\0')
-		error_function(var);
-	else if (S_ISDIR(f_stat.st_mode))
-	{
-		ft_fprintf(2, "%s: is a directory\n", filename);
-		exit(g_es(126, 0));
-	}
-	else if (!S_ISDIR(f_stat.st_mode) && ft_strchr(filename, '/'))
-	{
-		perror(filename);
-		exit(g_es(127, 0));
-	}
-	else if (access(filename, X_OK) == 0)
-		return (ft_strduppp(filename));
-	return (NULL);
-}*/
+	ft_fprintf(2, "minishell: .: filename argument required\n");
+	ft_fprintf(2, ".: usage: . filename [arguments]\n");
+	exit(2);
+}
 
 char	*norm_excu_in_path(char *filename)
 {
@@ -54,18 +33,18 @@ char	*norm_excu_in_path(char *filename)
 				exit(g_es(126, 0));
 			}
 		}
+		if (access(filename, X_OK) == -1 && access(filename, F_OK) == 0)
+		{
+			ft_fprintf(2, "minishell: permission denied\n");
+			exit(g_es(126, 0));
+		}
 		if (access(filename, X_OK) == 0)
 			return (ft_strduppp(filename));
 		perror(filename);
 		g_es(127, 0);
 		exit(127);
 	}
-	else if (!ft_strcmp(filename, "."))
-	{
-		ft_fprintf(2, "minishell: .: filename argument required\n");
-		ft_fprintf(2, ".: usage: . filename [arguments]\n");
-		exit(2);
-	}
+	(!ft_strcmp(filename, ".")) && (norm_error_path(), 0);
 	return (NULL);
 }
 

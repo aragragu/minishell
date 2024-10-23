@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 19:01:25 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/23 00:04:34 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/23 13:26:56 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int	list_handler(t_var *var)
 		return (2);
 	}
 	import_data(&var->list, &var->linked_list, &var->garbage);
+	// print_cmd(var->list);
 	return (0);
 }
 

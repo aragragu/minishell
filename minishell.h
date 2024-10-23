@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/22 22:50:32 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/23 13:29:09 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,10 @@
 # include <sys/wait.h>
 # include <string.h>
 # include <paths.h>
-# include <libc.h>
+# include <sys/stat.h>
 # include <dirent.h>
 # include <termios.h>
 # include <stdbool.h>
-
-// #define dup2(x, y) NULL
 
 typedef enum s_token
 {
