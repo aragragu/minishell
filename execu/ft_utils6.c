@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:21:52 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/22 23:14:32 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/23 09:57:51 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,18 @@ void	norm_excu_pipe(t_var *var, char **envp)
 		}
 		else
 		{
-			//added:
 			signal(SIGINT, SIG_DFL);
 			signal(SIGQUIT, SIG_DFL);
-			//
 			execve(cmd_path, var->list->argc, envp);
-			error_function(var);
 			free(cmd_path);
+			error_function(var);
 		}
 	}
 }
 
 void	norm_excu_pipe2(int prev_fd, int i, int num_cmds, int pipefd[2])
 {
+	(void)prev_fd;
 	dup2(prev_fd, STDIN_FILENO);
 	if (i < num_cmds - 1)
 		dup2(pipefd[1], STDOUT_FILENO);
@@ -77,44 +76,22 @@ void	norm_pipe(t_var *var, t_cmd *list, int flag, struct termios *term)
 	}
 }
 
-t_redir *check_redirection(t_redir *list)
-{
-	t_redir	*current;
-	t_redir	*last;
-
-	last = ft_lstlast_redi(list);
-	current = list;
-	while (current && current->type == HEREDOC && ft_strcmp(current->value, last->value))
-	{
-		close(current->fd);
-		current = current->next;
-	}
-	return (last);
-}
-
-
 void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd)
 {
-	int		pipefd[2];
-	t_redir	*last_herdoc;
-	//added:
-	struct termios	term;
-	tcgetattr(STDIN_FILENO, &term);
-	//
+	int				pipefd[2];
+	t_redir			*last_herdoc;
 
-	last_herdoc = check_redirection(var->list->redirection);
+	tcgetattr(STDIN_FILENO, &var->term);
 	var->list2 = var->list;
-	norm_pipe(var, var->list2, 0, &term);
+	norm_pipe(var, var->list2, 0, &var->term);
 	while (++i < num_cmds)
 	{
+		last_herdoc = check_redirection(var->list->redirection);
 		(i < num_cmds - 1) && (pipe(pipefd), 0);
 		signal(SIGQUIT, signal_hand_sig_qui);
 		var->pid[i] = fork();
 		if (var->pid[i] == -1)
-		{
-			(1) && (ft_free(var->envp), error_fork(var->pid[i]), 0);
-			return ;
-		}
+			(1) && (ft_free(var->envp), error_fork(), 0);
 		if (var->pid[i] == 0)
 		{
 			norm_excu_pipe2(prev_fd, i, num_cmds, pipefd);
@@ -126,5 +103,5 @@ void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd)
 		(!contains_red(var)) && (close(last_herdoc->fd), 0);
 		(prev_fd = pipefd[0]) && (var->list = var->list->next, 0);
 	}
-	norm_pipe(var, var->list2, 1, &term);
+	norm_pipe(var, var->list2, 1, &var->term);
 }

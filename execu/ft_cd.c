@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:31:11 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/22 20:54:45 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/23 09:56:57 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	pwd_upd_old(t_var *var, char *key, char *val)
 		if (ft_strcmp(current->key, key) == 0)
 		{
 			free(current->value);
-			current->value =NULL;
+			current->value = NULL;
 			current->value = ft_strdup(val, &var->garb);
 			return ;
 		}

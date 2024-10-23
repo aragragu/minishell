@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:48:48 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/21 22:47:39 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/22 16:21:04 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*norm_excu_in_path(char *filename)
 		g_es(127, 0);
 		exit(127);
 	}
-	else if (filename[0] == '.' && filename[1] == '\0')
+	else if (!ft_strcmp(filename, "."))
 	{
 		ft_fprintf(2, "minishell: .: filename argument required\n");
 		ft_fprintf(2, ".: usage: . filename [arguments]\n");
@@ -65,4 +65,19 @@ char	*excu_in_path(char *filename, t_var *var)
 		return (result);
 	}
 	return (NULL);
+}
+
+t_redir	*check_redirection(t_redir *list)
+{
+	t_redir	*current;
+	t_redir	*last;
+
+	last = ft_lstlast_redi(list);
+	current = list;
+	while (current && ft_strcmp(current->value, last->value))
+	{
+		close(current->fd);
+		current = current->next;
+	}
+	return (last);
 }

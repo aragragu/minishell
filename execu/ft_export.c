@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:32:21 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/22 12:08:17 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/22 13:42:20 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,7 @@ void	sort_env(t_env **env)
 			tmp = tmp->next;
 		}
 		if (first)
-		{
-			print_export(first);
-			first->flag = 1;
-		}
+			(1) && (print_export(first), first->flag = 1);
 		j++;
 	}
 	return (init_flag(*env));
