@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils8.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:48:48 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/22 16:21:04 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/23 12:30:20 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ char	*norm_excu_in_path(char *filename)
 				fprintf(stderr, "%s: is a directory\n", filename);
 				exit(g_es(126, 0));
 			}
+		}
+		if (access(filename, X_OK) == -1 && access(filename, F_OK) == 0)
+		{
+			ft_fprintf(2, "minishell: permission denied\n");
+			exit(g_es(126, 0));
 		}
 		if (access(filename, X_OK) == 0)
 			return (ft_strduppp(filename));
