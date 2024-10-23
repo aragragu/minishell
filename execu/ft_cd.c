@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:31:11 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/23 09:56:57 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/23 18:53:31 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,15 @@ void	pwd_upd_old(t_var *var, char *key, char *val)
 	{
 		if (ft_strcmp(current->key, key) == 0)
 		{
-			free(current->value);
-			current->value = NULL;
 			current->value = ft_strdup(val, &var->garb);
 			return ;
 		}
 		current = current->next;
 	}
-	new_node = (t_env *)malloc(sizeof(t_env));
+	new_node = ft_lstnew2(ft_strdup(key, &var->garb),
+			ft_strdup(val, &var->garb), &var->garb);
 	if (new_node)
 	{
-		new_node->key = ft_strduppp(key);
-		new_node->value = ft_strduppp(val);
 		new_node->next = NULL;
 		new_node->flag = 1;
 		ft_lstadd_backkk(&var->env, new_node);
