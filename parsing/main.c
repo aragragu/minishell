@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:02:07 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/22 16:49:08 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/23 14:46:28 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	read_input_loop(t_var *var, struct termios *original_termios)
 	while (1)
 	{
 		initialize_signals();
-		input = readline("➜ minishell💀$ ");
+		input = readline("➜ (minishell)✗ ");
 		i = fill_linked_list(input, var);
 		free(input);
 		if (i == 1)
