@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/23 13:29:09 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/23 14:45:03 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,6 @@ void		is_a_word(t_elem **list, char *input, int index,
 				t_garbage **garbage);
 void		is_a_quot(t_elem **list, char *input, int index,
 				t_garbage **garbage);
-void		print_list(t_elem **list);
 void		is_a_squot(t_elem **list, char *input, int index,
 				t_garbage **garbage);
 void		ft_free(char **tab);
@@ -181,7 +180,6 @@ void		edit_list(t_elem *list, t_garbage **garbage);
 void		expand_var_list(t_elem **list, t_var container,
 				t_garbage **garbage);
 void		ft_lstadd_back2(t_env **lst, t_env *new);
-void		print_env_list(t_env *head);
 int			ft_strcmp(char *s1, char *s2);
 void		expand_var(t_elem **list, t_elem *node, t_env **env,
 				t_garbage **garbage);
@@ -206,7 +204,6 @@ void		import_data(t_cmd **cmd, t_elem **list, t_garbage **garbage);
 void		fill_cmd1(t_cmd **cmd, t_elem **list, t_garbage **garbage);
 t_cmd		*ft_lstnew_cmd(void);
 void		ft_lstadd_back_cmd(t_cmd **lst, t_cmd *new);
-void		print_cmd(t_cmd *cmd);
 void		rename_token(t_elem **list);
 void		fill_cmd2(t_cmd **cmd, t_elem **list, t_garbage **garbage);
 int			word_count(t_elem *list);
