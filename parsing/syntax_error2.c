@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 19:12:50 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/23 00:33:13 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/23 10:18:13 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ int	has_invalid_redirection_out(t_elem **list)
 int	pipe_error(t_elem **head)
 {
 	t_elem	*list;
-	t_elem	*pah;
 
 	list = *head;
 	if (list->type == PIPE)
@@ -115,8 +114,7 @@ int	pipe_error(t_elem **head)
 		{
 			if (list->next && list->next->type == S_PACE)
 			{
-				pah = list->next->next;
-				if (pah && pah->type == PIPE)
+				if (list->next->next && list->next->next->type == PIPE)
 					return (0);
 			}
 			if (list->next && list->next->type == PIPE)
