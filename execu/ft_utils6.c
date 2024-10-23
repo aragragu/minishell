@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils6.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:21:52 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/23 09:57:51 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/23 13:26:12 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,7 @@ void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd)
 		}
 		close(pipefd[1]);
 		(i != 0) && (close(prev_fd), 0);
-		// printf("last_herdoc_fd = [%d]\n", last_herdoc->fd);
-		(!contains_red(var)) && (close(last_herdoc->fd), 0);
+		(last_herdoc) && (close(last_herdoc->fd), 0);
 		(prev_fd = pipefd[0]) && (var->list = var->list->next, 0);
 	}
 	norm_pipe(var, var->list2, 1, &var->term);

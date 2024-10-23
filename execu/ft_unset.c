@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 10:33:33 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/23 11:56:57 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/23 13:24:55 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,22 @@ void	norm_unset_3(t_env *curr, t_var *var, t_env *prev, int i)
 	}
 }
 
+int	is_valid_identifier(const char *str)
+{
+	int	i;
+
+	if (!str || !*str)
+		return (0);
+	i = 0;
+	while (str[i])
+	{
+		if (!ft_isalpha(str[i]) && !ft_digits(str[i]) && str[i] != '_')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 void	ft_unset(t_var *var, int i)
 {
 	t_env	*prev;
@@ -49,8 +65,7 @@ void	ft_unset(t_var *var, int i)
 	curr = var->env;
 	while (var->list->argc[++i])
 	{
-		if (var->list->argc[i][0] && (var->list->argc[i][0] == '_' \
-			|| ft_isalpha(var->list->argc[i][0])))
+		if (!is_valid_identifier(var->list->argc[i]))
 		{
 			if (!ft_strcmp(var->list->argc[i], "PATH"))
 			{
@@ -62,7 +77,8 @@ void	ft_unset(t_var *var, int i)
 		}
 		else
 		{
-			ft_fprintf(2, "`%s': not a valid identifier\n", var->list->argc[i]);
+			ft_fprintf(2, "unset: `%s': not a valid identifier\n",
+				var->list->argc[i]);
 			g_es(1, 0);
 		}
 	}
