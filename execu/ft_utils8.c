@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils8.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:48:48 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/23 13:32:23 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/23 14:29:13 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,21 @@ t_redir	*check_redirection(t_redir *list)
 		current = current->next;
 	}
 	return (last);
+}
+
+t_redir	*ft_lstlast_redi(t_redir *lst)
+{
+	t_redir	*ptr;
+
+	if (!lst)
+		return (NULL);
+	ptr = lst;
+	if (ptr && ptr->next)
+	{
+		while (ptr->next != NULL)
+		{
+			ptr = ptr->next;
+		}
+	}
+	return (ptr);
 }
