@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 19:01:25 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/22 12:44:28 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/22 23:14:00 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int	list_handler(t_var *var)
 		return (2);
 	}
 	import_data(&var->list, &var->linked_list, &var->garbage);
+	// print_cmd(var->list);
 	return (0);
 }
 

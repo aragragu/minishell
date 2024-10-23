@@ -6,7 +6,7 @@
 /*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 19:12:50 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/20 19:14:34 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/23 00:33:13 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,10 @@ int	has_invalid_redirection_in(t_elem **list)
 		{
 			if (current->next && current->next->type == S_PACE)
 			{
-				current = current->next->next;
-				if (current && (current->type >= PIPE))
+				if (current->next->next && current->next->next->type >= PIPE)
 					return (0);
 			}
-			if (current->next && current->next->type >= PIPE)
+			else if (current->next && current->next->type >= PIPE)
 				return (0);
 		}
 		current = current->next;
@@ -79,7 +78,6 @@ int	has_invalid_redirection_in(t_elem **list)
 int	has_invalid_redirection_out(t_elem **list)
 {
 	t_elem	*current;
-	t_elem	*pah;
 
 	current = *list;
 	if (ft_lstlast(*list)->type == REDIR_OUT)
@@ -90,11 +88,10 @@ int	has_invalid_redirection_out(t_elem **list)
 		{
 			if (current->next && current->next->type == S_PACE)
 			{
-				pah = current->next->next;
-				if (pah && pah->type >= PIPE)
+				if (current->next->next && current->next->next->type >= PIPE)
 					return (0);
 			}
-			if (current->next && current->next->type >= PIPE)
+			else if (current->next && current->next->type >= PIPE)
 				return (0);
 		}
 		current = current->next;

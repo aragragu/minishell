@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils6.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:21:52 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/22 12:43:22 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/22 23:14:32 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,14 @@ t_redir *check_redirection(t_redir *list)
 
 	last = ft_lstlast_redi(list);
 	current = list;
-	while (current && ft_strcmp(current->value, last->value))
+	while (current && current->type == HEREDOC && ft_strcmp(current->value, last->value))
 	{
 		close(current->fd);
 		current = current->next;
 	}
 	return (last);
 }
+
 
 void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd)
 {
@@ -121,6 +122,7 @@ void	execute_pipe(int num_cmds, t_var *var, int i, int prev_fd)
 		}
 		close(pipefd[1]);
 		(i != 0) && (close(prev_fd), 0);
+		// printf("last_herdoc_fd = [%d]\n", last_herdoc->fd);
 		(!contains_red(var)) && (close(last_herdoc->fd), 0);
 		(prev_fd = pipefd[0]) && (var->list = var->list->next, 0);
 	}
