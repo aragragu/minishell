@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 17:31:43 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/21 20:42:19 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/23 18:16:32 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ void	ex3_norm(t_var *var, int i)
 			free(var->key);
 		}
 		else
-			ft_lstadd_backkk(&var->env, ft_lstnewww(var->key, var->new_val));
+			ft_lstadd_backkk(&var->env, ft_lstnew2(var->key, var->new_val,
+					&var->garb));
 	}
 }
 
@@ -82,7 +83,8 @@ void	ex4_norm(t_var *var, int i)
 		free(var->key);
 	}
 	else
-		ft_lstadd_backkk(&var->env, ft_lstnewww(var->key, var->new_val));
+		ft_lstadd_backkk(&var->env, ft_lstnew2(var->key, var->new_val,
+				&var->garb));
 }
 
 void	ex5_norm(t_var *var, int i)

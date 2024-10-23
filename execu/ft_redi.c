@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 11:51:38 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/23 13:25:25 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/23 17:47:22 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	handle_redirection2(t_var *var)
 	redir = var->list->redirection;
 	while (redir)
 	{
-		if (redir->value == NULL)
+		if (redir->value == NULL || !redir->value[0])
 		{
 			ft_fprintf(2, "minishell: ambiguous redirect\n");
 			g_es(1, 0);
