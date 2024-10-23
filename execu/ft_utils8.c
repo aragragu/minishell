@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils8.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:48:48 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/23 12:30:20 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/23 13:32:23 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	norm_error_path(void)
+{
+	ft_fprintf(2, "minishell: .: filename argument required\n");
+	ft_fprintf(2, ".: usage: . filename [arguments]\n");
+	exit(2);
+}
 
 char	*norm_excu_in_path(char *filename)
 {
@@ -37,12 +44,7 @@ char	*norm_excu_in_path(char *filename)
 		g_es(127, 0);
 		exit(127);
 	}
-	else if (!ft_strcmp(filename, "."))
-	{
-		ft_fprintf(2, "minishell: .: filename argument required\n");
-		ft_fprintf(2, ".: usage: . filename [arguments]\n");
-		exit(2);
-	}
+	(!ft_strcmp(filename, ".")) && (norm_error_path(), 0);
 	return (NULL);
 }
 
@@ -79,9 +81,13 @@ t_redir	*check_redirection(t_redir *list)
 
 	last = ft_lstlast_redi(list);
 	current = list;
-	while (current && ft_strcmp(current->value, last->value))
+	if (!last)
+		return (NULL);
+	while (current)
 	{
-		close(current->fd);
+		if (current && current->type == HEREDOC \
+			&& ft_strcmp(current->value, last->value))
+			close(current->fd);
 		current = current->next;
 	}
 	return (last);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/13 11:44:30 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/23 11:57:05 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/23 13:29:09 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,10 @@
 # include <sys/wait.h>
 # include <string.h>
 # include <paths.h>
-# include <libc.h>
+# include <sys/stat.h>
 # include <dirent.h>
 # include <termios.h>
 # include <stdbool.h>
-
-// #define dup2(x, y) NULL
 
 typedef enum s_token
 {
@@ -333,8 +331,8 @@ int			ft_putchar_fd(char c, int fd);
 void		error_function(t_var *var);
 void		error_fork(void);
 void		waitpid_func(t_var *var, struct termios *term);
-void		red_herd_appen(t_redir *redir, int fd, t_var *var);
-void		red_out_in(t_redir *redir, int fd);
+void		red_herd_appen(t_redir *redir);
+void		red_out_in(t_redir *redir);
 int			contains_red(t_var *var);
 void		norm_excu_pipe3(t_var **var);
 int			check_builtins(char *str);
