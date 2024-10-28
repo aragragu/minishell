@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/30 11:51:38 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/23 17:47:22 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/28 15:54:44 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	red_out_in(t_redir *redir)
 		fd = open(redir->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd < 0)
 		{
-			perror("open failed");
+			perror(redir->value);
 			exit(1);
 		}
 		dup2(fd, STDOUT_FILENO);
@@ -76,7 +76,7 @@ void	red_herd_appen(t_redir *redir)
 		fd = open(redir->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (fd < 0)
 		{
-			perror("open failed");
+			perror(redir->value);
 			exit(g_es(1, 0));
 		}
 		dup2(fd, STDOUT_FILENO);
@@ -100,7 +100,7 @@ void	handle_redirection2(t_var *var)
 	redir = var->list->redirection;
 	while (redir)
 	{
-		if (redir->value == NULL || !redir->value[0])
+		if (redir->value == NULL)
 		{
 			ft_fprintf(2, "minishell: ambiguous redirect\n");
 			g_es(1, 0);

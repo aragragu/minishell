@@ -1,0 +1,64 @@
+declare -x saad="100"
+➜ (minishell)✗  saad+0=100
+minishell: saad+0=100: command not found
+➜ (minishell)✗ export saad+=1000
+➜ (minishell)✗ export
+AddressSanitizer:DEADLYSIGNAL
+=================================================================
+==80565==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000000 (pc 0x000105d726e7 bp 0x7ffee9eaa850 sp 0x7ffee9eaa7e0 T0)
+==80565==The signal is caused by a READ memory access.
+==80565==Hint: address points to the zero page.
+    #0 0x105d726e7 in ft_strcmplist ft_export.c:20
+    #1 0x105d7fef3 in swap_nodes ft_export_norm2.c:58
+    #2 0x105d72ebb in sort_env ft_export.c:61
+    #3 0x105d73460 in ft_export ft_export.c:77
+    #4 0x105d7c11c in ft_builtins ft_utils4.c:41
+    #5 0x105d7ad0e in execution ft_excu2.c:31
+    #6 0x105d5a7ce in read_input_loop main.c:47
+    #7 0x105d5a97f in read_input main.c:61
+    #8 0x105d5aa5c in main main.c:69
+    #9 0x7fff6eafacc8 in start+0x0 (libdyld.dylib:x86_64+0x1acc8)
+
+==80565==Register values:
+rax = 0x0000000000000000  rbx = 0x00007ffee9eaa9c0  rcx = 0x0000000000000000  rdx = 0x0000100000000000  
+rdi = 0x0000000000000000  rsi = 0x0000100000000000  rbp = 0x00007ffee9eaa850  rsp = 0x00007ffee9eaa7e0  
+ r8 = 0x00007ffee9eaadd8   r9 = 0x00001fffdd3d55bb  r10 = 0x0000000000000402  r11 = 0x0000000000000202  
+r12 = 0x0000000000000000  r13 = 0x0000000000000000  r14 = 0x0000000000000000  r15 = 0x0000000000000000  
+AddressSanitizer can not provide additional info.
+SUMMARY: AddressSanitizer: SEGV ft_export.c:20 in ft_strcmplist
+==80565==ABORTING
+[1]    80565 abort      ./minishell
+
+
+
+
+➜ (minishell)✗  cat test >>                '' | wc
+minishell: ambiguous redirect
+       0       0       0
+➜ (minishell)✗ 
+
+
+
+➜ (minishell)✗ touch lsd
+➜ (minishell)✗ ./lsd
+minishell: permission denied
+➜ (minishell)✗ chmod  777 lsd
+➜ (minishell)✗ ./lsd
+minishell: ./lsd: command not found
+➜ (minishell)✗ 
+
+
+
+
+ ls | $notvar  | wc -l (machi same output b7al lbash w kib9a ytcrea like wa7d child process )
+
+
+
+
+ env | grep PWD
+ {
+    ➜ (minishell)✗ env | grep PWD
+PWD=/goinfre/sfellahi/minishell__
+OLDPWD=/goinfre/sfellahi/minishell__
+    (flbsia makhasch OLDPWD ykon fih chi haja )
+ }
