@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanding2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 19:44:27 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/21 01:41:46 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/28 18:22:27 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,15 @@ void	fill_env(t_env **env, char **str, t_garbage **garbage)
 	end = 0;
 	if (!str || !str[0])
 	{
-		*env = ft_lstnewww(ft_strduppp("PWD"), getcwd(NULL, 0));
+		*env = ft_lstnew2(ft_strdup("PWD", garbage), getcwd(NULL, 0), garbage);
 		if (!*env)
 			return ;
-		ft_lstadd_backkk(env, ft_lstnewww(ft_strduppp("SHLVL"),
-				ft_strduppp("1")));
-		ft_lstadd_backkk(env, ft_lstnewww(ft_strduppp("_"),
-				ft_strduppp("/usr/bin/env")));
-		ft_lstadd_backkk(env, ft_lstnewww(ft_strduppp("OLDPWD"), NULL));
+		ft_lstadd_backkk(env, ft_lstnew2(ft_strdup("SHLVL", garbage),
+				ft_strdup("1", garbage), garbage));
+		ft_lstadd_backkk(env, ft_lstnew2(ft_strdup("_", garbage),
+				ft_strdup("/usr/bin/env", garbage), garbage));
+		ft_lstadd_backkk(env, ft_lstnew2(ft_strdup("OLDPWD", garbage),
+				NULL, garbage));
 		return ;
 	}
 	searsh_env(env, str, garbage, end);
