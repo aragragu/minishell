@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 17:31:43 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/23 18:16:32 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/28 13:54:04 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,9 @@ void	ex3_norm(t_var *var, int i)
 void	ex4_norm(t_var *var, int i)
 {
 	char	*temp;
+	char	*ptr;
 
+	ptr = NULL;
 	var->new_val = ft_cat(var->list->argc[i], var->j + 2, 1);
 	var->key = ft_cat(var->list->argc[i], var->j, 0);
 	var->index = index_key(var->env, var->key);
@@ -76,7 +78,9 @@ void	ex4_norm(t_var *var, int i)
 			var->index->value = var->new_val;
 		else
 		{
-			temp = ft_strjoinnn(var->index->value, var->new_val);
+			temp = ft_strjoin(var->index->value, var->new_val, &var->garb);
+			ft_lstadd_backkk(&var->env, ft_lstnew2(NULL, var->index->value,
+					&var->garb));
 			var->index->value = temp;
 			free(var->new_val);
 		}
