@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:02:07 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/23 14:46:28 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/29 17:10:58 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	read_input(char **env)
 	initialize_variables(&var, env);
 	tcgetattr(STDIN_FILENO, &original_termios);
 	read_input_loop(&var, &original_termios);
-	free_garbage(&var.garb);
+	exit(0);
 }
 
 int	main(int argc, char *argv[], char **env)

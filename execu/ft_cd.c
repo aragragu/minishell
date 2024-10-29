@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:31:11 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/29 15:04:05 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/29 17:12:49 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	pwd_upd_old(t_var *var, char *key, char *val)
 	{
 		if (ft_strcmp(current->key, key) == 0)
 		{
+			free(current->value);
 			current->value = ft_strdup(val, &var->garb);
 			return ;
 		}
@@ -47,7 +48,6 @@ void	error_fun_cd(t_var *var, char *home, int flag)
 	else if (flag == 1)
 	{
 		ft_fprintf(2, "minishell: cd: HOME not set\n");
-		ft_lstadd_back2(&var->env, ft_lstnew2(var->env->key, var->env->value, &var->garb));
 		g_es(1, 0);
 	}
 	else if (flag == 2)
