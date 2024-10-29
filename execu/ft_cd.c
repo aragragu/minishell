@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 17:31:11 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/23 18:53:31 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/29 15:04:05 by aragragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	error_fun_cd(t_var *var, char *home, int flag)
 	else if (flag == 1)
 	{
 		ft_fprintf(2, "minishell: cd: HOME not set\n");
+		ft_lstadd_back2(&var->env, ft_lstnew2(var->env->key, var->env->value, &var->garb));
 		g_es(1, 0);
 	}
 	else if (flag == 2)
