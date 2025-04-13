@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils8.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aragragu <aragragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 11:48:48 by ykasmi            #+#    #+#             */
-/*   Updated: 2024/10/23 14:29:13 by aragragu         ###   ########.fr       */
+/*   Updated: 2024/10/29 17:21:09 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*norm_excu_in_path(char *filename)
 		{
 			if (S_ISDIR(f_stat.st_mode))
 			{
-				fprintf(stderr, "%s: is a directory\n", filename);
+				ft_fprintf(2, "%s: is a directory\n", filename);
 				exit(g_es(126, 0));
 			}
 		}

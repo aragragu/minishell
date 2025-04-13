@@ -6,7 +6,7 @@
 /*   By: ykasmi <ykasmi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:02:07 by aragragu          #+#    #+#             */
-/*   Updated: 2024/10/29 17:10:58 by ykasmi           ###   ########.fr       */
+/*   Updated: 2024/10/29 17:19:54 by ykasmi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	read_input(char **env)
 	initialize_variables(&var, env);
 	tcgetattr(STDIN_FILENO, &original_termios);
 	read_input_loop(&var, &original_termios);
-	exit(0);
+	exit(g_es(0, 1));
 }
 
 int	main(int argc, char *argv[], char **env)
